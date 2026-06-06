@@ -22,6 +22,10 @@ const MENU = [
   { id: 15, category: 'Soups', name: 'Bitterleaf Soup (2L)',       description: 'Hearty Igbo soup with bitterleaf, cocoyam, and meat.',           price: 50000,  emoji: '🍃', image: IMG('1604908176997-125f25cc6f3d') },
   { id: 16, category: 'Soups', name: 'Bitterleaf Soup (4L)',       description: 'Hearty Igbo soup with bitterleaf, cocoyam, and meat.',           price: 80000,  emoji: '🍃', image: IMG('1604908176997-125f25cc6f3d') },
 
+  // SWALLOW
+  { id: 74, category: 'Swallow', name: 'Amala, Ewedu, Gbegiri & Assorted Fish (2L)', description: 'Yoruba classic — smooth amala with ewedu, gbegiri, assorted meat and fish.', price: 60000,  emoji: '🍜', image: '/images/amala-ewedu.jpg' },
+  { id: 75, category: 'Swallow', name: 'Amala, Ewedu, Gbegiri & Assorted Fish (4L)', description: 'Yoruba classic — smooth amala with ewedu, gbegiri, assorted meat and fish.', price: 110000, emoji: '🍜', image: '/images/amala-ewedu.jpg' },
+
   // STEWS
   { id: 17, category: 'Stews', name: 'Chicken Stew (2L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 40000,  emoji: '🍗', image: IMG('1619860705619-1e0ba34091e0') },
   { id: 18, category: 'Stews', name: 'Chicken Stew (4L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 80000,  emoji: '🍗', image: IMG('1619860705619-1e0ba34091e0') },
