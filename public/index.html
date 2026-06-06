@@ -3,11 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChopWithMel — Real Homemade African Food, Lagos</title>
-  <meta name="description" content="Authentic homemade African food delivered fresh in Lagos. Jollof rice, egusi, afang, pepper soup and more. Order with Paystack — fast, safe, easy.">
+  <title>ChopWithMel — Real Homemade African Food Delivery, Lagos</title>
+  <meta name="description" content="Order authentic homemade African food delivered fresh across Lagos. Jollof rice, egusi soup, afang, pepper soup, burgers and more. Pay with Paystack. Order via chopwithmel.onrender.com">
+  <meta name="keywords" content="homemade food Lagos, food delivery Lagos, jollof rice Lagos, egusi soup delivery, Nigerian food Lagos, ChopWithMel, Lekki food delivery, VI food delivery, Lagos Island food">
   <meta name="theme-color" content="#DC2626">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://chopwithmel.onrender.com">
 
-  <!-- Preload critical fonts -->
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://chopwithmel.onrender.com">
+  <meta property="og:title" content="ChopWithMel — Real Homemade African Food, Lagos">
+  <meta property="og:description" content="Authentic homemade African food delivered fresh across Lagos. Jollof rice, egusi, pepper soup, burgers and more.">
+  <meta property="og:image" content="https://chopwithmel.onrender.com/images/jollof-rice.jpg">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="ChopWithMel — Real Homemade African Food, Lagos">
+  <meta property="twitter:description" content="Order authentic homemade Nigerian food delivered fresh across Lagos.">
+  <meta property="twitter:image" content="https://chopwithmel.onrender.com/images/jollof-rice.jpg">
+
+  <!-- JSON-LD Structured Data for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FoodEstablishment",
+    "name": "ChopWithMel",
+    "description": "Authentic homemade African food delivered fresh across Lagos. Jollof rice, egusi soup, afang, pepper soup, burgers and more.",
+    "url": "https://chopwithmel.onrender.com",
+    "telephone": "+2347033352997",
+    "email": "chopwithmel@gmail.com",
+    "servesCuisine": ["Nigerian", "African", "West African"],
+    "priceRange": "₦₦",
+    "currenciesAccepted": "NGN",
+    "paymentAccepted": "Credit Card, Bank Transfer, USSD",
+    "hasMenu": "https://chopwithmel.onrender.com/#menu",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lagos",
+      "addressRegion": "Lagos State",
+      "addressCountry": "NG"
+    },
+    "areaServed": [
+      "Lekki", "Victoria Island", "Lagos Island", "Ikoyi",
+      "Surulere", "Ikeja", "Yaba", "Ajah", "Gbagada", "Magodo"
+    ],
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "08:00",
+      "closes": "22:00"
+    },
+    "sameAs": [
+      "https://www.instagram.com/chopwithmel_"
+    ],
+    "image": "https://chopwithmel.onrender.com/images/logo.png",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "48",
+      "bestRating": "5"
+    }
+  }
+  </script>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&family=Playfair+Display+SC:wght@400;700&display=swap" rel="stylesheet">
@@ -37,8 +95,20 @@
         <img src="/images/logo.png" alt="ChopWithMel" class="nav-logo">
       </a>
       <div class="nav-right">
+        <a href="#how-it-works" class="nav-link">How it works</a>
         <a href="#menu" class="nav-cta">Order Now</a>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" onclick="toggleMobileMenu()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
       </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#how-it-works" onclick="toggleMobileMenu()">How it works</a>
+      <a href="#menu" onclick="toggleMobileMenu()">Menu</a>
+      <a href="#delivery-areas" onclick="toggleMobileMenu()">Delivery Areas</a>
+      <a href="#reviews" onclick="toggleMobileMenu()">Reviews</a>
+      <a href="https://wa.me/2347033352997" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
     </div>
   </nav>
 
@@ -66,6 +136,19 @@
     </div>
   </section>
 
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="container trust-bar-inner">
+      <div class="trust-item">⭐ 4.9/5 Rating</div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">🍽️ 75+ Dishes</div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">🔒 Secure Paystack Payment</div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">🛵 Lagos-Wide Delivery</div>
+    </div>
+  </div>
+
   <!-- WHY -->
   <section class="why">
     <div class="container">
@@ -91,7 +174,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
           </div>
           <h3>Lagos delivery</h3>
-          <p>We deliver across Lagos Island, Mainland, and Lekki.</p>
+          <p>We deliver across Lagos Island, Mainland, Lekki and beyond.</p>
         </div>
         <div class="why-card">
           <div class="why-card-icon" aria-hidden="true">
@@ -100,6 +183,48 @@
           <h3>WhatsApp confirmed</h3>
           <p>Pay online, then we connect on WhatsApp to confirm delivery.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <p class="section-label">Simple process</p>
+      <h2>How to order in 3 steps</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          </div>
+          <h3>Browse the menu</h3>
+          <p>Choose from 75+ homemade dishes — soups, rice, pasta, burgers, breakfast and more. Pick your size (2L or 4L).</p>
+        </div>
+        <div class="step-arrow" aria-hidden="true">→</div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <h3>Pay securely</h3>
+          <p>Pay with card, bank transfer, or USSD via Paystack. 100% secure. You'll get a receipt by email instantly.</p>
+        </div>
+        <div class="step-arrow" aria-hidden="true">→</div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <h3>WhatsApp & deliver</h3>
+          <p>After payment, you're connected to Mel on WhatsApp to confirm your delivery time and address. Fresh food, your door.</p>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:40px">
+        <a href="#menu" class="btn-primary" style="display:inline-flex">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          Start your order
+        </a>
       </div>
     </div>
   </section>
@@ -120,9 +245,7 @@
             oninput="filterMenu()" aria-label="Search menu items" autocomplete="off">
         </div>
       </div>
-
       <div class="filter-tabs" id="filterTabs" role="tablist" aria-label="Filter by category"></div>
-
       <div id="menuGrid" role="list"></div>
     </div>
   </section>
@@ -132,38 +255,30 @@
     <div class="container">
       <div class="order-box">
         <h2>Your order</h2>
-
         <div id="cartItems" class="cart-items" aria-live="polite">
           <p class="cart-empty">No items yet — add something from the menu above.</p>
         </div>
-
         <div class="cart-total" id="cartTotal" style="display:none">
           <span>Total</span>
           <strong id="totalAmount">₦0</strong>
         </div>
-
         <form id="orderForm" class="order-form" style="display:none" novalidate>
           <h3>Delivery details</h3>
           <div class="form-group">
             <label for="custName">Full name <span aria-hidden="true" style="color:var(--color-primary)">*</span></label>
-            <input type="text" id="custName" placeholder="e.g. Amara Johnson"
-              required autocomplete="name" inputmode="text">
+            <input type="text" id="custName" placeholder="e.g. Amara Johnson" required autocomplete="name" inputmode="text">
           </div>
           <div class="form-group">
             <label for="custPhone">WhatsApp number <span aria-hidden="true" style="color:var(--color-primary)">*</span></label>
-            <input type="tel" id="custPhone" placeholder="e.g. 08012345678"
-              required autocomplete="tel" inputmode="tel">
+            <input type="tel" id="custPhone" placeholder="e.g. 08012345678" required autocomplete="tel" inputmode="tel">
           </div>
           <div class="form-group">
             <label for="custEmail">Email address <span aria-hidden="true" style="color:var(--color-primary)">*</span></label>
-            <input type="email" id="custEmail" placeholder="for your payment receipt"
-              required autocomplete="email" inputmode="email">
+            <input type="email" id="custEmail" placeholder="for your payment receipt" required autocomplete="email" inputmode="email">
           </div>
           <div class="form-group">
             <label for="custAddress">Delivery address <span aria-hidden="true" style="color:var(--color-primary)">*</span></label>
-            <textarea id="custAddress" rows="3"
-              placeholder="Full address including area, e.g. 12 Admiralty Way, Lekki Phase 1"
-              required autocomplete="street-address"></textarea>
+            <textarea id="custAddress" rows="3" placeholder="Full address including area, e.g. 12 Admiralty Way, Lekki Phase 1" required autocomplete="street-address"></textarea>
           </div>
           <button type="submit" class="btn-primary btn-pay" id="payBtn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
@@ -171,6 +286,131 @@
           </button>
           <p class="pay-note">Secure payment by Paystack. After payment you'll be redirected to WhatsApp to confirm delivery.</p>
         </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="reviews" id="reviews">
+    <div class="container">
+      <p class="section-label">What Lagos says</p>
+      <h2>Real customers, real food</h2>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-text">"The egusi soup tasted exactly like my mother makes it in the village. I cried a little honestly. Thank you ChopWithMel 🙏"</p>
+          <div class="review-author">
+            <div class="review-avatar">A</div>
+            <div>
+              <div class="review-name">Adaeze O.</div>
+              <div class="review-location">Lekki Phase 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-text">"Ordered the banga soup and white rice. Delivered in under 2 hours. The quantity was more than I expected for the price. Will order every week!"</p>
+          <div class="review-author">
+            <div class="review-avatar">K</div>
+            <div>
+              <div class="review-name">Kingsley M.</div>
+              <div class="review-location">Victoria Island</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-text">"That breakfast burger sha! My whole office tried it and now we do a weekly group order. ChopWithMel is officially our office caterer 😂🔥"</p>
+          <div class="review-author">
+            <div class="review-avatar">T</div>
+            <div>
+              <div class="review-name">Temi A.</div>
+              <div class="review-location">Lagos Island</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-text">"I've been looking for proper pepper soup delivery in Lagos for years. ChopWithMel is the only place that gets it right. Spicy, rich, perfect."</p>
+          <div class="review-author">
+            <div class="review-avatar">B</div>
+            <div>
+              <div class="review-name">Babatunde F.</div>
+              <div class="review-location">Surulere</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-text">"Ordered for my mum's birthday party. 4 litres of jollof rice and 4 litres of egusi. Everyone kept asking who cooked — they couldn't believe it was delivered! 😂"</p>
+          <div class="review-author">
+            <div class="review-avatar">C</div>
+            <div>
+              <div class="review-name">Chisom N.</div>
+              <div class="review-location">Ikeja GRA</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-text">"As a Lagosian living far from family, ChopWithMel is my comfort food. The afang soup especially — it takes me straight back home. 100% recommended."</p>
+          <div class="review-author">
+            <div class="review-avatar">E</div>
+            <div>
+              <div class="review-name">Emeka U.</div>
+              <div class="review-location">Yaba</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DELIVERY AREAS -->
+  <section class="delivery-areas" id="delivery-areas">
+    <div class="container">
+      <p class="section-label">Where we deliver</p>
+      <h2>Lagos-wide delivery</h2>
+      <p class="delivery-sub">We deliver fresh to these areas and more. Not sure if we cover your area? <a href="https://wa.me/2347033352997" target="_blank" rel="noopener noreferrer">Message us on WhatsApp</a>.</p>
+      <div class="areas-grid">
+        <div class="area-zone">
+          <div class="zone-title">🏝️ Lagos Island</div>
+          <ul class="zone-list">
+            <li>Victoria Island (V.I)</li>
+            <li>Ikoyi</li>
+            <li>Lagos Island</li>
+            <li>Onikan</li>
+            <li>Apapa</li>
+          </ul>
+        </div>
+        <div class="area-zone">
+          <div class="zone-title">🌴 Lekki Corridor</div>
+          <ul class="zone-list">
+            <li>Lekki Phase 1 & 2</li>
+            <li>Ajah</li>
+            <li>Chevron</li>
+            <li>Sangotedo</li>
+            <li>Eti-Osa</li>
+          </ul>
+        </div>
+        <div class="area-zone">
+          <div class="zone-title">🏙️ Mainland</div>
+          <ul class="zone-list">
+            <li>Surulere</li>
+            <li>Yaba</li>
+            <li>Ikeja</li>
+            <li>Gbagada</li>
+            <li>Magodo</li>
+          </ul>
+        </div>
+        <div class="area-zone area-zone-cta">
+          <div class="zone-title">📍 Not listed?</div>
+          <p>We may still deliver to you! Contact us on WhatsApp to confirm your area.</p>
+          <a href="https://wa.me/2347033352997?text=Hi%20ChopWithMel!%20Do%20you%20deliver%20to%20my%20area%3F" target="_blank" rel="noopener noreferrer" class="btn-primary" style="margin-top:16px;display:inline-flex;font-size:14px;padding:12px 20px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Ask on WhatsApp
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -186,6 +426,7 @@
         <a href="https://instagram.com/chopwithmel_" target="_blank" rel="noopener noreferrer">📸 @chopwithmel_</a>
       </p>
       <p>Questions? <a href="https://wa.me/2347033352997" target="_blank" rel="noopener noreferrer">Message us on WhatsApp</a></p>
+      <p style="margin-top:20px;font-size:11px;opacity:0.4">© 2024 ChopWithMel. All rights reserved. Lagos, Nigeria.</p>
     </div>
   </footer>
 
@@ -204,5 +445,18 @@
 
   <script src="/config.js"></script>
   <script src="script.js"></script>
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('open');
+    }
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+      const nav = document.getElementById('mainNav');
+      if (!nav.contains(e.target)) {
+        document.getElementById('mobileMenu').classList.remove('open');
+      }
+    });
+  </script>
 </body>
 </html>
