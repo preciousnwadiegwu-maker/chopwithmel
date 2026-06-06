@@ -13,8 +13,8 @@ const MENU = [
   { id: 6,  category: 'Soups', name: 'Afang Soup (4L)',            description: 'Efik classic with waterleaf, shredded meat, and periwinkle.',    price: 80000,  emoji: '🫕', image: '/images/afang-soup.jpg' },
   { id: 7,  category: 'Soups', name: 'Fisherman Soup (2L)',        description: 'Spicy Delta-style soup loaded with fresh fish and seafood.',      price: 70000,  emoji: '🐟', image: IMG('1576874762348-f74e25831a92') },
   { id: 8,  category: 'Soups', name: 'Fisherman Soup (4L)',        description: 'Spicy Delta-style soup loaded with fresh fish and seafood.',      price: 120000, emoji: '🐟', image: IMG('1576874762348-f74e25831a92') },
-  { id: 9,  category: 'Soups', name: 'Owo Soup (2L)',              description: 'Urhobo palm nut soup with crayfish and dried fish.',              price: 50000,  emoji: '🍵', image: IMG('1606663765399-5179e954a3a0') },
-  { id: 10, category: 'Soups', name: 'Owo Soup (4L)',              description: 'Urhobo palm nut soup with crayfish and dried fish.',              price: 80000,  emoji: '🍵', image: IMG('1606663765399-5179e954a3a0') },
+  { id: 9,  category: 'Soups', name: 'Owo Soup (2L)',              description: 'Urhobo palm nut soup with crayfish and dried fish.',              price: 50000,  emoji: '🍵', image: '/images/owo-soup-starch.jpg' },
+  { id: 10, category: 'Soups', name: 'Owo Soup (4L)',              description: 'Urhobo palm nut soup with crayfish and dried fish.',              price: 80000,  emoji: '🍵', image: '/images/owo-soup-starch.jpg' },
   { id: 11, category: 'Soups', name: 'Okro Soup (2L)',             description: 'Fresh okra cooked with assorted meat and ede.',                  price: 50000,  emoji: '🥗', image: IMG('1565280654386-36c3ea205191') },
   { id: 12, category: 'Soups', name: 'Okro Soup (4L)',             description: 'Fresh okra cooked with assorted meat and ede.',                  price: 80000,  emoji: '🥗', image: IMG('1565280654386-36c3ea205191') },
   { id: 13, category: 'Soups', name: 'Oha Soup (2L)',              description: 'Igbo oha leaf soup with cocoyam and assorted meat.',             price: 50000,  emoji: '🌿', image: IMG('1665594051407-7385d281ad76') },
@@ -23,6 +23,8 @@ const MENU = [
   { id: 16, category: 'Soups', name: 'Bitterleaf Soup (4L)',       description: 'Hearty Igbo soup with bitterleaf, cocoyam, and meat.',           price: 80000,  emoji: '🍃', image: IMG('1604908176997-125f25cc6f3d') },
 
   // SWALLOW
+  { id: 78, category: 'Swallow', name: 'Owo Soup & Starch (2L)', description: 'Delta classic — Urhobo owo soup with smooth cassava starch, assorted meat and fish.', price: 55000,  emoji: '🍽️', image: '/images/owo-soup-starch.jpg' },
+  { id: 79, category: 'Swallow', name: 'Owo Soup & Starch (4L)', description: 'Delta classic — Urhobo owo soup with smooth cassava starch, assorted meat and fish.', price: 100000, emoji: '🍽️', image: '/images/owo-soup-starch.jpg' },
   { id: 74, category: 'Swallow', name: 'Amala, Ewedu, Gbegiri & Assorted Fish (2L)', description: 'Yoruba classic — smooth amala with ewedu, gbegiri, assorted meat and fish.', price: 60000,  emoji: '🍜', image: '/images/amala-ewedu.jpg' },
   { id: 75, category: 'Swallow', name: 'Amala, Ewedu, Gbegiri & Assorted Fish (4L)', description: 'Yoruba classic — smooth amala with ewedu, gbegiri, assorted meat and fish.', price: 110000, emoji: '🍜', image: '/images/amala-ewedu.jpg' },
 
