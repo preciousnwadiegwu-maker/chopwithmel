@@ -414,3 +414,30 @@ body {
   .why { padding: 60px 20px; }
   .menu { padding: 60px 20px; }
 }
+
+/* MENU CATEGORIES */
+.menu-category { margin-bottom: 48px; }
+
+.category-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--green);
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.menu-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text);
+}
