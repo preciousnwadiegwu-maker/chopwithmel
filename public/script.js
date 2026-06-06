@@ -7,8 +7,8 @@ const MENU = [
   // SOUPS
   { id: 1,  category: 'Soups', name: 'Egusi Soup (2L)',            description: 'Rich melon-seed soup with assorted meat and stockfish.',         price: 50000,  emoji: '🥘', image: IMG('1763048443535-1243379234e2') },
   { id: 2,  category: 'Soups', name: 'Egusi Soup (4L)',            description: 'Rich melon-seed soup with assorted meat and stockfish.',         price: 80000,  emoji: '🥘', image: IMG('1763048443535-1243379234e2') },
-  { id: 3,  category: 'Soups', name: 'Banga Soup (2L)',            description: 'Palm fruit soup, slow-cooked with dried fish and spices.',       price: 50000,  emoji: '🍲', image: IMG('1529690678884-189e81f34ef6') },
-  { id: 4,  category: 'Soups', name: 'Banga Soup (4L)',            description: 'Palm fruit soup, slow-cooked with dried fish and spices.',       price: 80000,  emoji: '🍲', image: IMG('1529690678884-189e81f34ef6') },
+  { id: 3,  category: 'Soups', name: 'Banga Soup (2L)',            description: 'Palm fruit soup, slow-cooked with dried fish and spices.',       price: 50000,  emoji: '🍲', image: '/images/banga-soup.jpg' },
+  { id: 4,  category: 'Soups', name: 'Banga Soup (4L)',            description: 'Palm fruit soup, slow-cooked with dried fish and spices.',       price: 80000,  emoji: '🍲', image: '/images/banga-soup.jpg' },
   { id: 5,  category: 'Soups', name: 'Afang Soup (2L)',            description: 'Efik classic with waterleaf, shredded meat, and periwinkle.',    price: 50000,  emoji: '🫕', image: '/images/afang-soup.jpg' },
   { id: 6,  category: 'Soups', name: 'Afang Soup (4L)',            description: 'Efik classic with waterleaf, shredded meat, and periwinkle.',    price: 80000,  emoji: '🫕', image: '/images/afang-soup.jpg' },
   { id: 7,  category: 'Soups', name: 'Fisherman Soup (2L)',        description: 'Spicy Delta-style soup loaded with fresh fish and seafood.',      price: 70000,  emoji: '🐟', image: IMG('1576874762348-f74e25831a92') },
