@@ -37,8 +37,8 @@ const MENU = [
   { id: 20, category: 'Stews', name: 'Turkey Stew (4L)',           description: 'Rich tomato stew with well-seasoned turkey.',                    price: 80000,  emoji: '🦃', image: IMG('1603496987674-79600a000f55') },
   { id: 21, category: 'Stews', name: 'Beef Stew (2L)',             description: 'Classic Nigerian beef stew, slow-cooked to perfection.',         price: 40000,  emoji: '🥩', image: IMG('1565280654386-36c3ea205191') },
   { id: 22, category: 'Stews', name: 'Beef Stew (4L)',             description: 'Classic Nigerian beef stew, slow-cooked to perfection.',         price: 80000,  emoji: '🥩', image: IMG('1565280654386-36c3ea205191') },
-  { id: 23, category: 'Stews', name: 'Assorted Meat Stew (2L)',    description: 'Mixed meat stew — beef, tripe, and more.',                       price: 40000,  emoji: '🍖', image: IMG('1529690678884-189e81f34ef6') },
-  { id: 24, category: 'Stews', name: 'Assorted Meat Stew (4L)',    description: 'Mixed meat stew — beef, tripe, and more.',                       price: 80000,  emoji: '🍖', image: IMG('1529690678884-189e81f34ef6') },
+  { id: 23, category: 'Stews', name: 'Assorted Meat Stew (2L)',    description: 'Mixed meat stew — beef, tripe, and more.',                       price: 40000,  emoji: '🍖', image: '/images/assorted-stew.jpg' },
+  { id: 24, category: 'Stews', name: 'Assorted Meat Stew (4L)',    description: 'Mixed meat stew — beef, tripe, and more.',                       price: 80000,  emoji: '🍖', image: '/images/assorted-stew.jpg' },
   { id: 25, category: 'Stews', name: 'Stir Fry Sauce (2L)',        description: 'Vibrant stir-fry sauce packed with peppers and spices.',         price: 40000,  emoji: '🫙', image: IMG('1619860705619-1e0ba34091e0') },
   { id: 26, category: 'Stews', name: 'Stir Fry Sauce (4L)',        description: 'Vibrant stir-fry sauce packed with peppers and spices.',         price: 80000,  emoji: '🫙', image: IMG('1619860705619-1e0ba34091e0') },
 
