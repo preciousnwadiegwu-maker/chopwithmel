@@ -69,10 +69,10 @@ const MENU = [
   { id: 56, category: 'Rice & Pasta', name: 'Stir Fry Pasta (4L)',           description: 'Pasta tossed in a spicy, flavourful stir-fry sauce.',           price: 80000,  emoji: '🥡', image: '/images/seafood-pasta.jpg' },
 
   // BURGERS
-  { id: 57, category: 'Burgers', name: 'Breakfast Fast Burger',    description: 'Fully loaded breakfast burger — egg, bacon, sausage, and more.',  price: 15000, emoji: '🍔', image: IMG('1568901346375-23c9450c58cd') },
-  { id: 58, category: 'Burgers', name: 'Double Deck Burger',       description: 'Double-patty burger stacked high with all the toppings.',         price: 12000, emoji: '🍔', image: IMG('1568901346375-23c9450c58cd') },
-  { id: 59, category: 'Burgers', name: 'Beef Burger',              description: 'Juicy beef patty with fresh lettuce, tomato, and sauce.',         price: 8000,  emoji: '🍔', image: IMG('1586190848861-99aa4a171e90') },
-  { id: 60, category: 'Burgers', name: 'Chicken Burger',           description: 'Crispy chicken fillet with coleslaw and special mayo.',           price: 8500,  emoji: '🍗', image: IMG('1586190848861-99aa4a171e90') },
+  { id: 57, category: 'Burgers', name: 'Breakfast Fast Burger',    description: 'Fully loaded breakfast burger — egg, bacon, sausage, and more.',  price: 15000, emoji: '🍔', image: '/images/breakfast-burger.jpg' },
+  { id: 58, category: 'Burgers', name: 'Double Deck Burger',       description: 'Double-patty burger stacked high with all the toppings.',         price: 12000, emoji: '🍔', image: '/images/breakfast-burger.jpg' },
+  { id: 59, category: 'Burgers', name: 'Beef Burger',              description: 'Juicy beef patty with fresh lettuce, tomato, and sauce.',         price: 8000,  emoji: '🍔', image: '/images/breakfast-burger.jpg' },
+  { id: 60, category: 'Burgers', name: 'Chicken Burger',           description: 'Crispy chicken fillet with coleslaw and special mayo.',           price: 8500,  emoji: '🍗', image: '/images/breakfast-burger.jpg' },
 
   // BREAKFAST
   { id: 61, category: 'Breakfast', name: 'Butterscotch Milk Pancakes', description: 'Pancakes with 2 sausages, bacon, scrambled egg, and syrup.',        price: 9000,  emoji: '🥞', image: IMG('1528207776546-365bb710ee93') },
