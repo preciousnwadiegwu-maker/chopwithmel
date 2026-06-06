@@ -1,3 +1,14 @@
+// ─── CATEGORY IMAGES (free Unsplash photos) ───────────────────────────────────
+const CATEGORY_IMAGES = {
+  'Soups':       'https://images.unsplash.com/photo-1763048443535-1243379234e2?w=400&h=200&q=80&auto=format&fit=crop',
+  'Stews':       'https://images.unsplash.com/photo-1603496987674-79600a000f55?w=400&h=200&q=80&auto=format&fit=crop',
+  'Pepper Soup': 'https://images.unsplash.com/photo-1730112696140-19e61bb43d36?w=400&h=200&q=80&auto=format&fit=crop',
+  'Rice & Pasta':'https://images.unsplash.com/photo-1664993101841-036f189719b6?w=400&h=200&q=80&auto=format&fit=crop',
+  'Burgers':     'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=200&q=80&auto=format&fit=crop',
+  'Breakfast':   'https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&h=200&q=80&auto=format&fit=crop',
+  'Add-Ons':     'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=400&h=200&q=80&auto=format&fit=crop',
+};
+
 // ─── MENU DATA ───────────────────────────────────────────────────────────────
 
 const MENU = [
@@ -110,9 +121,14 @@ function renderMenu() {
     <div class="menu-category">
       <h3 class="category-title">${cat}</h3>
       <div class="category-grid">
-        ${categoryMap[cat].map(item => `
+        ${categoryMap[cat].map(item => {
+          const imgUrl = CATEGORY_IMAGES[item.category];
+          const imgHtml = imgUrl
+            ? `<img src="${imgUrl}" alt="${item.name}" loading="lazy" onerror="this.parentElement.innerHTML='${item.emoji}'">`
+            : item.emoji;
+          return `
           <div class="menu-card">
-            <div class="menu-card-img">${item.emoji}</div>
+            <div class="menu-card-img">${imgHtml}</div>
             <div class="menu-card-body">
               <h4>${item.name}</h4>
               <p>${item.description}</p>
@@ -124,7 +140,7 @@ function renderMenu() {
               </div>
             </div>
           </div>
-        `).join('')}
+        `}).join('')}
       </div>
     </div>
   `).join('');
