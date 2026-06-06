@@ -7,6 +7,12 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Inject Paystack public key safely into the frontend
+app.get('/config.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.send(`window.PAYSTACK_PUBLIC_KEY = ${JSON.stringify(process.env.PAYSTACK_PUBLIC_KEY || '')};`);
+});
+
 // Verify Paystack payment and return WhatsApp redirect URL
 app.post('/api/verify-payment', async (req, res) => {
   const { reference, orderDetails } = req.body;
