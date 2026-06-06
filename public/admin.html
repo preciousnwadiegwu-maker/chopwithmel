@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChopWithMel — Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700;800&family=Playfair+Display+SC:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #DC2626; --red-dark: #B91C1C;
+      --green: #15803D; --gold: #A16207;
+      --bg: #FEF2F2; --card: #fff;
+      --text: #450A0A; --muted: #6B6B6B;
+      --border: #FECACA;
+    }
+    body { font-family: 'Karla', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── HEADER ── */
+    .header {
+      background: #1a0505;
+      color: #fff;
+      padding: 0 28px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-logo { font-family: 'Playfair Display SC', serif; font-size: 20px; color: #fff; }
+    .header-logo span { color: var(--red); }
+    .header-badge { background: var(--red); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+    /* ── STATS ── */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+    }
+    .stat-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .stat-value { font-size: 32px; font-weight: 900; color: var(--red); font-variant-numeric: tabular-nums; }
+    .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* ── CONTROLS ── */
+    .controls { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .search-box {
+      padding: 10px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Karla', sans-serif;
+      font-size: 14px;
+      width: 260px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-box:focus { border-color: var(--red); }
+    .filter-btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      font-family: 'Karla', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--muted);
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--red); border-color: var(--red); color: #fff; }
+    .refresh-btn {
+      margin-left: auto;
+      padding: 10px 20px;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Karla', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .refresh-btn:hover { background: var(--red-dark); }
+
+    /* ── TABLE ── */
+    .table-wrap { background: var(--card); border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: #1a0505;
+      color: rgba(255,255,255,0.8);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 14px 16px;
+      text-align: left;
+    }
+    td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg); }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-paid    { background: #DCFCE7; color: #15803D; }
+    .badge-pending { background: #FEF9C3; color: #A16207; }
+    .badge-delivered { background: #DBEAFE; color: #1D4ED8; }
+    .badge-cancelled { background: #FEE2E2; color: #DC2626; }
+
+    .order-items { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+    .order-name  { font-weight: 700; color: var(--text); }
+    .order-phone { font-size: 12px; color: var(--muted); }
+    .order-amount { font-weight: 900; color: var(--green); font-size: 15px; font-variant-numeric: tabular-nums; }
+    .order-date { font-size: 12px; color: var(--muted); }
+
+    .status-select {
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-family: 'Karla', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--card);
+    }
+
+    .wa-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #25D366;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 6px;
+    }
+
+    .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 15px; }
+
+    /* ── REVENUE CHART ── */
+    .section-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; color: var(--text); }
+
+    /* ── LOGIN ── */
+    .login-overlay {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999;
+    }
+    .login-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 40px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(220,38,38,0.12);
+    }
+    .login-logo { font-family: 'Playfair Display SC', serif; font-size: 24px; margin-bottom: 8px; }
+    .login-logo span { color: var(--red); }
+    .login-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+    .login-input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Karla', sans-serif;
+      font-size: 15px;
+      margin-bottom: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .login-input:focus { border-color: var(--red); }
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Karla', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .login-btn:hover { background: var(--red-dark); }
+    .login-error { color: var(--red); font-size: 13px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">Chop<span>WithMel</span></div>
+    <div class="login-sub">Admin Dashboard — Enter your access token</div>
+    <input type="password" class="login-input" id="tokenInput" placeholder="Admin token" onkeydown="if(event.key==='Enter')login()">
+    <button class="login-btn" onclick="login()">Access Dashboard</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none">
+  <div class="header">
+    <div class="header-logo">Chop<span>WithMel</span></div>
+    <span class="header-badge">Admin Panel</span>
+  </div>
+
+  <div class="container">
+    <!-- STATS -->
+    <div class="stats" id="stats">
+      <div class="stat-card">
+        <div class="stat-label">Total Orders</div>
+        <div class="stat-value" id="statTotal">—</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value" id="statRevenue">—</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Today's Orders</div>
+        <div class="stat-value" id="statToday">—</div>
+        <div class="stat-sub" id="statTodayRev">—</div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <input type="text" class="search-box" id="searchInput" placeholder="Search by name, phone, ref…" oninput="renderOrders()">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('paid', this)">Paid</button>
+      <button class="filter-btn" onclick="setFilter('delivered', this)">Delivered</button>
+      <button class="filter-btn" onclick="setFilter('pending', this)">Pending</button>
+      <button class="refresh-btn" onclick="loadOrders()">🔄 Refresh</button>
+    </div>
+
+    <!-- ORDERS TABLE -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Order Items</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="ordersBody">
+          <tr><td colspan="6" class="empty">Loading orders…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  let TOKEN = '';
+  let allOrders = [];
+  let activeFilter = 'all';
+
+  function login() {
+    const input = document.getElementById('tokenInput').value.trim();
+    if (!input) return;
+    TOKEN = input;
+    loadOrders().then(ok => {
+      if (ok) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+      } else {
+        document.getElementById('loginError').textContent = 'Invalid token. Try again.';
+        TOKEN = '';
+      }
+    });
+  }
+
+  async function loadOrders() {
+    try {
+      const res = await fetch('/admin/api/orders', { headers: { 'x-admin-token': TOKEN } });
+      if (!res.ok) return false;
+      const data = await res.json();
+      allOrders = data.orders || [];
+
+      // Update stats
+      document.getElementById('statTotal').textContent   = data.stats.total.toLocaleString();
+      document.getElementById('statRevenue').textContent = '₦' + Math.round(data.stats.revenue).toLocaleString();
+      document.getElementById('statToday').textContent   = data.stats.todayCount.toLocaleString();
+      document.getElementById('statTodayRev').textContent = '₦' + Math.round(data.stats.todayRevenue).toLocaleString() + ' today';
+
+      renderOrders();
+      return true;
+    } catch { return false; }
+  }
+
+  function setFilter(f, btn) {
+    activeFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderOrders();
+  }
+
+  function renderOrders() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    let orders = allOrders;
+
+    if (activeFilter !== 'all') orders = orders.filter(o => o.status === activeFilter);
+    if (q) orders = orders.filter(o =>
+      (o.name||'').toLowerCase().includes(q) ||
+      (o.phone||'').includes(q) ||
+      (o.ref||'').toLowerCase().includes(q) ||
+      (o.address||'').toLowerCase().includes(q)
+    );
+
+    const tbody = document.getElementById('ordersBody');
+    if (!orders.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">No orders found.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = orders.map(o => {
+      const items = (o.items||[]).map(i => `${i.name} ×${i.qty}`).join(', ') || '—';
+      const date  = new Date(o.createdAt).toLocaleString('en-NG', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+      const badge = { paid:'badge-paid', delivered:'badge-delivered', pending:'badge-pending', cancelled:'badge-cancelled' }[o.status] || 'badge-pending';
+      const waMsg = encodeURIComponent(`Hi ${o.name}, your ChopWithMel order (ref: ${o.ref}) is being prepared! We'll confirm your delivery time shortly. 🍽️`);
+      const waUrl = `https://wa.me/${(o.phone||'').replace(/\D/g,'')}?text=${waMsg}`;
+
+      return `
+        <tr>
+          <td>
+            <div class="order-name">${o.name || '—'}</div>
+            <div class="order-phone">${o.phone || '—'}</div>
+            <div class="order-phone">${o.email || ''}</div>
+            <div class="order-phone" style="margin-top:4px;color:#450A0A;font-size:11px">${o.address || '—'}</div>
+          </td>
+          <td><div class="order-items">${items}</div></td>
+          <td><div class="order-amount">₦${Math.round(o.total||0).toLocaleString()}</div>
+              <div class="order-phone">${o.channel||''}</div></td>
+          <td>
+            <span class="badge ${badge}">${o.status||'paid'}</span><br>
+            <select class="status-select" style="margin-top:8px" onchange="updateStatus('${o.ref}', this.value)">
+              <option value="paid"      ${o.status==='paid'      ?'selected':''}>Paid</option>
+              <option value="preparing" ${o.status==='preparing' ?'selected':''}>Preparing</option>
+              <option value="delivered" ${o.status==='delivered' ?'selected':''}>Delivered</option>
+              <option value="cancelled" ${o.status==='cancelled' ?'selected':''}>Cancelled</option>
+            </select>
+          </td>
+          <td><div class="order-date">${date}</div>
+              <div class="order-phone">${o.ref||''}</div></td>
+          <td>
+            ${o.phone ? `<a class="wa-btn" href="${waUrl}" target="_blank">💬 WhatsApp</a>` : ''}
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  async function updateStatus(ref, status) {
+    await fetch(`/admin/api/orders/${ref}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': TOKEN },
+      body: JSON.stringify({ status })
+    });
+    await loadOrders();
+  }
+
+  // Auto-refresh every 60s
+  setInterval(() => { if (TOKEN) loadOrders(); }, 60000);
+</script>
+</body>
+</html>
