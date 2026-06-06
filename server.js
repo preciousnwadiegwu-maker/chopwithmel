@@ -65,8 +65,8 @@ app.post('/api/verify-payment', async (req, res) => {
   }
 });
 
-// Paystack webhook (for server-side order logging — optional but recommended)
-app.post('/api/webhook', (req, res) => {
+// Paystack webhook — notifies Mel on WhatsApp for every confirmed payment
+app.post('/api/webhook', async (req, res) => {
   const hash = require('crypto')
     .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY)
     .update(JSON.stringify(req.body))
@@ -79,8 +79,36 @@ app.post('/api/webhook', (req, res) => {
   const event = req.body;
 
   if (event.event === 'charge.success') {
-    console.log('Payment confirmed via webhook:', event.data.reference);
-    // TODO: save order to database here if needed
+    const data = event.data;
+    const meta = data.metadata || {};
+    const fields = (meta.custom_fields || []).reduce((acc, f) => {
+      acc[f.variable_name] = f.value;
+      return acc;
+    }, {});
+
+    const name    = fields.name    || 'Customer';
+    const phone   = fields.phone   || 'N/A';
+    const address = fields.address || 'N/A';
+    const amount  = `₦${(data.amount / 100).toLocaleString()}`;
+    const ref     = data.reference;
+    const email   = data.customer?.email || 'N/A';
+
+    const message =
+      `🔔 *Payment Received — ChopWithMel*\n\n` +
+      `*Name:* ${name}\n` +
+      `*Phone:* ${phone}\n` +
+      `*Email:* ${email}\n` +
+      `*Address:* ${address}\n\n` +
+      `*Amount paid:* ${amount}\n` +
+      `*Reference:* ${ref}\n` +
+      `*Channel:* ${data.channel}\n\n` +
+      `✅ Payment confirmed by Paystack`;
+
+    const whatsappNumber = (process.env.WHATSAPP_NUMBER || '').replace(/\D/g, '');
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+    console.log(`✅ Webhook: payment confirmed — ${ref} — ${amount}`);
+    console.log(`WhatsApp notify URL: ${whatsappUrl}`);
   }
 
   res.sendStatus(200);
