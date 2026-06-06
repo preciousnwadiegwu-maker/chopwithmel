@@ -19,6 +19,8 @@ const MENU = [
   { id: 12, category: 'Soups', name: 'Okro Soup (4L)',             description: 'Fresh okra cooked with assorted meat and ede.',                  price: 80000,  emoji: '🥗', image: IMG('1565280654386-36c3ea205191') },
   { id: 13, category: 'Soups', name: 'Oha Soup (2L)',              description: 'Igbo oha leaf soup with cocoyam and assorted meat.',             price: 50000,  emoji: '🌿', image: IMG('1665594051407-7385d281ad76') },
   { id: 14, category: 'Soups', name: 'Oha Soup (4L)',              description: 'Igbo oha leaf soup with cocoyam and assorted meat.',             price: 80000,  emoji: '🌿', image: IMG('1665594051407-7385d281ad76') },
+  { id: 80, category: 'Soups', name: 'Efo Riro (2L)', description: 'Yoruba spinach stew with assorted meat, kpomo, and dried fish.',  price: 55000, emoji: '🥬', image: '/images/efo-riro.jpg' },
+  { id: 81, category: 'Soups', name: 'Efo Riro (4L)', description: 'Yoruba spinach stew with assorted meat, kpomo, and dried fish.',  price: 90000, emoji: '🥬', image: '/images/efo-riro.jpg' },
   { id: 15, category: 'Soups', name: 'Bitterleaf Soup (2L)',       description: 'Hearty Igbo soup with bitterleaf, cocoyam, and meat.',           price: 50000,  emoji: '🍃', image: IMG('1604908176997-125f25cc6f3d') },
   { id: 16, category: 'Soups', name: 'Bitterleaf Soup (4L)',       description: 'Hearty Igbo soup with bitterleaf, cocoyam, and meat.',           price: 80000,  emoji: '🍃', image: IMG('1604908176997-125f25cc6f3d') },
 
