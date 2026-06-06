@@ -4,37 +4,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ChopWithMel — Real Homemade African Food, Lagos</title>
-  <meta name="description" content="Authentic homemade African food delivered fresh in Lagos. Jollof rice, egusi, afang, and more. Order now with instant payment.">
+  <meta name="description" content="Authentic homemade African food delivered fresh in Lagos. Jollof rice, egusi, afang, pepper soup and more. Order now with instant Paystack payment.">
   <link rel="stylesheet" href="style.css">
   <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 <body>
 
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- FLOATING CART -->
+  <button class="cart-fab" id="cartFab" onclick="document.getElementById('orderSection').scrollIntoView({behavior:'smooth'})">
+    <span class="cart-fab-icon">🛒</span>
+    <span>View Order</span>
+    <span class="cart-fab-count" id="cartFabCount">0</span>
+  </button>
+
   <!-- NAV -->
-  <nav class="nav">
+  <nav class="nav" id="mainNav">
     <div class="nav-inner">
-      <div class="logo">🍲 ChopWithMel</div>
-      <a href="#menu" class="nav-cta">Order Now</a>
+      <div class="logo">Chop<span>WithMel</span></div>
+      <div class="nav-right">
+        <a href="#menu" class="nav-cta">Order Now</a>
+      </div>
     </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
     <div class="hero-content">
       <span class="hero-tag">🇳🇬 Lagos Delivery</span>
-      <h1>Real homemade African food,<br>made fresh for you.</h1>
+      <h1>Real homemade<br><em>African food,</em><br>made fresh for you.</h1>
       <p>No restaurant shortcuts. No factory seasoning. Just Mel's kitchen, your doorstep.</p>
-      <a href="#menu" class="btn-primary">See the menu</a>
-    </div>
-    <div class="hero-img">
-      <div class="hero-img-placeholder">🍲</div>
+      <div class="hero-buttons">
+        <a href="#menu" class="btn-primary">🍽️ See the menu</a>
+        <a href="https://wa.me/2347033352997" target="_blank" class="btn-outline">💬 WhatsApp us</a>
+      </div>
     </div>
   </section>
 
   <!-- WHY -->
   <section class="why">
     <div class="container">
-      <h2>Why ChopWithMel?</h2>
+      <p class="section-label">Why choose us</p>
+      <h2>Mel's kitchen, your doorstep.</h2>
       <div class="why-grid">
         <div class="why-card">
           <span>🧑‍🍳</span>
@@ -53,7 +67,7 @@
         </div>
         <div class="why-card">
           <span>💬</span>
-          <h3>Order via WhatsApp</h3>
+          <h3>WhatsApp confirmed</h3>
           <p>Pay online, then we connect on WhatsApp to sort your delivery.</p>
         </div>
       </div>
@@ -63,9 +77,23 @@
   <!-- MENU -->
   <section class="menu" id="menu">
     <div class="container">
-      <h2>Today's menu</h2>
-      <p class="menu-sub">Click "Add to order" on any dish, then checkout below.</p>
-      <div class="menu-grid" id="menuGrid">
+      <div class="menu-header">
+        <div>
+          <p class="section-label">What we serve</p>
+          <h2>Today's menu</h2>
+        </div>
+        <div class="menu-search">
+          <span class="menu-search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search dishes…" oninput="filterMenu()">
+        </div>
+      </div>
+
+      <!-- CATEGORY FILTER TABS -->
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" onclick="filterCategory('all', this)">All</button>
+      </div>
+
+      <div id="menuGrid">
         <!-- Populated by script.js -->
       </div>
     </div>
@@ -75,7 +103,7 @@
   <section class="order-section" id="orderSection">
     <div class="container">
       <div class="order-box">
-        <h2>Your order</h2>
+        <h2>🛒 Your order</h2>
 
         <div id="cartItems" class="cart-items">
           <p class="cart-empty">No items yet — add something from the menu above.</p>
@@ -105,7 +133,7 @@
             <textarea id="custAddress" rows="3" placeholder="Full address including area, e.g. 12 Admiralty Way, Lekki Phase 1" required></textarea>
           </div>
           <button type="submit" class="btn-primary btn-pay" id="payBtn">
-            Pay with Paystack 🔒
+            🔒 Pay with Paystack
           </button>
           <p class="pay-note">Secure payment powered by Paystack. After payment, you'll be sent to WhatsApp to confirm delivery.</p>
         </form>
@@ -116,7 +144,8 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
-      <p>🍲 <strong>ChopWithMel</strong> — Real homemade African food, Lagos.</p>
+      <div class="footer-logo">Chop<span>WithMel</span></div>
+      <p>Real homemade African food, delivered fresh across Lagos.</p>
       <p>📞 <a href="tel:07033352997">07033352997</a> &nbsp;|&nbsp; 📧 <a href="mailto:chopwithmel@gmail.com">chopwithmel@gmail.com</a> &nbsp;|&nbsp; 📸 <a href="https://instagram.com/chopwithmel_" target="_blank">@chopwithmel_</a></p>
       <p>Questions? Message us on <a href="https://wa.me/2347033352997" target="_blank">WhatsApp</a></p>
     </div>
@@ -128,7 +157,7 @@
       <div class="modal-icon">✅</div>
       <h2>Payment confirmed!</h2>
       <p>Your order is placed. Click below to open WhatsApp — we'll confirm your delivery time there.</p>
-      <a href="#" class="btn-primary" id="whatsappLink" target="_blank">Open WhatsApp</a>
+      <a href="#" class="btn-primary" id="whatsappLink" target="_blank" style="justify-content:center;width:100%">💬 Open WhatsApp</a>
     </div>
   </div>
 

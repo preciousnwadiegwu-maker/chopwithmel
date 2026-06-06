@@ -107,10 +107,23 @@ const PAYSTACK_PUBLIC_KEY = window.PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxx
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 const cart = {};
+let activeCategory = 'all';
+let searchQuery = '';
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function showToast(message) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 2600);
+}
 
 // ─── RENDER MENU ─────────────────────────────────────────────────────────────
 function renderMenu() {
   const grid = document.getElementById('menuGrid');
+  const tabsContainer = document.getElementById('filterTabs');
 
   const categories = [];
   const categoryMap = {};
@@ -122,51 +135,113 @@ function renderMenu() {
     categoryMap[item.category].push(item);
   });
 
+  // Build filter tabs
+  tabsContainer.innerHTML = `<button class="filter-tab active" onclick="filterCategory('all', this)">All</button>`;
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-tab';
+    btn.textContent = cat;
+    btn.onclick = function() { filterCategory(cat, this); };
+    tabsContainer.appendChild(btn);
+  });
+
+  // Build menu
   grid.innerHTML = categories.map(cat => `
-    <div class="menu-category">
+    <div class="menu-category" data-cat="${cat}">
       <h3 class="category-title">${cat}</h3>
       <div class="category-grid">
         ${categoryMap[cat].map(item => {
           const imgHtml = item.image
-            ? `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.parentElement.innerHTML='${item.emoji}'">`
+            ? `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.style.display='none'">`
             : item.emoji;
           return `
-          <div class="menu-card">
-            <div class="menu-card-img">${imgHtml}</div>
-            <div class="menu-card-body">
-              <h4>${item.name}</h4>
-              <p>${item.description}</p>
-              <div class="menu-card-footer">
-                <span class="menu-price">₦${item.price.toLocaleString()}</span>
-                <button class="btn-add" id="add-${item.id}" onclick="addToCart(${item.id})">
-                  Add to order
-                </button>
+            <div class="menu-card" data-name="${item.name.toLowerCase()}" data-category="${cat}">
+              <div class="menu-card-img">${imgHtml}</div>
+              <div class="menu-card-body">
+                <h4>${item.name}</h4>
+                <p>${item.description}</p>
+                <div class="menu-card-footer">
+                  <span class="menu-price">₦${item.price.toLocaleString()}</span>
+                  <button class="btn-add" id="add-${item.id}" onclick="addToCart(${item.id})">+ Add</button>
+                </div>
               </div>
-            </div>
-          </div>
-        `}).join('')}
+            </div>`;
+        }).join('')}
       </div>
     </div>
   `).join('');
+
+  // Animate cards on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 40);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.menu-card').forEach(card => observer.observe(card));
+}
+
+// ─── FILTER BY CATEGORY ───────────────────────────────────────────────────────
+function filterCategory(cat, btn) {
+  activeCategory = cat;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.menu-category').forEach(section => {
+    section.classList.toggle('hidden', cat !== 'all' && section.dataset.cat !== cat);
+  });
+  applySearch();
+}
+
+// ─── SEARCH ──────────────────────────────────────────────────────────────────
+function filterMenu() {
+  searchQuery = document.getElementById('searchInput').value.toLowerCase();
+  applySearch();
+}
+
+function applySearch() {
+  document.querySelectorAll('.menu-card').forEach(card => {
+    const matchesSearch = !searchQuery || card.dataset.name.includes(searchQuery);
+    const matchesCat = activeCategory === 'all' || card.dataset.category === activeCategory;
+    card.style.display = matchesSearch && matchesCat ? '' : 'none';
+  });
+  document.querySelectorAll('.menu-category').forEach(section => {
+    if (section.classList.contains('hidden')) return;
+    const hasVisible = [...section.querySelectorAll('.menu-card')].some(c => c.style.display !== 'none');
+    section.style.display = hasVisible ? '' : 'none';
+  });
 }
 
 // ─── CART LOGIC ──────────────────────────────────────────────────────────────
 function addToCart(id) {
+  const item = MENU.find(m => m.id === id);
   cart[id] = (cart[id] || 0) + 1;
   const btn = document.getElementById(`add-${id}`);
-  if (btn) { btn.textContent = 'Added ✓'; btn.classList.add('added'); }
+  if (btn) { btn.textContent = '✓ Added'; btn.classList.add('added'); }
+  showToast(`${item.emoji} ${item.name} added!`);
   renderCart();
+  updateFab();
 }
 
 function updateQty(id, delta) {
   cart[id] = (cart[id] || 0) + delta;
   if (cart[id] <= 0) delete cart[id];
   renderCart();
+  updateFab();
   const btn = document.getElementById(`add-${id}`);
   if (btn) {
-    btn.textContent = cart[id] ? 'Added ✓' : 'Add to order';
+    btn.textContent = cart[id] ? '✓ Added' : '+ Add';
     btn.classList.toggle('added', !!cart[id]);
   }
+}
+
+function updateFab() {
+  const fab = document.getElementById('cartFab');
+  const count = Object.values(cart).reduce((a, b) => a + b, 0);
+  document.getElementById('cartFabCount').textContent = count;
+  fab.style.display = count > 0 ? 'flex' : 'none';
 }
 
 function renderCart() {
@@ -174,7 +249,6 @@ function renderCart() {
   const cartTotal = document.getElementById('cartTotal');
   const totalAmount = document.getElementById('totalAmount');
   const orderForm = document.getElementById('orderForm');
-
   const ids = Object.keys(cart).map(Number);
 
   if (ids.length === 0) {
@@ -199,14 +273,18 @@ function renderCart() {
           <button class="qty-btn" onclick="updateQty(${id}, 1)">+</button>
         </div>
         <span class="cart-row-price">₦${subtotal.toLocaleString()}</span>
-      </div>
-    `;
+      </div>`;
   }).join('');
 
   totalAmount.textContent = `₦${total.toLocaleString()}`;
   cartTotal.style.display = 'flex';
   orderForm.style.display = 'block';
 }
+
+// ─── STICKY NAV ───────────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
+});
 
 // ─── CHECKOUT ────────────────────────────────────────────────────────────────
 document.getElementById('orderForm').addEventListener('submit', function(e) {
@@ -250,7 +328,7 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
       verifyPayment(response.reference, { name, phone, email, address, items, total });
     },
     onClose: function() {
-      payBtn.textContent = 'Pay with Paystack 🔒';
+      payBtn.innerHTML = '🔒 Pay with Paystack';
       payBtn.disabled = false;
     }
   });
@@ -276,13 +354,13 @@ async function verifyPayment(reference, orderDetails) {
       document.getElementById('successModal').style.display = 'flex';
     } else {
       alert('Payment could not be verified. Please contact us on WhatsApp with your reference: ' + reference);
-      payBtn.textContent = 'Pay with Paystack 🔒';
+      payBtn.innerHTML = '🔒 Pay with Paystack';
       payBtn.disabled = false;
     }
   } catch (err) {
     console.error(err);
     alert('Something went wrong. Please contact us on WhatsApp with your reference: ' + reference);
-    payBtn.textContent = 'Pay with Paystack 🔒';
+    payBtn.innerHTML = '🔒 Pay with Paystack';
     payBtn.disabled = false;
   }
 }
@@ -290,3 +368,4 @@ async function verifyPayment(reference, orderDetails) {
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 renderMenu();
 renderCart();
+updateFab();
