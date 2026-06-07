@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — ChopWithMel</title>
+  <meta name="description" content="Frequently asked questions about ChopWithMel — homemade food delivery in Lagos. Delivery areas, payment, ordering, portions and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700;800&family=Playfair+Display+SC:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .faq-hero { background: #1a0505; color: #fff; padding: 64px 24px; text-align: center; }
+    .faq-hero h1 { font-family: 'Playfair Display SC', serif; font-size: clamp(28px,5vw,42px); margin-bottom: 12px; }
+    .faq-hero p  { color: rgba(255,255,255,0.7); font-size: 16px; }
+    .faq-section { max-width: 760px; margin: 0 auto; padding: 64px 24px; }
+    .faq-category { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--color-primary); margin: 40px 0 16px; }
+    .faq-item { border: 1px solid var(--color-border); border-radius: var(--radius-md); margin-bottom: 10px; overflow: hidden; }
+    .faq-question {
+      padding: 18px 22px; font-size: 15px; font-weight: 700; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--color-white); transition: background 0.2s; font-family: var(--font-body);
+    }
+    .faq-question:hover { background: var(--color-background); }
+    .faq-question.open { color: var(--color-primary); }
+    .faq-chevron { transition: transform 0.25s; font-size: 18px; flex-shrink: 0; }
+    .faq-question.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      display: none; padding: 0 22px 18px; font-size: 14px; color: var(--color-muted-fg);
+      line-height: 1.7; background: var(--color-white); font-family: var(--font-body);
+    }
+    .faq-answer.open { display: block; }
+    .faq-answer a { color: var(--color-primary); font-weight: 600; text-decoration: none; }
+    .faq-cta { background: var(--color-background); border-top: 1px solid var(--color-border); padding: 48px 24px; text-align: center; }
+    .faq-cta h3 { font-size: 22px; margin-bottom: 8px; }
+    .faq-cta p  { color: var(--color-muted-fg); margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo"><img src="/images/logo.png" alt="ChopWithMel" class="nav-logo"></a>
+      <div class="nav-right"><a href="/#menu" class="nav-cta">Order Now</a></div>
+    </div>
+  </nav>
+
+  <div class="faq-hero">
+    <h1>Frequently Asked Questions</h1>
+    <p>Everything you need to know about ordering from ChopWithMel</p>
+  </div>
+
+  <div class="faq-section">
+
+    <div class="faq-category">📦 Ordering</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">How do I place an order? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">Browse our menu at <a href="/#menu">chopwithmel.com/#menu</a>, add items to your cart, fill in your delivery details, and pay securely with Paystack (card, bank transfer, or USSD). After payment, you'll be redirected to WhatsApp where we confirm your delivery time.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">Can I order directly on WhatsApp? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">Yes! You can message us on <a href="https://wa.me/2347033352997" target="_blank">WhatsApp (+2347033352997)</a> to place your order. Payment is still processed via Paystack for security — we'll send you a payment link.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">What is the minimum order? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">There's no minimum order. You can order a single 2-litre portion starting from ₦35,000. However, we recommend ordering 4L portions for better value, especially for families or events.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">Can I schedule an order in advance? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">Yes! You can order up to 48 hours in advance. This is especially recommended for large orders (4L+) or event catering. Place your order online and mention your preferred delivery time in the address field, then confirm on WhatsApp.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">Do you do bulk/event catering orders? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">Absolutely! We cater for parties, corporate events, birthdays, and gatherings across Lagos. Contact us on <a href="https://wa.me/2347033352997" target="_blank">WhatsApp</a> at least 48 hours in advance to discuss quantities and pricing for events.</div>
+    </div>
+
+    <div class="faq-category">🚚 Delivery</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">Where do you deliver? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">We deliver across Lagos including: Victoria Island, Ikoyi, Lagos Island, Lekki Phase 1 & 2, Ajah, Chevron, Surulere, Yaba, Ikeja, Gbagada, Magodo, and more. Not sure if we cover your area? <a href="https://wa.me/2347033352997" target="_blank">Message us on WhatsApp</a>.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">How long does delivery take? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">Delivery typically takes 1–3 hours depending on your location and order preparation time. We'll give you an estimated time on WhatsApp after your payment is confirmed. For advance orders, delivery is at your specified time.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">Is there a delivery fee? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">Delivery fees vary by location and are confirmed on WhatsApp before we dispatch. Island areas (VI, Lekki, Ikoyi) typically have lower fees due to proximity. We occasionally run free delivery promotions — follow <a href="https://instagram.com/chopwithmel_" target="_blank">@chopwithmel_</a> to stay updated.</div>
+    </div>
+
+    <div class="faq-category">🍲 Food & Portions</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">What does 2L and 4L mean? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">2L = 2 litres of food, which typically serves 2–3 people. 4L = 4 litres, which typically serves 4–6 people. For soups, a 2L portion pairs well with your own swallow (eba, pounded yam, fufu). Portion sizes may vary slightly by dish.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">Is the food freshly cooked? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">Yes! Every dish is freshly cooked to order in Mel's kitchen. We use market-fresh ingredients — no preservatives, no artificial flavouring, no factory shortcuts. The same quality you'd get from a skilled home cook.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">How long can I keep the food? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">Our food is best consumed within 24 hours at room temperature. In the refrigerator, soups and stews last 3–4 days. Rice dishes last 2–3 days refrigerated. Always reheat thoroughly before eating. We do not use preservatives, so freshness is best enjoyed soon after delivery.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">Can I request less spicy or no spice? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">Yes! Just add a note in the delivery address field (e.g. "mild spice please") or mention it on WhatsApp after payment. We'll do our best to accommodate dietary preferences. Note that some dishes like pepper soup are inherently spicy by nature.</div>
+    </div>
+
+    <div class="faq-category">💳 Payment</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">What payment methods do you accept? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">We accept all major payment methods via Paystack: debit/credit cards (Visa, Mastercard, Verve), bank transfer, USSD (*737#, *770#, etc.), and mobile money. Payment is 100% secure — your card details are never stored by us.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">Can I pay on delivery (cash)? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">We currently only accept online payment via Paystack before delivery. This ensures your order is confirmed and guarantees food preparation starts immediately. We may introduce cash on delivery in the future.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">What if my payment fails? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">If your payment fails, please try again or use a different payment method. If money was deducted but the order wasn't confirmed, please contact us immediately on <a href="https://wa.me/2347033352997" target="_blank">WhatsApp</a> with your bank reference — we'll resolve it within 2 hours.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">Do you offer refunds? <span class="faq-chevron">▼</span></div>
+      <div class="faq-answer">If there's an issue with your order (wrong item, quality problem, or non-delivery), please contact us on WhatsApp within 2 hours of the expected delivery time. We'll offer a replacement or full refund depending on the situation. Customer satisfaction is our priority.</div>
+    </div>
+
+  </div>
+
+  <div class="faq-cta">
+    <div class="container">
+      <h3>Still have questions?</h3>
+      <p>We're always happy to help. Message us directly on WhatsApp.</p>
+      <a href="https://wa.me/2347033352997?text=Hi%20ChopWithMel!%20I%20have%20a%20question..." target="_blank" class="btn-primary" style="display:inline-flex">
+        💬 Message us on WhatsApp
+      </a>
+      &nbsp;&nbsp;
+      <a href="/" class="btn-primary" style="display:inline-flex;background:#1a0505;box-shadow:none">
+        🍽️ Back to Menu
+      </a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <img src="/images/logo.png" alt="ChopWithMel" class="footer-logo-img">
+      <p><strong>ChopWithMel</strong> — Real homemade African food, Lagos.</p>
+      <p><a href="tel:07033352997">📞 07033352997</a> · <a href="mailto:chopwithmel@gmail.com">✉️ chopwithmel@gmail.com</a></p>
+    </div>
+  </footer>
+
+  <script>
+    function toggle(el) {
+      el.classList.toggle('open');
+      el.nextElementSibling.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
