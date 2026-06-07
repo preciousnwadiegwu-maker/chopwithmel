@@ -27,7 +27,8 @@ function saveOrder(order) {
 // ── ADMIN MIDDLEWARE (simple token auth) ─────────────────────────────────────
 function adminAuth(req, res, next) {
   const token = req.headers['x-admin-token'] || req.query.token;
-  const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'chopwithmel-admin-2024';
+  const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
+  if (!ADMIN_TOKEN) return res.status(500).json({ error: 'Admin token not configured' });
   if (token !== ADMIN_TOKEN) return res.status(401).json({ error: 'Unauthorized' });
   next();
 }
