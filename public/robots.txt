@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /data/
+
+Sitemap: https://chopwithmel.com/sitemap.xml

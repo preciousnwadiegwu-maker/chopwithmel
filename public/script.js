@@ -71,10 +71,10 @@ const MENU = [
   { id: 46, category: 'Rice & Pasta', name: 'Asun Jollof Rice (4L)',         description: 'Jollof rice topped with peppered goat meat (asun).',           price: 80000,  emoji: '🍖', image: '/images/jollof-rice.jpg' },
   { id: 47, category: 'Rice & Pasta', name: 'Fried Rice (2L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 40000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
   { id: 48, category: 'Rice & Pasta', name: 'Fried Rice (4L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 80000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
-  { id: 49, category: 'Rice & Pasta', name: 'Creamy Penny Pasta (2L)',       description: 'Penne pasta in a rich, creamy sauce.',                          price: 50000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
-  { id: 50, category: 'Rice & Pasta', name: 'Creamy Penny Pasta (4L)',       description: 'Penne pasta in a rich, creamy sauce.',                          price: 110000, emoji: '🍝', image: '/images/seafood-pasta.jpg' },
-  { id: 51, category: 'Rice & Pasta', name: 'Jollof Penny Pasta (2L)',       description: 'Penne pasta cooked Nigerian jollof-style.',                     price: 40000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
-  { id: 52, category: 'Rice & Pasta', name: 'Jollof Penny Pasta (4L)',       description: 'Penne pasta cooked Nigerian jollof-style.',                     price: 80000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
+  { id: 49, category: 'Rice & Pasta', name: 'Creamy Penne Pasta (2L)',       description: 'Penne pasta in a rich, creamy sauce.',                          price: 50000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
+  { id: 50, category: 'Rice & Pasta', name: 'Creamy Penne Pasta (4L)',       description: 'Penne pasta in a rich, creamy sauce.',                          price: 110000, emoji: '🍝', image: '/images/seafood-pasta.jpg' },
+  { id: 51, category: 'Rice & Pasta', name: 'Jollof Penne Pasta (2L)',       description: 'Penne pasta cooked Nigerian jollof-style.',                     price: 40000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
+  { id: 52, category: 'Rice & Pasta', name: 'Jollof Penne Pasta (4L)',       description: 'Penne pasta cooked Nigerian jollof-style.',                     price: 80000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
   { id: 53, category: 'Rice & Pasta', name: 'Alfredo Linguine Pasta (2L)',   description: 'Linguine in a velvety Alfredo cream sauce.',                    price: 50000,  emoji: '🍜', image: '/images/seafood-pasta.jpg' },
   { id: 54, category: 'Rice & Pasta', name: 'Alfredo Linguine Pasta (4L)',   description: 'Linguine in a velvety Alfredo cream sauce.',                    price: 110000, emoji: '🍜', image: '/images/seafood-pasta.jpg' },
   { id: 55, category: 'Rice & Pasta', name: 'Stir Fry Pasta (2L)',           description: 'Pasta tossed in a spicy, flavourful stir-fry sauce.',           price: 40000,  emoji: '🥡', image: '/images/seafood-pasta.jpg' },
@@ -296,7 +296,11 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
   const address = document.getElementById('custAddress').value.trim();
 
   if (!name || !phone || !email || !address) {
-    alert('Please fill in all delivery details.');
+    showToast('⚠️ Please fill in all delivery details.');
+    if (!name) document.getElementById('custName').focus();
+    else if (!phone) document.getElementById('custPhone').focus();
+    else if (!email) document.getElementById('custEmail').focus();
+    else document.getElementById('custAddress').focus();
     return;
   }
 
@@ -352,17 +356,26 @@ async function verifyPayment(reference, orderDetails) {
     if (data.success) {
       document.getElementById('whatsappLink').href = data.whatsappUrl;
       document.getElementById('successModal').style.display = 'flex';
+      // Clear cart after successful payment
+      Object.keys(cart).forEach(k => delete cart[k]);
+      renderCart();
+      updateFab();
     } else {
-      alert('Payment could not be verified. Please contact us on WhatsApp with your reference: ' + reference);
+      showToast('⚠️ Payment unverified — please WhatsApp us with ref: ' + reference);
       payBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay with Paystack';
       payBtn.disabled = false;
     }
   } catch (err) {
     console.error(err);
-    alert('Something went wrong. Please contact us on WhatsApp with your reference: ' + reference);
-    payBtn.innerHTML = '🔒 Pay with Paystack';
+    showToast('⚠️ Something went wrong — please WhatsApp us with ref: ' + reference);
+    payBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay with Paystack';
     payBtn.disabled = false;
   }
+}
+
+// ─── CLOSE SUCCESS MODAL ──────────────────────────────────────────────────────
+function closeSuccessModal() {
+  document.getElementById('successModal').style.display = 'none';
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
