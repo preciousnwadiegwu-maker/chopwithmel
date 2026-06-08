@@ -71,10 +71,14 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://js.paystack.co">
+  <link rel="dns-prefetch" href="https://js.paystack.co">
   <link href="https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&family=Playfair+Display+SC:wght@400;700&display=swap" rel="stylesheet">
 
+  <!-- LCP image preload for Core Web Vitals -->
+  <link rel="preload" as="image" href="/images/jollof-rice.jpg" fetchpriority="high">
+
   <link rel="stylesheet" href="style.css">
+  <script src="/config.js"></script>
   <script src="https://js.paystack.co/v1/inline.js" defer></script>
 </head>
 <body>
@@ -455,7 +459,6 @@
     </div>
   </div>
 
-  <script src="/config.js"></script>
   <script src="script.js"></script>
   <script>
     function toggleMobileMenu() {
@@ -469,6 +472,40 @@
         document.getElementById('mobileMenu').classList.remove('open');
       }
     });
+
+    // H12: success modal a11y — focus management + ESC to close
+    function closeSuccessModal() {
+      const m = document.getElementById('successModal');
+      m.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    function showSuccessModal() {
+      const m = document.getElementById('successModal');
+      m.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => document.getElementById('whatsappLink').focus(), 50);
+    }
+    // Patch script.js modal trigger: observe display change to manage focus
+    new MutationObserver(() => {
+      const m = document.getElementById('successModal');
+      if (m && m.style.display === 'flex' && document.activeElement !== document.getElementById('whatsappLink')) {
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => { try { document.getElementById('whatsappLink').focus(); } catch(e){} }, 50);
+      }
+    }).observe(document.getElementById('successModal'), { attributes: true, attributeFilter: ['style'] });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const m = document.getElementById('successModal');
+        if (m && m.style.display === 'flex') closeSuccessModal();
+        document.getElementById('mobileMenu')?.classList.remove('open');
+      }
+    });
+
+    // H11: ARIA — add listitem role to menu cards as they render
+    new MutationObserver(() => {
+      document.querySelectorAll('#menuGrid .menu-card:not([role])').forEach(c => c.setAttribute('role', 'listitem'));
+    }).observe(document.getElementById('menuGrid') || document.body, { childList: true, subtree: false });
   </script>
 </body>
 </html>

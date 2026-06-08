@@ -336,37 +336,45 @@
       return;
     }
 
+    // C8: XSS-safe HTML escape for all user-controlled fields
+    const esc = (s) => String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
     tbody.innerHTML = orders.map(o => {
-      const items = (o.items||[]).map(i => `${i.name} ×${i.qty}`).join(', ') || '—';
+      const items = (o.items||[]).map(i => `${esc(i.name)} ×${Number(i.qty)||0}`).join(', ') || '—';
       const date  = new Date(o.createdAt).toLocaleString('en-NG', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
       const badge = { paid:'badge-paid', delivered:'badge-delivered', pending:'badge-pending', cancelled:'badge-cancelled' }[o.status] || 'badge-pending';
-      const waMsg = encodeURIComponent(`Hi ${o.name}, your ChopWithMel order (ref: ${o.ref}) is being prepared! We'll confirm your delivery time shortly. 🍽️`);
-      const waUrl = `https://wa.me/${(o.phone||'').replace(/\D/g,'')}?text=${waMsg}`;
+      const phoneClean = (o.phone||'').replace(/\D/g,'');
+      const waMsg = encodeURIComponent(`Hi ${o.name||'there'}, your ChopWithMel order (ref: ${o.ref}) is being prepared! We'll confirm your delivery time shortly. 🍽️`);
+      const waUrl = `https://wa.me/${phoneClean}?text=${waMsg}`;
+      const refEsc = esc(o.ref);
 
       return `
         <tr>
           <td>
-            <div class="order-name">${o.name || '—'}</div>
-            <div class="order-phone">${o.phone || '—'}</div>
-            <div class="order-phone">${o.email || ''}</div>
-            <div class="order-phone" style="margin-top:4px;color:#450A0A;font-size:11px">${o.address || '—'}</div>
+            <div class="order-name">${esc(o.name) || '—'}</div>
+            <div class="order-phone">${esc(o.phone) || '—'}</div>
+            <div class="order-phone">${esc(o.email)}</div>
+            <div class="order-phone" style="margin-top:4px;color:#450A0A;font-size:11px">${esc(o.address) || '—'}</div>
           </td>
           <td><div class="order-items">${items}</div></td>
           <td><div class="order-amount">₦${Math.round(o.total||0).toLocaleString()}</div>
-              <div class="order-phone">${o.channel||''}</div></td>
+              <div class="order-phone">${esc(o.channel)}</div></td>
           <td>
-            <span class="badge ${badge}">${o.status||'paid'}</span><br>
-            <select class="status-select" style="margin-top:8px" onchange="updateStatus('${o.ref}', this.value)">
-              <option value="paid"      ${o.status==='paid'      ?'selected':''}>Paid</option>
-              <option value="preparing" ${o.status==='preparing' ?'selected':''}>Preparing</option>
-              <option value="delivered" ${o.status==='delivered' ?'selected':''}>Delivered</option>
-              <option value="cancelled" ${o.status==='cancelled' ?'selected':''}>Cancelled</option>
+            <span class="badge ${badge}">${esc(o.status) || 'paid'}</span><br>
+            <select class="status-select" style="margin-top:8px" onchange="updateStatus('${refEsc}', this.value)">
+              <option value="paid"             ${o.status==='paid'             ?'selected':''}>Paid</option>
+              <option value="preparing"        ${o.status==='preparing'        ?'selected':''}>Preparing</option>
+              <option value="out_for_delivery" ${o.status==='out_for_delivery' ?'selected':''}>Out for delivery</option>
+              <option value="delivered"        ${o.status==='delivered'        ?'selected':''}>Delivered</option>
+              <option value="cancelled"        ${o.status==='cancelled'        ?'selected':''}>Cancelled</option>
             </select>
           </td>
           <td><div class="order-date">${date}</div>
-              <div class="order-phone">${o.ref||''}</div></td>
+              <div class="order-phone">${refEsc}</div></td>
           <td>
-            ${o.phone ? `<a class="wa-btn" href="${waUrl}" target="_blank">💬 WhatsApp</a>` : ''}
+            ${phoneClean ? `<a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>` : ''}
           </td>
         </tr>`;
     }).join('');

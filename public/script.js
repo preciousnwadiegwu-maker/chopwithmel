@@ -2,16 +2,17 @@
 const IMG = (id) => `https://images.unsplash.com/photo-${id}?w=400&h=220&q=80&auto=format&fit=crop`;
 
 // Branded illustrated card for add-ons & side items — emoji + label on warm gradient
+// Uses encodeURIComponent for cross-browser SVG data URI compatibility (H4)
 const CARD = (emoji, label, color1 = '#FEF3E7', color2 = '#FCD9B6') => {
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 220'>
-    <defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'>
-      <stop offset='0%' stop-color='${color1}'/><stop offset='100%' stop-color='${color2}'/>
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220">
+    <defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="${color1}"/><stop offset="100%" stop-color="${color2}"/>
     </linearGradient></defs>
-    <rect width='400' height='220' fill='url(%23g)'/>
-    <text x='200' y='115' font-size='90' text-anchor='middle' dominant-baseline='middle'>${emoji}</text>
-    <text x='200' y='185' font-family='Karla,sans-serif' font-size='18' font-weight='700' fill='%23DC2626' text-anchor='middle'>${label}</text>
-  </svg>`;
-  return `data:image/svg+xml;utf8,${svg.replace(/\n\s*/g, '').replace(/#/g, '%23')}`;
+    <rect width="400" height="220" fill="url(#g)"/>
+    <text x="200" y="115" font-size="90" text-anchor="middle" dominant-baseline="middle">${emoji}</text>
+    <text x="200" y="185" font-family="Karla,sans-serif" font-size="18" font-weight="700" fill="#DC2626" text-anchor="middle">${label}</text>
+  </svg>`.replace(/\n\s*/g, '');
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 };
 
 // ─── MENU DATA ───────────────────────────────────────────────────────────────
@@ -303,6 +304,13 @@ window.addEventListener('scroll', () => {
 document.getElementById('orderForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
+  // H1: empty cart guard
+  if (Object.keys(cart).length === 0) {
+    showToast('⚠️ Your cart is empty — add items from the menu first.');
+    document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
   const name = document.getElementById('custName').value.trim();
   const phone = document.getElementById('custPhone').value.trim();
   const email = document.getElementById('custEmail').value.trim();
@@ -317,23 +325,53 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     return;
   }
 
+  // H9: phone validation (Nigerian numbers: 10-15 digits after stripping)
+  const phoneClean = phone.replace(/\D/g, '');
+  if (phoneClean.length < 10 || phoneClean.length > 15) {
+    showToast('⚠️ Please enter a valid WhatsApp number.');
+    document.getElementById('custPhone').focus();
+    return;
+  }
+
+  // Email format sanity check
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showToast('⚠️ Please enter a valid email address.');
+    document.getElementById('custEmail').focus();
+    return;
+  }
+
+  // C3: PaystackPop guard
+  if (typeof PaystackPop === 'undefined') {
+    showToast('⚠️ Payment system not loaded. Please refresh and try again, or message us on WhatsApp.');
+    return;
+  }
+  if (!window.PAYSTACK_PUBLIC_KEY || !String(window.PAYSTACK_PUBLIC_KEY).startsWith('pk_')) {
+    showToast('⚠️ Payment temporarily unavailable. Please order on WhatsApp.');
+    return;
+  }
+
   const items = Object.keys(cart).map(id => {
     const item = MENU.find(m => m.id === Number(id));
     return { id: item.id, name: item.name, price: item.price, qty: cart[id] };
   });
 
   const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  if (!total || total <= 0) {
+    showToast('⚠️ Invalid order total. Please refresh and try again.');
+    return;
+  }
 
   const payBtn = document.getElementById('payBtn');
   payBtn.textContent = 'Opening payment…';
   payBtn.disabled = true;
 
   const handler = PaystackPop.setup({
-    key: PAYSTACK_PUBLIC_KEY,
+    key: window.PAYSTACK_PUBLIC_KEY,
     email: email,
     amount: total * 100,
     currency: 'NGN',
-    ref: 'CWM-' + Date.now(),
+    // H8: random suffix prevents ref collision on rapid taps
+    ref: 'CWM-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
     metadata: {
       custom_fields: [
         { display_name: 'Customer name', variable_name: 'name', value: name },
