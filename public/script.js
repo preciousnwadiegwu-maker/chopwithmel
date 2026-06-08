@@ -1,6 +1,19 @@
 // ─── IMAGE HELPER ─────────────────────────────────────────────────────────────
 const IMG = (id) => `https://images.unsplash.com/photo-${id}?w=400&h=220&q=80&auto=format&fit=crop`;
 
+// Branded illustrated card for add-ons & side items — emoji + label on warm gradient
+const CARD = (emoji, label, color1 = '#FEF3E7', color2 = '#FCD9B6') => {
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 220'>
+    <defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'>
+      <stop offset='0%' stop-color='${color1}'/><stop offset='100%' stop-color='${color2}'/>
+    </linearGradient></defs>
+    <rect width='400' height='220' fill='url(%23g)'/>
+    <text x='200' y='115' font-size='90' text-anchor='middle' dominant-baseline='middle'>${emoji}</text>
+    <text x='200' y='185' font-family='Karla,sans-serif' font-size='18' font-weight='700' fill='%23DC2626' text-anchor='middle'>${label}</text>
+  </svg>`;
+  return `data:image/svg+xml;utf8,${svg.replace(/\n\s*/g, '').replace(/#/g, '%23')}`;
+};
+
 // ─── MENU DATA ───────────────────────────────────────────────────────────────
 
 const MENU = [
@@ -11,8 +24,8 @@ const MENU = [
   { id: 4,  category: 'Soups', name: 'Banga Soup (4L)',            description: 'Palm fruit soup, slow-cooked with dried fish and spices.',       price: 95000,  emoji: '🍲', image: '/images/banga-soup.jpg' },
   { id: 5,  category: 'Soups', name: 'Afang Soup (2L)',            description: 'Efik classic with waterleaf, shredded meat, and periwinkle.',    price: 50000,  emoji: '🫕', image: '/images/afang-soup.jpg' },
   { id: 6,  category: 'Soups', name: 'Afang Soup (4L)',            description: 'Efik classic with waterleaf, shredded meat, and periwinkle.',    price: 95000,  emoji: '🫕', image: '/images/afang-soup.jpg' },
-  { id: 7,  category: 'Soups', name: 'Fisherman Soup (2L)',        description: 'Spicy Delta-style soup loaded with fresh fish and seafood.',      price: 70000,  emoji: '🐟', image: IMG('1576874762348-f74e25831a92') },
-  { id: 8,  category: 'Soups', name: 'Fisherman Soup (4L)',        description: 'Spicy Delta-style soup loaded with fresh fish and seafood.',      price: 120000, emoji: '🐟', image: IMG('1576874762348-f74e25831a92') },
+  { id: 7,  category: 'Soups', name: 'Fisherman Soup (2L)',        description: 'Spicy Delta-style soup loaded with fresh fish and seafood.',      price: 70000,  emoji: '🐟', image: CARD('🐟', 'Fisherman Soup', '#D4E5F7', '#1E5C8F') },
+  { id: 8,  category: 'Soups', name: 'Fisherman Soup (4L)',        description: 'Spicy Delta-style soup loaded with fresh fish and seafood.',      price: 120000, emoji: '🐟', image: CARD('🐟', 'Fisherman Soup', '#D4E5F7', '#1E5C8F') },
   { id: 9,  category: 'Soups', name: 'Owo Soup (2L)',              description: 'Urhobo palm nut soup with crayfish and dried fish.',              price: 50000,  emoji: '🍵', image: '/images/owo-soup-starch.jpg' },
   { id: 10, category: 'Soups', name: 'Owo Soup (4L)',              description: 'Urhobo palm nut soup with crayfish and dried fish.',              price: 95000,  emoji: '🍵', image: '/images/owo-soup-starch.jpg' },
   { id: 11, category: 'Soups', name: 'Okro Soup (2L)',             description: 'Fresh okra cooked with assorted meat.',                         price: 50000,  emoji: '🥗', image: '/images/okro-soup.jpg' },
@@ -31,16 +44,16 @@ const MENU = [
   { id: 75, category: 'Swallow', name: 'Amala, Ewedu, Gbegiri & Assorted Fish (4L)', description: 'Yoruba classic — smooth amala with ewedu, gbegiri, assorted meat and fish.', price: 110000, emoji: '🍜', image: '/images/amala-ewedu.jpg' },
 
   // STEWS
-  { id: 17, category: 'Stews', name: 'Chicken Stew (2L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 40000,  emoji: '🍗', image: IMG('1619860705619-1e0ba34091e0') },
-  { id: 18, category: 'Stews', name: 'Chicken Stew (4L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 80000,  emoji: '🍗', image: IMG('1619860705619-1e0ba34091e0') },
-  { id: 19, category: 'Stews', name: 'Turkey Stew (2L)',           description: 'Rich tomato stew with well-seasoned turkey.',                    price: 40000,  emoji: '🦃', image: IMG('1603496987674-79600a000f55') },
-  { id: 20, category: 'Stews', name: 'Turkey Stew (4L)',           description: 'Rich tomato stew with well-seasoned turkey.',                    price: 80000,  emoji: '🦃', image: IMG('1603496987674-79600a000f55') },
+  { id: 17, category: 'Stews', name: 'Chicken Stew (2L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 40000,  emoji: '🍗', image: CARD('🍗', 'Chicken Stew',  '#FFE0CC', '#C0392B') },
+  { id: 18, category: 'Stews', name: 'Chicken Stew (4L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 80000,  emoji: '🍗', image: CARD('🍗', 'Chicken Stew',  '#FFE0CC', '#C0392B') },
+  { id: 19, category: 'Stews', name: 'Turkey Stew (2L)',           description: 'Rich tomato stew with well-seasoned turkey.',                    price: 40000,  emoji: '🦃', image: CARD('🦃', 'Turkey Stew',   '#FFD9B5', '#A0522D') },
+  { id: 20, category: 'Stews', name: 'Turkey Stew (4L)',           description: 'Rich tomato stew with well-seasoned turkey.',                    price: 80000,  emoji: '🦃', image: CARD('🦃', 'Turkey Stew',   '#FFD9B5', '#A0522D') },
   { id: 21, category: 'Stews', name: 'Beef Stew (2L)',             description: 'Classic Nigerian beef stew, slow-cooked to perfection.',         price: 40000,  emoji: '🥩', image: '/images/beef-stew.jpg' },
   { id: 22, category: 'Stews', name: 'Beef Stew (4L)',             description: 'Classic Nigerian beef stew, slow-cooked to perfection.',         price: 80000,  emoji: '🥩', image: '/images/beef-stew.jpg' },
   { id: 23, category: 'Stews', name: 'Assorted Meat Stew (2L)',    description: 'Mixed meat stew — beef, tripe, and more.',                       price: 40000,  emoji: '🍖', image: '/images/assorted-stew.jpg' },
   { id: 24, category: 'Stews', name: 'Assorted Meat Stew (4L)',    description: 'Mixed meat stew — beef, tripe, and more.',                       price: 80000,  emoji: '🍖', image: '/images/assorted-stew.jpg' },
-  { id: 25, category: 'Stews', name: 'Stir Fry Sauce (2L)',        description: 'Vibrant stir-fry sauce packed with peppers and spices.',         price: 40000,  emoji: '🫙', image: IMG('1619860705619-1e0ba34091e0') },
-  { id: 26, category: 'Stews', name: 'Stir Fry Sauce (4L)',        description: 'Vibrant stir-fry sauce packed with peppers and spices.',         price: 80000,  emoji: '🫙', image: IMG('1619860705619-1e0ba34091e0') },
+  { id: 25, category: 'Stews', name: 'Stir Fry Sauce (2L)',        description: 'Vibrant stir-fry sauce packed with peppers and spices.',         price: 40000,  emoji: '🫙', image: CARD('🫙', 'Stir Fry Sauce', '#FFD4D4', '#E74C3C') },
+  { id: 26, category: 'Stews', name: 'Stir Fry Sauce (4L)',        description: 'Vibrant stir-fry sauce packed with peppers and spices.',         price: 80000,  emoji: '🫙', image: CARD('🫙', 'Stir Fry Sauce', '#FFD4D4', '#E74C3C') },
 
   // PEPPER SOUP
   { id: 27, category: 'Pepper Soup', name: 'Chicken Pepper Soup (2L)',       description: 'Hot and spicy chicken pepper soup — great for any weather.',    price: 35000, emoji: '🌶️', image: '/images/pepper-soup.jpg' },
@@ -57,16 +70,16 @@ const MENU = [
   // RICE & PASTA
   { id: 76, category: 'Rice & Pasta', name: 'Ofe Akwu & White Rice (2L)', description: 'Igbo palm nut soup (ofe akwu) served with fluffy white rice.',  price: 55000,  emoji: '🍚', image: '/images/ofe-akwu-white-rice.jpg' },
   { id: 77, category: 'Rice & Pasta', name: 'Ofe Akwu & White Rice (4L)', description: 'Igbo palm nut soup (ofe akwu) served with fluffy white rice.',  price: 100000, emoji: '🍚', image: '/images/ofe-akwu-white-rice.jpg' },
-  { id: 37, category: 'Rice & Pasta', name: 'Native Rice (2L)',              description: 'Ofada-style native rice cooked in palm oil sauce.',             price: 40000,  emoji: '🍚', image: IMG('1536304993881-ff6e9eefa2a6') },
-  { id: 38, category: 'Rice & Pasta', name: 'Native Rice (4L)',              description: 'Ofada-style native rice cooked in palm oil sauce.',             price: 80000,  emoji: '🍚', image: IMG('1536304993881-ff6e9eefa2a6') },
+  { id: 37, category: 'Rice & Pasta', name: 'Native Rice (2L)',              description: 'Ofada-style native rice cooked in palm oil sauce.',             price: 40000,  emoji: '🍚', image: CARD('🍚', 'Native Rice',       '#F5E6D3', '#8B4513') },
+  { id: 38, category: 'Rice & Pasta', name: 'Native Rice (4L)',              description: 'Ofada-style native rice cooked in palm oil sauce.',             price: 80000,  emoji: '🍚', image: CARD('🍚', 'Native Rice',       '#F5E6D3', '#8B4513') },
   { id: 39, category: 'Rice & Pasta', name: 'Jollof Rice (2L)',              description: 'Party-style smoky jollof — the real deal.',                     price: 40000,  emoji: '🍛', image: '/images/jollof-rice.jpg' },
   { id: 40, category: 'Rice & Pasta', name: 'Jollof Rice (4L)',              description: 'Party-style smoky jollof — the real deal.',                     price: 80000,  emoji: '🍛', image: '/images/jollof-rice.jpg' },
   { id: 72, category: 'Rice & Pasta', name: 'Delta Coconut Rice & Assorted Meat Sauce (2L)', description: 'Delta-style coconut rice served with a rich assorted meat sauce.',  price: 50000,  emoji: '🥥', image: '/images/delta-coconut-rice.jpg' },
   { id: 73, category: 'Rice & Pasta', name: 'Delta Coconut Rice & Assorted Meat Sauce (4L)', description: 'Delta-style coconut rice served with a rich assorted meat sauce.',  price: 110000, emoji: '🥥', image: '/images/delta-coconut-rice.jpg' },
-  { id: 41, category: 'Rice & Pasta', name: 'Seafood Coconut Rice (2L)',     description: 'Coconut rice loaded with shrimp, crab, and mixed seafood.',     price: 50000,  emoji: '🦐', image: IMG('1664992960082-0ea299a9c53e') },
-  { id: 42, category: 'Rice & Pasta', name: 'Seafood Coconut Rice (4L)',     description: 'Coconut rice loaded with shrimp, crab, and mixed seafood.',     price: 110000, emoji: '🦐', image: IMG('1664992960082-0ea299a9c53e') },
-  { id: 43, category: 'Rice & Pasta', name: 'Special Coconut Rice (2L)',     description: 'Fragrant coconut rice with special Mel seasoning.',             price: 40000,  emoji: '🥥', image: IMG('1512058564366-18510be2db19') },
-  { id: 44, category: 'Rice & Pasta', name: 'Special Coconut Rice (4L)',     description: 'Fragrant coconut rice with special Mel seasoning.',             price: 80000,  emoji: '🥥', image: IMG('1512058564366-18510be2db19') },
+  { id: 41, category: 'Rice & Pasta', name: 'Seafood Coconut Rice (2L)',     description: 'Coconut rice loaded with shrimp, crab, and mixed seafood.',     price: 50000,  emoji: '🦐', image: CARD('🦐', 'Seafood Coconut Rice', '#FFE5D9', '#FF6B6B') },
+  { id: 42, category: 'Rice & Pasta', name: 'Seafood Coconut Rice (4L)',     description: 'Coconut rice loaded with shrimp, crab, and mixed seafood.',     price: 110000, emoji: '🦐', image: CARD('🦐', 'Seafood Coconut Rice', '#FFE5D9', '#FF6B6B') },
+  { id: 43, category: 'Rice & Pasta', name: 'Special Coconut Rice (2L)',     description: 'Fragrant coconut rice with special Mel seasoning.',             price: 40000,  emoji: '🥥', image: CARD('🥥', 'Special Coconut Rice', '#FFFAF0', '#8B7355') },
+  { id: 44, category: 'Rice & Pasta', name: 'Special Coconut Rice (4L)',     description: 'Fragrant coconut rice with special Mel seasoning.',             price: 80000,  emoji: '🥥', image: CARD('🥥', 'Special Coconut Rice', '#FFFAF0', '#8B7355') },
   { id: 45, category: 'Rice & Pasta', name: 'Asun Jollof Rice (2L)',         description: 'Jollof rice topped with peppered goat meat (asun).',           price: 40000,  emoji: '🍖', image: '/images/jollof-rice.jpg' },
   { id: 46, category: 'Rice & Pasta', name: 'Asun Jollof Rice (4L)',         description: 'Jollof rice topped with peppered goat meat (asun).',           price: 80000,  emoji: '🍖', image: '/images/jollof-rice.jpg' },
   { id: 47, category: 'Rice & Pasta', name: 'Fried Rice (2L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 40000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
@@ -88,18 +101,18 @@ const MENU = [
   { id: 71, category: 'Burgers', name: 'Breakfast Burger & Sandwich Melt Combo', description: 'The ultimate combo — a loaded breakfast burger paired with a golden sandwich melt.', price: 50000, emoji: '🍔', image: '/images/burger-sandwich-combo.jpg' },
 
   // BREAKFAST
-  { id: 61, category: 'Breakfast', name: 'Butterscotch Milk Pancakes', description: 'Pancakes with 2 sausages, bacon, scrambled egg, and syrup.',        price: 9000,  emoji: '🥞', image: IMG('1528207776546-365bb710ee93') },
-  { id: 62, category: 'Breakfast', name: 'Banana Oatmeal Pancakes',    description: 'Oatmeal pancakes with 2 sausages, bacon, scrambled egg, and syrup.',price: 9500,  emoji: '🥞', image: IMG('1528207776546-365bb710ee93') },
-  { id: 63, category: 'Breakfast', name: 'Waffles',                    description: 'Golden waffles served with crispy chicken and syrup.',              price: 9500,  emoji: '🧇', image: IMG('1562376552-0d160a2f238d') },
-  { id: 64, category: 'Breakfast', name: 'French Toast',               description: 'French toast with 2 sausages, bacon, scrambled egg, and syrup.',   price: 8500,  emoji: '🍞', image: IMG('1646678257402-8a0ed0d2d14e') },
+  { id: 61, category: 'Breakfast', name: 'Butterscotch Milk Pancakes', description: 'Pancakes with 2 sausages, bacon, scrambled egg, and syrup.',        price: 9000,  emoji: '🥞', image: CARD('🥞', 'Butterscotch Pancakes', '#FFF4E0', '#D4A017') },
+  { id: 62, category: 'Breakfast', name: 'Banana Oatmeal Pancakes',    description: 'Oatmeal pancakes with 2 sausages, bacon, scrambled egg, and syrup.',price: 9500,  emoji: '🥞', image: CARD('🥞', 'Banana Oatmeal Pancakes', '#FFF8DC', '#B8860B') },
+  { id: 63, category: 'Breakfast', name: 'Waffles',                    description: 'Golden waffles served with crispy chicken and syrup.',              price: 9500,  emoji: '🧇', image: CARD('🧇', 'Waffles',                '#FFE8B5', '#DAA520') },
+  { id: 64, category: 'Breakfast', name: 'French Toast',               description: 'French toast with 2 sausages, bacon, scrambled egg, and syrup.',   price: 8500,  emoji: '🍞', image: CARD('🍞', 'French Toast',           '#FFE4B5', '#CD853F') },
 
   // ADD-ONS
-  { id: 65, category: 'Add-Ons', name: 'Baked Beans',     description: 'Side of seasoned baked beans.',       price: 500,  emoji: '🫘', image: IMG('1604908176997-125f25cc6f3d') },
-  { id: 66, category: 'Add-Ons', name: 'Sausage',         description: 'One grilled sausage.',                price: 500,  emoji: '🌭', image: IMG('1619860705619-1e0ba34091e0') },
-  { id: 67, category: 'Add-Ons', name: 'Scrambled Egg',   description: 'Freshly scrambled egg.',              price: 500,  emoji: '🍳', image: IMG('1528207776546-365bb710ee93') },
-  { id: 68, category: 'Add-Ons', name: 'Syrup',           description: 'Sweet pancake/waffle syrup.',         price: 500,  emoji: '🍯', image: IMG('1560052859-7deb492b0baf') },
-  { id: 69, category: 'Add-Ons', name: 'Chicken',         description: 'Extra piece of grilled chicken.',     price: 2000, emoji: '🍗', image: IMG('1603496987674-79600a000f55') },
-  { id: 70, category: 'Add-Ons', name: 'Bacon',           description: 'Crispy streaky bacon.',               price: 1500, emoji: '🥓', image: IMG('1619860705619-1e0ba34091e0') },
+  { id: 65, category: 'Add-Ons', name: 'Baked Beans',     description: 'Side of seasoned baked beans.',       price: 500,  emoji: '🫘', image: CARD('🫘', 'Baked Beans',   '#FFE5B4', '#FFB347') },
+  { id: 66, category: 'Add-Ons', name: 'Sausage',         description: 'One grilled sausage.',                price: 500,  emoji: '🌭', image: CARD('🌭', 'Sausage',       '#FFD9C4', '#FF9966') },
+  { id: 67, category: 'Add-Ons', name: 'Scrambled Egg',   description: 'Freshly scrambled egg.',              price: 500,  emoji: '🍳', image: CARD('🍳', 'Scrambled Egg', '#FFF8DC', '#FFD700') },
+  { id: 68, category: 'Add-Ons', name: 'Syrup',           description: 'Sweet pancake/waffle syrup.',         price: 500,  emoji: '🍯', image: CARD('🍯', 'Syrup',         '#FFE8B5', '#E8A317') },
+  { id: 69, category: 'Add-Ons', name: 'Chicken',         description: 'Extra piece of grilled chicken.',     price: 2000, emoji: '🍗', image: CARD('🍗', 'Chicken',       '#FFE4C4', '#D2691E') },
+  { id: 70, category: 'Add-Ons', name: 'Bacon',           description: 'Crispy streaky bacon.',               price: 1500, emoji: '🥓', image: CARD('🥓', 'Bacon',         '#FFD1D1', '#C0392B') },
 ];
 
 // ─── PAYSTACK PUBLIC KEY ──────────────────────────────────────────────────────
