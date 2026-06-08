@@ -96,7 +96,7 @@ const MENU = [
 
   // BURGERS
   { id: 57, category: 'Burgers', name: 'Breakfast Fast Burger',    description: 'Fully loaded breakfast burger — egg, bacon, sausage, and more.',  price: 15000, emoji: '🍔', image: '/images/breakfast-burger.jpg' },
-  { id: 58, category: 'Burgers', name: 'Double Deck Burger',       description: 'Double-patty burger stacked high with all the toppings.',         price: 12000, emoji: '🍔', image: '/images/breakfast-burger.jpg' },
+  { id: 58, category: 'Burgers', name: 'Double Deck Burger',       description: 'Double-patty burger stacked high with all the toppings.',         price: 20000, emoji: '🍔', image: '/images/breakfast-burger.jpg' },
   { id: 59, category: 'Burgers', name: 'Beef Burger',              description: 'Juicy beef patty with fresh lettuce, tomato, and sauce.',         price: 8000,  emoji: '🍔', image: '/images/breakfast-burger.jpg' },
   { id: 60, category: 'Burgers', name: 'Chicken Burger',           description: 'Crispy chicken fillet with coleslaw and special mayo.',           price: 8500,  emoji: '🍗', image: '/images/breakfast-burger.jpg' },
   { id: 71, category: 'Burgers', name: 'Breakfast Burger & Sandwich Melt Combo', description: 'The ultimate combo — a loaded breakfast burger paired with a golden sandwich melt.', price: 50000, emoji: '🍔', image: '/images/burger-sandwich-combo.jpg' },
