@@ -267,11 +267,54 @@ function updateQty(id, delta) {
 }
 
 function updateFab() {
-  const fab = document.getElementById('cartFab');
+  // Renamed conceptually to "updateStickyCart" but kept name for back-compat
+  const bar = document.getElementById('stickyCart');
+  if (!bar) return;
   const count = Object.values(cart).reduce((a, b) => a + b, 0);
-  document.getElementById('cartFabCount').textContent = count;
-  fab.style.display = count > 0 ? 'flex' : 'none';
+  const total = Object.entries(cart).reduce((sum, [id, qty]) => {
+    const item = MENU.find(m => m.id === Number(id));
+    return item ? sum + item.price * qty : sum;
+  }, 0);
+
+  // Build summary like "Egusi ×1 + 2 more"
+  const ids = Object.keys(cart);
+  let summary = `${count} item${count === 1 ? '' : 's'}`;
+  if (ids.length > 0) {
+    const first = MENU.find(m => m.id === Number(ids[0]));
+    if (first) {
+      const others = ids.length - 1;
+      summary = others > 0
+        ? `${first.name.replace(/\s*\(.*\)/, '')} + ${others} more`
+        : `${first.name.replace(/\s*\(.*\)/, '')} ×${cart[ids[0]]}`;
+    }
+  }
+
+  document.getElementById('stickyCartCount').textContent = count;
+  document.getElementById('stickyCartSummary').textContent = summary;
+  document.getElementById('stickyCartTotal').textContent = `₦${total.toLocaleString()}`;
+
+  if (count > 0) {
+    bar.removeAttribute('hidden');
+    document.body.classList.add('cart-active');
+  } else {
+    bar.setAttribute('hidden', '');
+    document.body.classList.remove('cart-active');
+  }
 }
+
+// Hide sticky bar when user is already in checkout view (avoid double CTA)
+const _orderFormObserver = new IntersectionObserver((entries) => {
+  const bar = document.getElementById('stickyCart');
+  if (!bar) return;
+  const formInView = entries[0]?.isIntersecting;
+  bar.style.opacity = formInView ? '0' : '1';
+  bar.style.pointerEvents = formInView ? 'none' : 'auto';
+}, { threshold: 0.3 });
+// Attach after DOM ready
+window.addEventListener('load', () => {
+  const orderSection = document.getElementById('orderSection');
+  if (orderSection) _orderFormObserver.observe(orderSection);
+});
 
 function renderCart() {
   const cartItems = document.getElementById('cartItems');

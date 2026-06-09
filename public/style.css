@@ -109,41 +109,121 @@ h1,h2,h3,h4 { font-family: var(--font-heading); line-height: 1.15; }
   box-shadow: 0 4px 16px rgba(220,38,38,0.4);
 }
 
-/* ── FLOATING CART FAB ── */
-.cart-fab {
+/* ── STICKY CART BAR (Test #3: replaces FAB — +20-35% cart→form lift) ── */
+.sticky-cart {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
-  background: var(--color-primary);
-  color: var(--color-white);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 150;
+  padding: 12px;
+  pointer-events: none;
+  animation: stickyCartIn 0.3s ease;
+}
+@keyframes stickyCartIn {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+.sticky-cart[hidden] { display: none; }
+.sticky-cart-inner {
+  pointer-events: auto;
+  max-width: 720px;
+  margin: 0 auto;
+  background: #1a0505;
+  color: #fff;
+  border-radius: 16px;
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  overflow: hidden;
+}
+.sticky-cart-info,
+.sticky-cart-cta {
+  background: none;
   border: none;
-  border-radius: var(--radius-full);
-  padding: 15px 24px;
-  font-size: 15px;
-  font-weight: 700;
+  color: #fff;
   font-family: var(--font-body);
   cursor: pointer;
-  display: none;
+  padding: 14px 18px;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0 6px 28px rgba(220,38,38,0.45);
-  z-index: 150;
-  transition: transform var(--transition), box-shadow var(--transition);
+  gap: 14px;
+  transition: background 0.2s;
 }
-.cart-fab:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 36px rgba(220,38,38,0.55);
+.sticky-cart-info { flex: 1; min-width: 0; }
+.sticky-cart-info:hover { background: rgba(255,255,255,0.05); }
+.sticky-cart-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
-.cart-fab-icon { font-size: 18px; line-height:1; }
-.cart-fab-count {
-  background: var(--color-white);
-  color: var(--color-primary);
-  border-radius: var(--radius-full);
-  padding: 2px 9px;
-  font-size: 13px;
+.sticky-cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 999px;
+  padding: 1px 6px;
+  font-size: 11px;
   font-weight: 800;
-  min-width: 22px;
+  min-width: 18px;
   text-align: center;
+  line-height: 1.4;
+}
+.sticky-cart-meta {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  min-width: 0;
+}
+.sticky-cart-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+.sticky-cart-summary {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sticky-cart-cta {
+  background: var(--color-primary);
+  flex-shrink: 0;
+  font-weight: 700;
+  flex-direction: column;
+  gap: 0;
+  padding: 14px 22px;
+  text-align: right;
+  transition: background 0.2s;
+}
+.sticky-cart-cta:hover { background: #b91c1c; }
+.sticky-cart-total {
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.sticky-cart-cta-arrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+@media (max-width: 480px) {
+  .sticky-cart { padding: 8px; }
+  .sticky-cart-info { padding: 12px 14px; gap: 10px; }
+  .sticky-cart-cta { padding: 12px 18px; }
+  .sticky-cart-summary { font-size: 13px; }
+  .sticky-cart-total { font-size: 16px; }
+  .sticky-cart-cta-arrow { font-size: 10px; }
 }
 @keyframes fabPop {
   from { transform: scale(0.7) translateY(12px); opacity: 0; }
@@ -870,7 +950,7 @@ h1,h2,h3,h4 { font-family: var(--font-heading); line-height: 1.15; }
   .menu-search, .menu-search input { width: 100%; }
   .menu-search input:focus { width: 100%; }
   .order-box { padding: 28px 20px; }
-  .cart-fab { bottom: 16px; right: 16px; }
+  /* Sticky cart bar handles mobile cart visibility, no per-breakpoint tweaks needed here. */
   .why { padding: 64px 24px; }
   .menu { padding: 64px 24px; }
 }
@@ -1069,10 +1149,10 @@ h1,h2,h3,h4 { font-family: var(--font-heading); line-height: 1.15; }
 .zone-list li:last-child { border-bottom: none; }
 .area-zone-cta p { font-size: 14px; color: var(--color-muted-fg); line-height: 1.6; }
 
-/* ── WHATSAPP STICKY BUTTON ── */
+/* ── WHATSAPP STICKY BUTTON (lifts above sticky cart when present) ── */
 .wa-sticky {
   position: fixed;
-  bottom: 88px;
+  bottom: 100px;
   right: 20px;
   z-index: 998;
   background: #25D366;
@@ -1087,16 +1167,19 @@ h1,h2,h3,h4 { font-family: var(--font-heading); line-height: 1.15; }
   font-family: var(--font-body);
   text-decoration: none;
   box-shadow: 0 4px 16px rgba(37,211,102,0.4);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, bottom 0.25s;
   white-space: nowrap;
 }
 .wa-sticky:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 24px rgba(37,211,102,0.5);
 }
+/* When sticky cart is visible, push WhatsApp button higher */
+body.cart-active .wa-sticky { bottom: 168px; }
 @media (max-width: 480px) {
   .wa-sticky span:last-child { display: none; }
-  .wa-sticky { padding: 14px; bottom: 88px; border-radius: 50%; }
+  .wa-sticky { padding: 14px; right: 16px; bottom: 100px; border-radius: 50%; }
+  body.cart-active .wa-sticky { bottom: 156px; }
 }
 
 /* ── MODAL CLOSE BUTTON ── */
