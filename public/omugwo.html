@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omugwo Meal Package — Real Nourishing Food for New Mums in Lagos | ChopWithMel</title>
+  <meta name="description" content="ChopWithMel's Omugwo Package — authentic, nutrient-rich Nigerian meals delivered to new mothers across Lagos. Pepper soup with catfish, Banga, Oha, ofada with goat meat. 2, 4 or 8 week plans.">
+  <link rel="canonical" href="https://chopwithmel.com/omugwo">
+  <link rel="icon" type="image/png" href="/images/logo.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://chopwithmel.com/omugwo">
+  <meta property="og:title" content="Omugwo Meal Package — Nourishing Food for New Mums in Lagos">
+  <meta property="og:description" content="Authentic Nigerian recovery meals for new mothers. Catfish pepper soup, Banga, Oha, ofada with goat meat — delivered fresh across Lagos. 2/4/8 week plans available.">
+  <meta property="og:image" content="https://chopwithmel.com/images/oha-soup.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Omugwo Meals — ChopWithMel">
+  <meta name="twitter:image" content="https://chopwithmel.com/images/oha-soup.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700;800&family=Playfair+Display+SC:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .omu-hero {
+      background: linear-gradient(135deg, #FFF7EB 0%, #FFE8D6 100%);
+      padding: 80px 24px 64px;
+      text-align: center;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .omu-badge {
+      display: inline-block;
+      background: rgba(220,38,38,0.10);
+      color: var(--color-primary);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .omu-hero h1 {
+      font-family: 'Playfair Display SC', serif;
+      font-size: clamp(32px, 6vw, 56px);
+      line-height: 1.1;
+      color: #450A0A;
+      margin-bottom: 18px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .omu-hero .lead {
+      max-width: 640px;
+      margin: 0 auto 32px;
+      color: var(--color-muted-fg);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+    .omu-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 28px;
+      background: #25D366;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 6px 18px rgba(37,211,102,0.35);
+      transition: transform 0.15s;
+    }
+    .omu-cta:hover { transform: translateY(-2px); }
+
+    .why-section { padding: 72px 24px; max-width: 980px; margin: 0 auto; }
+    .why-section h2 {
+      text-align: center;
+      font-family: 'Playfair Display SC', serif;
+      font-size: clamp(26px,4vw,38px);
+      margin-bottom: 12px;
+      color: #450A0A;
+    }
+    .why-section .sub {
+      text-align: center;
+      color: var(--color-muted-fg);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .why-card {
+      background: var(--color-white);
+      padding: 28px 24px;
+      border-radius: 16px;
+      border: 1px solid var(--color-border);
+    }
+    .why-icon { font-size: 32px; margin-bottom: 12px; }
+    .why-card h3 { font-size: 18px; color: #450A0A; margin-bottom: 8px; }
+    .why-card p { font-size: 14px; color: var(--color-muted-fg); line-height: 1.7; }
+
+    .dishes-strip {
+      background: #FFFBF5;
+      padding: 64px 24px;
+      border-block: 1px solid var(--color-border);
+    }
+    .dishes-strip h2 {
+      text-align: center;
+      font-family: 'Playfair Display SC', serif;
+      font-size: clamp(24px,4vw,34px);
+      margin-bottom: 36px;
+      color: #450A0A;
+    }
+    .dishes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .dish-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    }
+    .dish-card img { width: 100%; height: 150px; object-fit: cover; display: block; }
+    .dish-card-body { padding: 14px 16px; }
+    .dish-card-body h4 { font-size: 15px; color: #1a0505; margin-bottom: 4px; }
+    .dish-card-body p { font-size: 12px; color: var(--color-muted-fg); line-height: 1.5; }
+
+    .pricing { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
+    .pricing h2 {
+      text-align: center;
+      font-family: 'Playfair Display SC', serif;
+      font-size: clamp(28px,5vw,42px);
+      margin-bottom: 12px;
+      color: #450A0A;
+    }
+    .pricing .sub {
+      text-align: center;
+      color: var(--color-muted-fg);
+      margin-bottom: 48px;
+    }
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .plan {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 30px;
+      border: 2px solid var(--color-border);
+      text-align: center;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .plan:hover { transform: translateY(-6px); box-shadow: 0 16px 38px rgba(0,0,0,0.10); }
+    .plan.featured {
+      border-color: var(--color-primary);
+      background: linear-gradient(180deg, #fff 0%, #FFF7EB 100%);
+      box-shadow: 0 8px 24px rgba(220,38,38,0.15);
+    }
+    .plan-tag {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-primary);
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .plan h3 {
+      font-family: 'Playfair Display SC', serif;
+      font-size: 26px;
+      color: #450A0A;
+      margin-bottom: 6px;
+    }
+    .plan-duration { color: var(--color-muted-fg); font-size: 14px; margin-bottom: 24px; }
+    .plan-price {
+      font-family: 'Playfair Display SC', serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--color-primary);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .plan-per { font-size: 13px; color: var(--color-muted-fg); margin-bottom: 28px; }
+    .plan ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      text-align: left;
+    }
+    .plan li {
+      padding: 8px 0 8px 28px;
+      font-size: 14px;
+      color: #1a0505;
+      position: relative;
+      line-height: 1.5;
+    }
+    .plan li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      color: #15803D;
+      font-weight: 800;
+    }
+    .plan-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: #25D366;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: transform 0.15s, background 0.2s;
+      box-sizing: border-box;
+    }
+    .plan-btn:hover { transform: translateY(-1px); background: #1ebe5b; }
+    .plan.featured .plan-btn { background: var(--color-primary); }
+    .plan.featured .plan-btn:hover { background: #b91c1c; }
+
+    .testimonial-block {
+      background: #1a0505;
+      color: #fff;
+      padding: 64px 24px;
+      text-align: center;
+    }
+    .testimonial-block blockquote {
+      font-family: 'Playfair Display SC', serif;
+      font-size: clamp(20px, 3vw, 28px);
+      max-width: 760px;
+      margin: 0 auto 16px;
+      line-height: 1.4;
+      font-style: italic;
+    }
+    .testimonial-block cite { color: rgba(255,255,255,0.7); font-size: 14px; font-style: normal; }
+
+    .closing-cta {
+      padding: 64px 24px;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .closing-cta h2 {
+      font-family: 'Playfair Display SC', serif;
+      font-size: clamp(26px,4vw,38px);
+      margin-bottom: 14px;
+      color: #450A0A;
+    }
+    .closing-cta p { color: var(--color-muted-fg); margin-bottom: 28px; font-size: 16px; line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo"><img src="/images/logo.png" alt="ChopWithMel" class="nav-logo"></a>
+      <div class="nav-right"><a href="/#menu" class="nav-cta">Order Now</a></div>
+    </div>
+  </nav>
+
+  <section class="omu-hero">
+    <span class="omu-badge">🤱🏾 Omugwo Package</span>
+    <h1>Nourishing Meals for New Mums.<br>Made With Love. Delivered to You.</h1>
+    <p class="lead">
+      A new baby is a blessing — and recovery deserves proper food. Our Omugwo Package brings you authentic, nutrient-rich Nigerian meals proven by generations of mothers to support healing, breastfeeding, and energy in the precious first weeks.
+    </p>
+    <a href="https://wa.me/2347033352997?text=Hi%20Mel!%20I%27m%20interested%20in%20the%20Omugwo%20Package%20%F0%9F%A4%B1%F0%9F%8F%BE%20Please%20share%20details." target="_blank" rel="noopener noreferrer" class="omu-cta">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Talk to Mel on WhatsApp
+    </a>
+  </section>
+
+  <section class="why-section">
+    <h2>Why Mel's Omugwo Meals?</h2>
+    <p class="sub">Because new mothers — and the omugwo aunties and mums caring for them — deserve more than supermarket convenience food.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🍲</div>
+        <h3>Recipes from Nigerian mothers</h3>
+        <p>Traditional postpartum dishes — Banga, Oha, pepper soup with catfish, ofada with goat meat — chosen for warmth, iron, healthy fats, and milk-support.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🌿</div>
+        <h3>No preservatives. No shortcuts.</h3>
+        <p>Fresh palm oil, fresh ingredients, slow-cooked the way your grandmother would. Your body knows the difference.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🛵</div>
+        <h3>Delivered hot, on schedule</h3>
+        <p>We deliver across Lagos on the days you choose — so you and your omugwo aunty can rest, not cook.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💚</div>
+        <h3>One less thing to worry about</h3>
+        <p>You focus on baby. We focus on feeding you. Custom delivery schedules around hospital visits, family time, and your rest.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="dishes-strip">
+    <h2>Featured Omugwo Dishes</h2>
+    <div class="dishes-grid">
+      <div class="dish-card">
+        <img src="/images/oha-soup.jpg" alt="Oha Soup">
+        <div class="dish-card-body">
+          <h4>Oha Soup with Assorted Meat</h4>
+          <p>Iron-rich Igbo classic. Warming, healing, traditional.</p>
+        </div>
+      </div>
+      <div class="dish-card">
+        <img src="/images/banga-soup.jpg" alt="Banga Soup">
+        <div class="dish-card-body">
+          <h4>Banga Soup with Dried Fish</h4>
+          <p>Healthy palm fats, deeply nourishing. A new-mum favourite.</p>
+        </div>
+      </div>
+      <div class="dish-card">
+        <img src="/images/pepper-soup.jpg" alt="Catfish Pepper Soup">
+        <div class="dish-card-body">
+          <h4>Catfish Pepper Soup</h4>
+          <p>Supports milk supply. Light, clean, restorative broth.</p>
+        </div>
+      </div>
+      <div class="dish-card">
+        <img src="/images/egusi-soup.jpg" alt="Egusi Soup">
+        <div class="dish-card-body">
+          <h4>Egusi Soup with Assorted Meat</h4>
+          <p>Protein-packed melon-seed soup. Energy for long nights.</p>
+        </div>
+      </div>
+      <div class="dish-card">
+        <img src="/images/afang-soup.jpg" alt="Afang Soup">
+        <div class="dish-card-body">
+          <h4>Afang Soup with Periwinkle</h4>
+          <p>Greens + protein. Healing waterleaf, shredded meat, periwinkle.</p>
+        </div>
+      </div>
+      <div class="dish-card">
+        <img src="/images/jollof-rice.jpg" alt="Jollof Rice">
+        <div class="dish-card-body">
+          <h4>Jollof Rice + Chicken/Turkey</h4>
+          <p>Comforting carb for visitors and family. Generous portions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="plans">
+    <h2>Choose your plan</h2>
+    <p class="sub">All plans include free Lagos delivery. Custom dishes available on request.</p>
+    <div class="plans">
+
+      <div class="plan">
+        <h3>2-Week Plan</h3>
+        <p class="plan-duration">For the first crucial fortnight</p>
+        <div class="plan-price">₦280k</div>
+        <p class="plan-per">≈ ₦20k per delivery · 14 deliveries</p>
+        <ul>
+          <li>1 fresh meal delivered daily</li>
+          <li>Rotating menu: 4 soups + 2 rice + protein</li>
+          <li>Free Lagos delivery</li>
+          <li>Custom dietary preferences honoured</li>
+          <li>WhatsApp daily check-in with Mel</li>
+        </ul>
+        <a href="https://wa.me/2347033352997?text=Hi%20Mel!%20I%27d%20like%20to%20book%20the%202-week%20Omugwo%20Plan%20%E2%82%A6280%2C000.%20Please%20share%20available%20start%20dates." target="_blank" rel="noopener noreferrer" class="plan-btn">
+          Book 2-Week Plan →
+        </a>
+      </div>
+
+      <div class="plan featured">
+        <div class="plan-tag">⭐ Most popular</div>
+        <h3>4-Week Plan</h3>
+        <p class="plan-duration">The classic omugwo length</p>
+        <div class="plan-price">₦520k</div>
+        <p class="plan-per">≈ ₦18.5k per delivery · 28 deliveries · save ₦40k</p>
+        <ul>
+          <li>1 fresh meal delivered daily</li>
+          <li>Premium rotation: all soups, rice, swallows, proteins</li>
+          <li>Free Lagos delivery</li>
+          <li>Hospital + recovery menu adjustments</li>
+          <li>Postnatal smoothie or pap, twice weekly</li>
+          <li>Direct WhatsApp line with Mel</li>
+          <li>Free family-size meal for the omugwo aunty 🫶🏾</li>
+        </ul>
+        <a href="https://wa.me/2347033352997?text=Hi%20Mel!%20I%27d%20like%20to%20book%20the%204-week%20Omugwo%20Plan%20%E2%82%A6520%2C000.%20Please%20share%20available%20start%20dates." target="_blank" rel="noopener noreferrer" class="plan-btn">
+          Book 4-Week Plan →
+        </a>
+      </div>
+
+      <div class="plan">
+        <h3>8-Week Plan</h3>
+        <p class="plan-duration">Extended support, full recovery</p>
+        <div class="plan-price">₦980k</div>
+        <p class="plan-per">≈ ₦17.5k per delivery · 56 deliveries · save ₦140k</p>
+        <ul>
+          <li>1 fresh meal delivered daily</li>
+          <li>Everything in the 4-Week Plan</li>
+          <li>Weekly postnatal special (catfish soup, ofe akwu)</li>
+          <li>Snack basket monthly (chin chin, plantain chips)</li>
+          <li>Priority scheduling</li>
+          <li>One free dinner for partner/visitor each week</li>
+        </ul>
+        <a href="https://wa.me/2347033352997?text=Hi%20Mel!%20I%27d%20like%20to%20book%20the%208-week%20Omugwo%20Plan%20%E2%82%A6980%2C000.%20Please%20share%20available%20start%20dates." target="_blank" rel="noopener noreferrer" class="plan-btn">
+          Book 8-Week Plan →
+        </a>
+      </div>
+
+    </div>
+    <p style="text-align:center;margin-top:36px;color:var(--color-muted-fg);font-size:13px">
+      💡 <strong>Gift it.</strong> Friends and family abroad regularly book Omugwo plans for new mums in Lagos. Pay online, we deliver to her door.
+    </p>
+  </section>
+
+  <section class="testimonial-block">
+    <blockquote>"The food was a lifesaver. My mum could focus on the baby instead of cooking. Banga, Oha, pepper soup — exactly what my body needed."</blockquote>
+    <cite>— Adaeze, new mum in Lekki</cite>
+  </section>
+
+  <section class="closing-cta">
+    <h2>Not sure which plan? Just message Mel.</h2>
+    <p>She'll help you choose based on your due date, dietary needs, and family situation. No pressure, no sales script — just one mum looking after another.</p>
+    <a href="https://wa.me/2347033352997?text=Hi%20Mel!%20I%27d%20like%20help%20choosing%20an%20Omugwo%20plan." target="_blank" rel="noopener noreferrer" class="omu-cta">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat with Mel
+    </a>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <img src="/images/logo.png" alt="ChopWithMel" class="footer-logo-img">
+      <p><strong>ChopWithMel</strong> — Real homemade African food, Lagos.</p>
+      <p><a href="tel:+2347033352997">📞 07033352997</a> · <a href="mailto:chopwithmel@gmail.com">✉️ chopwithmel@gmail.com</a></p>
+    </div>
+  </footer>
+</body>
+</html>

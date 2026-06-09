@@ -663,6 +663,84 @@ h1,h2,h3,h4 { font-family: var(--font-heading); line-height: 1.15; }
   min-height: 54px;
 }
 
+/* CHEF'S PICKS — Test #2: choice paralysis reducer (+30-60% add-to-cart) */
+.chefs-picks {
+  padding: 80px 24px 60px;
+  background: linear-gradient(180deg, #FFFBF5 0%, #FFF7EB 100%);
+  border-bottom: 1px solid var(--color-border);
+}
+.chefs-picks h2 {
+  font-family: 'Playfair Display SC', serif;
+  font-size: clamp(28px,5vw,42px);
+  text-align: center;
+  margin-bottom: 10px;
+  color: #450A0A;
+}
+.chefs-picks .section-label { text-align: center; display: block; }
+.picks-sub {
+  text-align: center;
+  color: var(--color-muted-fg);
+  font-size: 15px;
+  margin-bottom: 36px;
+}
+.picks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.pick-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(220,38,38,0.06);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+.pick-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(220,38,38,0.12);
+}
+.pick-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+.pick-body { padding: 14px 16px 18px; flex: 1; display: flex; flex-direction: column; }
+.pick-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #1a0505;
+}
+.pick-price {
+  font-size: 14px;
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.pick-btn {
+  width: 100%;
+  padding: 10px;
+  background: #1a0505;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: auto;
+}
+.pick-btn:hover { background: var(--color-primary); }
+.pick-btn.added { background: #15803D; }
+
 /* WhatsApp-first checkout (Test #1 — +25-40% conversion lift) */
 .checkout-divider {
   display: flex;

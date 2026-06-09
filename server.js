@@ -319,6 +319,11 @@ app.get('/refer', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'refer.html'));
 });
 
+// ── OMUGWO / POSTPARTUM PACKAGE LANDING ───────────────────────────────────────
+app.get('/omugwo', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'omugwo.html'));
+});
+
 // ── CATCH-ALL ─────────────────────────────────────────────────────────────────
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
