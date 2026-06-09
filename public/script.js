@@ -592,20 +592,24 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
 
 // ─── CHEF'S PICKS — Test #2 (+30-60% add-to-cart) ────────────────────────────
 // 8 highest-converting / most-loved dishes (real photos prioritized)
-const CHEFS_PICKS_IDS = [1, 13, 11, 17, 51, 80, 7, 71];
+// 8 bestsellers — all with real photos for maximum trust + visual impact
+const CHEFS_PICKS_IDS = [1, 13, 11, 39, 80, 71, 3, 31];
 function renderPicks() {
   const grid = document.getElementById('picksGrid');
   if (!grid) return;
   grid.innerHTML = CHEFS_PICKS_IDS.map(id => {
     const item = MENU.find(m => m.id === id);
     if (!item) return '';
+    const imgHtml = item.image
+      ? `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'pick-img-fallback\\'>${item.emoji}</span>'">`
+      : `<span class="pick-img-fallback">${item.emoji}</span>`;
     return `
-      <div class="pick-card" role="listitem" onclick="addToCart(${item.id})">
-        <img src="${item.image}" alt="${item.name}" loading="lazy">
+      <div class="pick-card" role="listitem">
+        <div class="pick-img-wrap">${imgHtml}</div>
         <div class="pick-body">
           <div class="pick-name">${item.emoji} ${item.name}</div>
           <div class="pick-price">₦${item.price.toLocaleString()}</div>
-          <button class="pick-btn" id="pick-${item.id}" onclick="event.stopPropagation(); addToCart(${item.id})">+ Add to order</button>
+          <button class="pick-btn" id="pick-${item.id}" onclick="addToCart(${item.id})">+ Add to order</button>
         </div>
       </div>`;
   }).join('');
