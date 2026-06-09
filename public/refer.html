@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refer a Friend — ChopWithMel | Get ₦5,000 Off</title>
+  <meta name="description" content="Share ChopWithMel with friends. When they place their first order, you BOTH get ₦5,000 off your next order.">
+  <link rel="canonical" href="https://chopwithmel.com/refer">
+  <link rel="icon" type="image/png" href="/images/logo.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://chopwithmel.com/refer">
+  <meta property="og:title" content="Refer a Friend — Get ₦5,000 Off ChopWithMel">
+  <meta property="og:description" content="Tell a friend about Mel's homemade food. When they order, you both get ₦5,000 off.">
+  <meta property="og:image" content="https://chopwithmel.com/images/jollof-rice.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700;800&family=Playfair+Display+SC:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .refer-hero {
+      background: linear-gradient(135deg, #DC2626 0%, #7F1D1D 100%);
+      color: #fff;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+    .refer-hero h1 {
+      font-family: 'Playfair Display SC', serif;
+      font-size: clamp(32px,6vw,52px);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .refer-hero .tagline {
+      font-size: 18px;
+      opacity: 0.92;
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+    .reward-box {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 4px;
+      background: rgba(255,255,255,0.13);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 22px 38px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+    }
+    .reward-box .amount {
+      font-family: 'Playfair Display SC', serif;
+      font-size: 44px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .reward-box .label { font-size: 13px; opacity: 0.85; letter-spacing: 2px; text-transform: uppercase; }
+
+    .how-it-works { padding: 64px 24px; max-width: 980px; margin: 0 auto; }
+    .how-it-works h2 {
+      text-align: center;
+      font-family: 'Playfair Display SC', serif;
+      font-size: clamp(24px,4vw,36px);
+      margin-bottom: 40px;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .step {
+      text-align: center;
+      padding: 28px 20px;
+      background: var(--color-white);
+      border-radius: 16px;
+      border: 1px solid var(--color-border);
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: var(--color-primary);
+      color: #fff;
+      border-radius: 50%;
+      font-family: 'Playfair Display SC', serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .step h3 { font-size: 18px; margin-bottom: 8px; color: #450A0A; }
+    .step p { font-size: 14px; color: var(--color-muted-fg); line-height: 1.6; }
+
+    .code-section { background: #FFF7ED; padding: 60px 24px; }
+    .code-card {
+      max-width: 560px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 36px 28px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(220,38,38,0.10);
+      text-align: center;
+    }
+    .code-card label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 14px;
+    }
+    .code-input {
+      width: 100%;
+      padding: 16px 20px;
+      font-size: 18px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      border: 2px solid var(--color-border);
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 18px;
+      box-sizing: border-box;
+    }
+    .code-input:focus { outline: none; border-color: var(--color-primary); }
+    .code-display {
+      background: #FEF3E7;
+      border: 2px dashed var(--color-primary);
+      padding: 18px;
+      border-radius: 12px;
+      font-family: monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .code-display:hover { background: #FFE5D9; }
+
+    .share-buttons {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .share-btn:hover { transform: translateY(-1px); }
+    .share-whatsapp { background: #25D366; color: #fff; }
+    .share-copy { background: #1a0505; color: #fff; }
+
+    .faq-cta-strip {
+      padding: 48px 24px;
+      text-align: center;
+      background: #1a0505;
+      color: #fff;
+    }
+    .faq-cta-strip h3 { font-family: 'Playfair Display SC', serif; font-size: 24px; margin-bottom: 10px; }
+    .faq-cta-strip p { color: rgba(255,255,255,0.7); margin-bottom: 20px; font-size: 14px; }
+    .faq-cta-strip a { color: var(--color-primary); font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo"><img src="/images/logo.png" alt="ChopWithMel" class="nav-logo"></a>
+      <div class="nav-right"><a href="/#menu" class="nav-cta">Order Now</a></div>
+    </div>
+  </nav>
+
+  <section class="refer-hero">
+    <div class="reward-box">
+      <span class="amount">₦5,000</span>
+      <span class="label">For you · For your friend</span>
+    </div>
+    <h1>Share Mel's Food.<br>Get Rewarded.</h1>
+    <p class="tagline">Tell a friend about ChopWithMel. When they place their first order, you BOTH get ₦5,000 off your next order. Forever — every friend.</p>
+  </section>
+
+  <section class="how-it-works">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Get your code</h3>
+        <p>Enter your name below to generate your personal referral code (e.g. MEL-AMARA).</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Share with friends</h3>
+        <p>Send your code via WhatsApp, Instagram, or text — anyone who would love homemade food.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Both get ₦5,000 off</h3>
+        <p>When they mention your code on their first order, we credit ₦5,000 to both your next orders.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="code-section">
+    <div class="code-card">
+      <label for="nameInput">Your first name</label>
+      <input
+        type="text"
+        id="nameInput"
+        class="code-input"
+        placeholder="e.g. Amara"
+        autocomplete="given-name"
+        maxlength="20"
+        oninput="updateCode()"
+      >
+
+      <label>Your referral code</label>
+      <div class="code-display" id="codeDisplay" onclick="copyCode()" title="Click to copy">
+        MEL-YOURNAME
+      </div>
+
+      <div class="share-buttons">
+        <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Share on WhatsApp
+        </button>
+        <button class="share-btn share-copy" onclick="copyShareMessage()">
+          📋 Copy share message
+        </button>
+      </div>
+
+      <p style="margin-top:18px;font-size:12px;color:var(--color-muted-fg)">
+        Don't forget to remind your friend to mention your code when ordering!
+      </p>
+    </div>
+  </section>
+
+  <div class="faq-cta-strip">
+    <h3>Questions?</h3>
+    <p>Reach Mel directly on WhatsApp — she'll help.</p>
+    <a href="https://wa.me/2347033352997?text=Hi%20Mel!%20I%20have%20a%20question%20about%20the%20referral%20program." target="_blank" rel="noopener noreferrer">💬 Message Mel on WhatsApp</a>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <img src="/images/logo.png" alt="ChopWithMel" class="footer-logo-img">
+      <p><strong>ChopWithMel</strong> — Real homemade African food, Lagos.</p>
+      <p><a href="tel:+2347033352997">📞 07033352997</a> · <a href="mailto:chopwithmel@gmail.com">✉️ chopwithmel@gmail.com</a></p>
+    </div>
+  </footer>
+
+  <script>
+    function getCode() {
+      const name = document.getElementById('nameInput').value.trim().toUpperCase().replace(/[^A-Z]/g, '');
+      return name ? `MEL-${name}` : 'MEL-YOURNAME';
+    }
+
+    function updateCode() {
+      document.getElementById('codeDisplay').textContent = getCode();
+    }
+
+    function copyCode() {
+      const code = getCode();
+      if (code === 'MEL-YOURNAME') return alert('Enter your name first!');
+      navigator.clipboard.writeText(code);
+      const el = document.getElementById('codeDisplay');
+      const orig = el.textContent;
+      el.textContent = '✓ Copied!';
+      setTimeout(() => el.textContent = orig, 1500);
+    }
+
+    function buildMessage() {
+      const code = getCode();
+      return `Hey! 🍲 You HAVE to try ChopWithMel — Mel makes the most authentic homemade Nigerian food and delivers it across Lagos.
+
+Use my code *${code}* when you order and you'll get ₦5,000 off your first order (I get ₦5,000 off too 😉).
+
+Order here: https://chopwithmel.com
+Or WhatsApp her directly: https://wa.me/2347033352997
+
+You're welcome 😘`;
+    }
+
+    function shareWhatsApp() {
+      const code = getCode();
+      if (code === 'MEL-YOURNAME') return alert('Enter your name first!');
+      const url = `https://wa.me/?text=${encodeURIComponent(buildMessage())}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    function copyShareMessage() {
+      const code = getCode();
+      if (code === 'MEL-YOURNAME') return alert('Enter your name first!');
+      navigator.clipboard.writeText(buildMessage());
+      alert('✅ Share message copied! Paste it anywhere — WhatsApp, Instagram DM, group chat.');
+    }
+  </script>
+</body>
+</html>

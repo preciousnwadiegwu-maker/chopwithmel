@@ -148,11 +148,15 @@ app.use(express.static(path.join(__dirname, 'public'), {
   }
 }));
 
-// ── PAYSTACK PUBLIC KEY ───────────────────────────────────────────────────────
+// ── PAYSTACK PUBLIC KEY + AD TRACKING IDS ─────────────────────────────────────
 app.get('/config.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.setHeader('Cache-Control', 'no-store');
-  res.send(`window.PAYSTACK_PUBLIC_KEY = ${JSON.stringify(process.env.PAYSTACK_PUBLIC_KEY || '')};`);
+  res.send(
+    `window.PAYSTACK_PUBLIC_KEY = ${JSON.stringify(process.env.PAYSTACK_PUBLIC_KEY || '')};\n` +
+    `window.META_PIXEL_ID = ${JSON.stringify(process.env.META_PIXEL_ID || '')};\n` +
+    `window.GA_MEASUREMENT_ID = ${JSON.stringify(process.env.GA_MEASUREMENT_ID || '')};`
+  );
 });
 
 // ── VERIFY PAYMENT ────────────────────────────────────────────────────────────
@@ -308,6 +312,11 @@ app.get('/admin', adminAuth, (req, res) => {
 // ── FAQ ROUTE (H5) ────────────────────────────────────────────────────────────
 app.get('/faq', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'faq.html'));
+});
+
+// ── REFERRAL LANDING ──────────────────────────────────────────────────────────
+app.get('/refer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'refer.html'));
 });
 
 // ── CATCH-ALL ─────────────────────────────────────────────────────────────────

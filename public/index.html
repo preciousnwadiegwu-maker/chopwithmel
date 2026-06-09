@@ -80,6 +80,37 @@
   <link rel="stylesheet" href="style.css">
   <script src="/config.js"></script>
   <script src="https://js.paystack.co/v1/inline.js" defer></script>
+
+  <!-- META PIXEL — initialized only if META_PIXEL_ID is set on server -->
+  <script>
+    (function() {
+      if (!window.META_PIXEL_ID) return;
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', window.META_PIXEL_ID);
+      fbq('track', 'PageView');
+    })();
+  </script>
+  <noscript><img height="1" width="1" style="display:none" alt=""
+    src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
+  <!-- GOOGLE ANALYTICS 4 — initialized only if GA_MEASUREMENT_ID is set -->
+  <script>
+    (function() {
+      if (!window.GA_MEASUREMENT_ID) return;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.GA_MEASUREMENT_ID;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', window.GA_MEASUREMENT_ID);
+    })();
+  </script>
 </head>
 <body>
 
@@ -122,6 +153,7 @@
       <a href="#menu" onclick="toggleMobileMenu()">Menu</a>
       <a href="#delivery-areas" onclick="toggleMobileMenu()">Delivery Areas</a>
       <a href="#reviews" onclick="toggleMobileMenu()">Reviews</a>
+      <a href="/refer" onclick="toggleMobileMenu()">🎁 Refer & Earn ₦5k</a>
       <a href="https://wa.me/2347033352997" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
     </div>
   </nav>

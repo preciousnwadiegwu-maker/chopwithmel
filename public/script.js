@@ -228,6 +228,12 @@ function applySearch() {
   });
 }
 
+// ─── ANALYTICS HELPERS (Meta Pixel + GA4) ────────────────────────────────────
+function trackEvent(name, params = {}) {
+  try { if (window.fbq) fbq('track', name, params); } catch (e) {}
+  try { if (window.gtag) gtag('event', name.toLowerCase().replace(/\s/g,'_'), params); } catch (e) {}
+}
+
 // ─── CART LOGIC ──────────────────────────────────────────────────────────────
 function addToCart(id) {
   const item = MENU.find(m => m.id === id);
@@ -237,6 +243,15 @@ function addToCart(id) {
   showToast(`${item.emoji} ${item.name} added!`);
   renderCart();
   updateFab();
+
+  // Track Meta + GA conversion event
+  trackEvent('AddToCart', {
+    content_ids: [String(item.id)],
+    content_name: item.name,
+    content_type: 'product',
+    currency: 'NGN',
+    value: item.price
+  });
 }
 
 function updateQty(id, delta) {
@@ -365,6 +380,14 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
   payBtn.textContent = 'Opening payment…';
   payBtn.disabled = true;
 
+  // Track checkout intent
+  trackEvent('InitiateCheckout', {
+    content_ids: items.map(i => String(i.id)),
+    num_items: items.reduce((n, i) => n + i.qty, 0),
+    currency: 'NGN',
+    value: total
+  });
+
   const handler = PaystackPop.setup({
     key: window.PAYSTACK_PUBLIC_KEY,
     email: email,
@@ -405,6 +428,13 @@ async function verifyPayment(reference, orderDetails) {
     const data = await res.json();
 
     if (data.success) {
+      // Track Purchase conversion (the money event)
+      trackEvent('Purchase', {
+        content_ids: orderDetails.items.map(i => String(i.id)),
+        currency: 'NGN',
+        value: orderDetails.total,
+        num_items: orderDetails.items.reduce((n, i) => n + i.qty, 0)
+      });
       document.getElementById('whatsappLink').href = data.whatsappUrl;
       document.getElementById('successModal').style.display = 'flex';
       // Clear cart after successful payment
@@ -494,6 +524,14 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
     `Please confirm delivery time & payment details. Thank you!`;
 
   const waUrl = `https://wa.me/2347033352997?text=${encodeURIComponent(message)}`;
+
+  // Track Lead conversion for WhatsApp checkout (counts as pre-paid intent)
+  trackEvent('Lead', {
+    content_ids: items.map(i => String(i.id)),
+    currency: 'NGN',
+    value: total,
+    content_category: 'whatsapp_checkout'
+  });
 
   // Clear cart + open WhatsApp
   Object.keys(cart).forEach(k => delete cart[k]);
