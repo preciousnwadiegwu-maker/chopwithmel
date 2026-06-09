@@ -429,6 +429,86 @@ function closeSuccessModal() {
   document.getElementById('successModal').style.display = 'none';
 }
 
+// ─── WHATSAPP-FIRST CHECKOUT (Test #1, expected +25-40% lift) ────────────────
+document.getElementById('waOrderBtn').addEventListener('click', async function() {
+  // Empty cart guard
+  if (Object.keys(cart).length === 0) {
+    showToast('⚠️ Your cart is empty — add items from the menu first.');
+    document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const email = document.getElementById('custEmail').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+
+  if (!name || !phone || !address) {
+    showToast('⚠️ Please fill in name, phone & address (email optional for WhatsApp orders).');
+    if (!name) document.getElementById('custName').focus();
+    else if (!phone) document.getElementById('custPhone').focus();
+    else document.getElementById('custAddress').focus();
+    return;
+  }
+
+  const phoneClean = phone.replace(/\D/g, '');
+  if (phoneClean.length < 10 || phoneClean.length > 15) {
+    showToast('⚠️ Please enter a valid WhatsApp number.');
+    document.getElementById('custPhone').focus();
+    return;
+  }
+
+  const items = Object.keys(cart).map(id => {
+    const item = MENU.find(m => m.id === Number(id));
+    return { id: item.id, name: item.name, price: item.price, qty: cart[id] };
+  });
+  const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+  const btn = this;
+  btn.disabled = true;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = 'Opening WhatsApp…';
+
+  // Log the WhatsApp-intent order to backend (don't block if it fails — UX first)
+  const ref = 'CWM-WA-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+  try {
+    fetch('/api/whatsapp-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref, name, phone, email, address, items, total })
+    }).catch(() => {});
+  } catch (e) { /* non-blocking */ }
+
+  // Build the WhatsApp message
+  const itemLines = items
+    .map(i => `• ${i.name} ×${i.qty} — ₦${(i.price * i.qty).toLocaleString()}`)
+    .join('\n');
+  const message =
+    `Hi Mel! 🍲 I'd like to place this order:\n\n` +
+    `*Name:* ${name}\n*Phone:* ${phone}\n` +
+    (email ? `*Email:* ${email}\n` : '') +
+    `*Delivery:* ${address}\n\n` +
+    `*Order:*\n${itemLines}\n\n` +
+    `*Total:* ₦${total.toLocaleString()}\n` +
+    `*Ref:* ${ref}\n\n` +
+    `Please confirm delivery time & payment details. Thank you!`;
+
+  const waUrl = `https://wa.me/2347033352997?text=${encodeURIComponent(message)}`;
+
+  // Clear cart + open WhatsApp
+  Object.keys(cart).forEach(k => delete cart[k]);
+  renderCart();
+  updateFab();
+  showToast('✅ Opening WhatsApp — Mel will confirm shortly!');
+
+  // Small delay so the toast is visible
+  setTimeout(() => {
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+  }, 300);
+});
+
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 renderMenu();
 renderCart();

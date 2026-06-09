@@ -226,6 +226,39 @@ app.post('/api/verify-payment', async (req, res) => {
   }
 });
 
+// ── WHATSAPP-FIRST ORDER (Test #1 — bypass Paystack, save as pending) ────────
+app.post('/api/whatsapp-order', async (req, res) => {
+  const b = req.body || {};
+  const ref = String(b.ref || '').trim().slice(0, 100);
+  const name = String(b.name || '').trim().slice(0, 100);
+  const phone = String(b.phone || '').trim().slice(0, 30);
+  const email = String(b.email || '').trim().slice(0, 200);
+  const address = String(b.address || '').trim().slice(0, 500);
+  const items = Array.isArray(b.items) ? b.items.slice(0, 50) : [];
+  const total = Number(b.total) || 0;
+
+  if (!ref || !name || !phone || !address || items.length === 0 || total <= 0) {
+    return res.status(400).json({ success: false, message: 'Missing required fields' });
+  }
+
+  try {
+    await saveOrder({
+      id: ref, ref,
+      name, phone, address, email,
+      items, total,
+      channel: 'whatsapp',
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      source: 'whatsapp_intent'
+    });
+    console.log(`📲 WhatsApp intent: ${name} — ₦${total.toLocaleString()} — ${ref}`);
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('WhatsApp order save error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
 // ── ADMIN API: GET ORDERS ─────────────────────────────────────────────────────
 app.get('/admin/api/orders', adminAuth, (req, res) => {
   const orders = loadOrders();
