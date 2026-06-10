@@ -360,7 +360,8 @@
           </td>
           <td><div class="order-items">${items}</div></td>
           <td><div class="order-amount">₦${Math.round(o.total||0).toLocaleString()}</div>
-              <div class="order-phone">${esc(o.channel)}</div></td>
+              <div class="order-phone">${esc(o.channel)}</div>
+              ${o.attribution ? `<div class="order-phone" style="color:#A16207;font-size:11px" title="${esc(o.attribution.utm_campaign||'')}">📣 ${esc(o.attribution.utm_source||'ad')}${o.attribution.utm_campaign ? ' · '+esc(o.attribution.utm_campaign) : ''}</div>` : ''}</td>
           <td>
             <span class="badge ${badge}">${esc(o.status) || 'paid'}</span><br>
             <select class="status-select" style="margin-top:8px" onchange="updateStatus('${refEsc}', this.value)">

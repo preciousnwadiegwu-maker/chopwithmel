@@ -1,6 +1,3 @@
-// ─── IMAGE HELPER ─────────────────────────────────────────────────────────────
-const IMG = (id) => `https://images.unsplash.com/photo-${id}?w=400&h=220&q=80&auto=format&fit=crop`;
-
 // Branded illustrated card for add-ons & side items — emoji + label on warm gradient
 // Uses encodeURIComponent for cross-browser SVG data URI compatibility (H4)
 const CARD = (emoji, label, color1 = '#FEF3E7', color2 = '#FCD9B6') => {
@@ -119,8 +116,53 @@ const MENU = [
 // ─── PAYSTACK PUBLIC KEY ──────────────────────────────────────────────────────
 const PAYSTACK_PUBLIC_KEY = window.PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
-// ─── STATE ───────────────────────────────────────────────────────────────────
+// ─── AD ATTRIBUTION (UTM capture, first-touch, 7-day window) ─────────────────
+// Captures utm_* params + fbclid from ad clicks so every order records which
+// campaign brought the customer. Survives navigation via localStorage.
+const ATTR_KEY = 'cwm_attribution';
+(function captureAttribution() {
+  try {
+    const params = new URLSearchParams(location.search);
+    const utm = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => {
+      const v = params.get(k);
+      if (v) utm[k] = v.slice(0, 100);
+    });
+    if (params.get('fbclid')) utm.fbclid = '1'; // flag only — full ID not needed
+    if (Object.keys(utm).length) {
+      utm.landing = location.pathname;
+      utm.ts = Date.now();
+      localStorage.setItem(ATTR_KEY, JSON.stringify(utm)); // last-touch wins
+    }
+  } catch (e) { /* localStorage unavailable — ignore */ }
+})();
+function getAttribution() {
+  try {
+    const raw = localStorage.getItem(ATTR_KEY);
+    if (!raw) return null;
+    const utm = JSON.parse(raw);
+    if (Date.now() - (utm.ts || 0) > 7 * 24 * 3600 * 1000) return null; // expired
+    return utm;
+  } catch (e) { return null; }
+}
+
+// ─── STATE (cart persisted to localStorage so ad visitors don't lose it) ────
+const CART_KEY = 'cwm_cart';
 const cart = {};
+(function restoreCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CART_KEY) || '{}');
+    Object.entries(saved).forEach(([id, qty]) => {
+      // Only restore items that still exist on the menu at a valid qty
+      if (MENU.some(m => m.id === Number(id)) && Number.isInteger(qty) && qty > 0 && qty <= 50) {
+        cart[id] = qty;
+      }
+    });
+  } catch (e) { /* corrupt or unavailable — start fresh */ }
+})();
+function persistCart() {
+  try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
+}
 let activeCategory = 'all';
 let searchQuery = '';
 
@@ -238,6 +280,7 @@ function trackEvent(name, params = {}) {
 function addToCart(id) {
   const item = MENU.find(m => m.id === id);
   cart[id] = (cart[id] || 0) + 1;
+  persistCart();
   const btn = document.getElementById(`add-${id}`);
   if (btn) { btn.textContent = '✓ Added'; btn.classList.add('added'); }
   showToast(`${item.emoji} ${item.name} added!`);
@@ -257,6 +300,7 @@ function addToCart(id) {
 function updateQty(id, delta) {
   cart[id] = (cart[id] || 0) + delta;
   if (cart[id] <= 0) delete cart[id];
+  persistCart();
   renderCart();
   updateFab();
   const btn = document.getElementById(`add-${id}`);
@@ -446,7 +490,7 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
       ]
     },
     callback: function(response) {
-      verifyPayment(response.reference, { name, phone, email, address, items, total });
+      verifyPayment(response.reference, { name, phone, email, address, items, total, attribution: getAttribution() });
     },
     onClose: function() {
       payBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay with Paystack';
@@ -482,6 +526,7 @@ async function verifyPayment(reference, orderDetails) {
       document.getElementById('successModal').style.display = 'flex';
       // Clear cart after successful payment
       Object.keys(cart).forEach(k => delete cart[k]);
+      persistCart();
       renderCart();
       updateFab();
     } else {
@@ -548,7 +593,7 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
     fetch('/api/whatsapp-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ref, name, phone, email, address, items, total })
+      body: JSON.stringify({ ref, name, phone, email, address, items, total, attribution: getAttribution() })
     }).catch(() => {});
   } catch (e) { /* non-blocking */ }
 
@@ -578,6 +623,7 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
 
   // Clear cart + open WhatsApp
   Object.keys(cart).forEach(k => delete cart[k]);
+  persistCart();
   renderCart();
   updateFab();
   showToast('✅ Opening WhatsApp — Mel will confirm shortly!');
@@ -620,3 +666,8 @@ renderMenu();
 renderPicks();
 renderCart();
 updateFab();
+// Reflect restored cart in menu "+ Add" buttons
+Object.keys(cart).forEach(id => {
+  const btn = document.getElementById(`add-${id}`);
+  if (btn) { btn.textContent = '✓ Added'; btn.classList.add('added'); }
+});

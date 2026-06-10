@@ -117,6 +117,16 @@ function saveOrder(order) {
   });
 }
 
+// ── AD ATTRIBUTION SANITIZER — whitelist utm fields from client ───────────────
+function cleanAttribution(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const out = {};
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'landing'].forEach(k => {
+    if (raw[k]) out[k] = String(raw[k]).slice(0, 100);
+  });
+  return Object.keys(out).length ? out : null;
+}
+
 // ── ADMIN AUTH — TIMING SAFE (C4) ─────────────────────────────────────────────
 function adminAuth(req, res, next) {
   const token = req.headers['x-admin-token'] || req.query.token;
@@ -206,7 +216,8 @@ app.post('/api/verify-payment', async (req, res) => {
       items, total: verifiedTotal,
       channel: transaction.channel || 'unknown',
       status: 'paid',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      attribution: cleanAttribution(orderDetails.attribution)
     });
 
     // Build WhatsApp URL — guard WA_NUMBER (C1)
@@ -253,7 +264,8 @@ app.post('/api/whatsapp-order', async (req, res) => {
       channel: 'whatsapp',
       status: 'pending',
       createdAt: new Date().toISOString(),
-      source: 'whatsapp_intent'
+      source: 'whatsapp_intent',
+      attribution: cleanAttribution(b.attribution)
     });
     console.log(`📲 WhatsApp intent: ${name} — ₦${total.toLocaleString()} — ${ref}`);
     return res.json({ success: true });
