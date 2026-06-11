@@ -54,16 +54,8 @@ const MENU = [
   { id: 26, category: 'Stews', name: 'Stir Fry Sauce (4L)',        description: 'Vibrant stir-fry sauce packed with peppers and spices.',         price: 80000,  emoji: '🫙', image: CARD('🫙', 'Stir Fry Sauce', '#FFD4D4', '#E74C3C') },
 
   // PEPPER SOUP
-  { id: 27, category: 'Pepper Soup', name: 'Chicken Pepper Soup (2L)',       description: 'Hot and spicy chicken pepper soup — great for any weather.',    price: 35000, emoji: '🌶️', image: '/images/pepper-soup.jpg' },
-  { id: 28, category: 'Pepper Soup', name: 'Chicken Pepper Soup (4L)',       description: 'Hot and spicy chicken pepper soup — great for any weather.',    price: 70000, emoji: '🌶️', image: '/images/pepper-soup.jpg' },
-  { id: 29, category: 'Pepper Soup', name: 'Assorted Meat Pepper Soup (2L)', description: 'Mixed meat in a bold, aromatic pepper broth.',                  price: 35000, emoji: '🫕',  image: '/images/pepper-soup.jpg' },
-  { id: 30, category: 'Pepper Soup', name: 'Assorted Meat Pepper Soup (4L)', description: 'Mixed meat in a bold, aromatic pepper broth.',                  price: 70000, emoji: '🫕',  image: '/images/pepper-soup.jpg' },
-  { id: 31, category: 'Pepper Soup', name: 'Goat Meat Pepper Soup (2L)',     description: 'Classic Nigerian goat meat pepper soup.',                       price: 35000, emoji: '🐐',  image: '/images/pepper-soup.jpg' },
-  { id: 32, category: 'Pepper Soup', name: 'Goat Meat Pepper Soup (4L)',     description: 'Classic Nigerian goat meat pepper soup.',                       price: 70000, emoji: '🐐',  image: '/images/pepper-soup.jpg' },
-  { id: 33, category: 'Pepper Soup', name: 'Turkey Pepper Soup (2L)',        description: 'Peppered turkey broth with fresh uziza leaves.',                price: 35000, emoji: '🦃',  image: '/images/pepper-soup.jpg' },
-  { id: 34, category: 'Pepper Soup', name: 'Turkey Pepper Soup (4L)',        description: 'Peppered turkey broth with fresh uziza leaves.',                price: 70000, emoji: '🦃',  image: '/images/pepper-soup.jpg' },
-  { id: 35, category: 'Pepper Soup', name: 'Catfish Pepper Soup (2L)',       description: 'Point-and-kill catfish in a spicy, aromatic broth.',            price: 35000, emoji: '🐠',  image: '/images/pepper-soup.jpg' },
-  { id: 36, category: 'Pepper Soup', name: 'Catfish Pepper Soup (4L)',       description: 'Point-and-kill catfish in a spicy, aromatic broth.',            price: 70000, emoji: '🐠',  image: '/images/pepper-soup.jpg' },
+  { id: 35, category: 'Pepper Soup', name: 'Catfish Pepper Soup (2L)',       description: 'Point-and-kill catfish in a rich, aromatic broth with fresh herbs.', price: 35000, emoji: '🐠',  image: '/images/catfish-pepper-soup.jpg' },
+  { id: 36, category: 'Pepper Soup', name: 'Catfish Pepper Soup (4L)',       description: 'Point-and-kill catfish in a rich, aromatic broth with fresh herbs.', price: 70000, emoji: '🐠',  image: '/images/catfish-pepper-soup.jpg' },
 
   // RICE & PASTA
   { id: 76, category: 'Rice & Pasta', name: 'Ofe Akwu & White Rice (2L)', description: 'Igbo palm nut soup (ofe akwu) served with fluffy white rice.',  price: 55000,  emoji: '🍚', image: '/images/ofe-akwu-white-rice.jpg' },
@@ -639,7 +631,7 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
 // ─── CHEF'S PICKS — Test #2 (+30-60% add-to-cart) ────────────────────────────
 // 8 highest-converting / most-loved dishes (real photos prioritized)
 // 8 bestsellers — all with real photos for maximum trust + visual impact
-const CHEFS_PICKS_IDS = [1, 13, 11, 39, 80, 71, 3, 31];
+const CHEFS_PICKS_IDS = [1, 13, 11, 39, 80, 71, 3, 35];
 function renderPicks() {
   const grid = document.getElementById('picksGrid');
   if (!grid) return;
