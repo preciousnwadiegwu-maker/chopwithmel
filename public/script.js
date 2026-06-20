@@ -79,8 +79,8 @@ const MENU = [
   { id: 46, category: 'Rice & Pasta', name: 'Asun Jollof Rice (4L)',         description: 'Jollof rice topped with peppered goat meat (asun).',           price: 80000,  emoji: '🍖', image: '/images/jollof-rice.jpg' },
   { id: 47, category: 'Rice & Pasta', name: 'Fried Rice (2L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 40000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
   { id: 48, category: 'Rice & Pasta', name: 'Fried Rice (4L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 80000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
-  { id: 51, category: 'Rice & Pasta', name: 'Jollof Penne Pasta (2L)',       description: 'Penne pasta cooked Nigerian jollof-style.',                     price: 40000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
-  { id: 52, category: 'Rice & Pasta', name: 'Jollof Penne Pasta (4L)',       description: 'Penne pasta cooked Nigerian jollof-style.',                     price: 80000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
+  { id: 51, category: 'Rice & Pasta', name: 'Jollof Seafood Linguine (2L)',  description: 'Jollof-style linguine tossed with prawns, calamari and fresh fish in a smoky pepper sauce.', price: 55000,  emoji: '🍤', image: '/images/seafood-pasta.jpg' },
+  { id: 52, category: 'Rice & Pasta', name: 'Jollof Seafood Linguine (4L)',  description: 'Jollof-style linguine tossed with prawns, calamari and fresh fish in a smoky pepper sauce.', price: 110000, emoji: '🍤', image: '/images/seafood-pasta.jpg' },
   { id: 55, category: 'Rice & Pasta', name: 'Beef Stir Fry Pasta (2L)',     description: 'Spicy stir-fry spaghetti tossed with tender beef strips, peppers and onions.', price: 45000,  emoji: '🍝', image: '/images/beef-stir-fry-pasta.jpg' },
   { id: 56, category: 'Rice & Pasta', name: 'Beef Stir Fry Pasta (4L)',     description: 'Spicy stir-fry spaghetti tossed with tender beef strips, peppers and onions.', price: 90000,  emoji: '🍝', image: '/images/beef-stir-fry-pasta.jpg' },
 
