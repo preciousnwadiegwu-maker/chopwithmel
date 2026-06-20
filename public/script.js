@@ -635,8 +635,8 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
 
 // ─── CHEF'S PICKS — Test #2 (+30-60% add-to-cart) ────────────────────────────
 // 8 highest-converting / most-loved dishes (real photos prioritized)
-// 8 bestsellers — all with real photos for maximum trust + visual impact
-const CHEFS_PICKS_IDS = [1, 13, 11, 39, 80, 71, 3, 35];
+// 8 bestsellers — entry-tier combos featured first for conversion lift
+const CHEFS_PICKS_IDS = [83, 84, 82, 39, 1, 13, 11, 71];
 function renderPicks() {
   const grid = document.getElementById('picksGrid');
   if (!grid) return;
