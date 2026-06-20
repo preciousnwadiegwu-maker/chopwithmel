@@ -96,6 +96,7 @@ const MENU = [
   { id: 71, category: 'Burgers', name: 'Breakfast Burger & Sandwich Melt Combo', description: 'The ultimate combo — a loaded breakfast burger paired with a golden sandwich melt.', price: 50000, emoji: '🍔', image: '/images/burger-sandwich-combo.jpg' },
 
   // BREAKFAST
+  { id: 85, category: 'Breakfast', name: 'Akara & Fried Bread Combo',  description: 'Naija breakfast classic — hot akara, fried bread, pap and a tin of Peak milk. Real Lagos morning, delivered.', price: 15000, emoji: '🫓', image: '/images/akara-bread-breakfast.jpg' },
   { id: 61, category: 'Breakfast', name: 'Butterscotch Milk Pancakes', description: 'Pancakes with 2 sausages, bacon, scrambled egg, and syrup.',        price: 9000,  emoji: '🥞', image: CARD('🥞', 'Butterscotch Pancakes', '#FFF4E0', '#D4A017') },
   { id: 62, category: 'Breakfast', name: 'Banana Oatmeal Pancakes',    description: 'Oatmeal pancakes with 2 sausages, bacon, scrambled egg, and syrup.',price: 9500,  emoji: '🥞', image: CARD('🥞', 'Banana Oatmeal Pancakes', '#FFF8DC', '#B8860B') },
   { id: 63, category: 'Breakfast', name: 'Waffles',                    description: 'Golden waffles served with crispy chicken and syrup.',              price: 9500,  emoji: '🧇', image: CARD('🧇', 'Waffles',                '#FFE8B5', '#DAA520') },
