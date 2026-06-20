@@ -56,6 +56,8 @@ const MENU = [
   // PEPPER SOUP
   { id: 35, category: 'Pepper Soup', name: 'Catfish Pepper Soup (2L)',       description: 'Point-and-kill catfish in a rich, aromatic broth with fresh herbs.', price: 35000, emoji: '🐠',  image: '/images/catfish-pepper-soup.jpg' },
   { id: 36, category: 'Pepper Soup', name: 'Catfish Pepper Soup (4L)',       description: 'Point-and-kill catfish in a rich, aromatic broth with fresh herbs.', price: 70000, emoji: '🐠',  image: '/images/catfish-pepper-soup.jpg' },
+  { id: 27, category: 'Pepper Soup', name: 'Chicken Pepper Soup (2L)',       description: 'Tender chicken simmered in a hot, aromatic broth with scent leaves.', price: 35000, emoji: '🐔', image: '/images/chicken-pepper-soup.jpg' },
+  { id: 28, category: 'Pepper Soup', name: 'Chicken Pepper Soup (4L)',       description: 'Tender chicken simmered in a hot, aromatic broth with scent leaves.', price: 70000, emoji: '🐔', image: '/images/chicken-pepper-soup.jpg' },
 
   // RICE & PASTA
   { id: 76, category: 'Rice & Pasta', name: 'Ofe Akwu & White Rice (2L)', description: 'Igbo palm nut soup (ofe akwu) served with fluffy white rice.',  price: 55000,  emoji: '🍚', image: '/images/ofe-akwu-white-rice.jpg' },
