@@ -154,7 +154,13 @@ app.use((req, res, next) => {
 // ── STATIC FILES ─────────────────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.html')) res.setHeader('Cache-Control', 'no-cache');
+    // HTML, JS, CSS — revalidate every load so menu/UX updates ship instantly
+    if (/\.(html|js|css)$/.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else if (/\.(jpg|jpeg|png|webp|gif|svg|mp4|webm|woff2?)$/.test(filePath)) {
+      // Images/videos/fonts — long cache, filename change busts it
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    }
   }
 }));
 
