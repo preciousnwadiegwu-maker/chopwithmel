@@ -679,6 +679,58 @@ h1,h2,h3,h4 { font-family: var(--font-heading); line-height: 1.15; }
 .qty-count  { font-weight: 800; min-width: 22px; text-align: center; font-family: var(--font-body); }
 .cart-row-price { font-weight: 800; color: var(--color-accent); min-width: 80px; text-align: right; font-size: 13px; font-family: var(--font-body); font-variant-numeric: tabular-nums; }
 
+/* coupon discount row inside cart */
+.cart-row.cart-discount { background: linear-gradient(90deg, #FFF7EB, #FFE8D6); border-radius: 10px; padding: 10px 14px; margin-top: 8px; border: 1px dashed #ff5a1f; }
+.cart-row.cart-discount .cart-row-name { color: #b91c1c; }
+.cart-row.cart-discount .cart-row-price { color: #15803D; }
+
+/* spin-wheel coupon banner above cart */
+.coupon-banner { margin-bottom: 14px; }
+.coupon-banner-inner {
+  display: flex; align-items: center; gap: 14px;
+  background: linear-gradient(135deg, #ff5a1f, #ffb020);
+  color: #1a1205;
+  padding: 14px 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(255,90,31,.25);
+  animation: couponSlide 0.4s cubic-bezier(.34,1.56,.64,1);
+}
+.coupon-emoji { font-size: 32px; line-height: 1; flex-shrink: 0; }
+.coupon-text { flex: 1; min-width: 0; }
+.coupon-label { font-size: 14px; font-weight: 800; letter-spacing: .3px; font-family: var(--font-body); }
+.coupon-code  { font-size: 12px; font-weight: 600; opacity: .8; font-family: var(--font-body); margin-top: 2px; }
+.coupon-code b { font-family: 'SF Mono', Menlo, Consolas, monospace; letter-spacing: 1px; }
+.coupon-remove {
+  background: rgba(26,18,5,.15); border: none; color: #1a1205;
+  width: 28px; height: 28px; border-radius: 50%;
+  font-size: 18px; font-weight: 800; line-height: 1;
+  cursor: pointer; flex-shrink: 0;
+  transition: background .15s;
+}
+.coupon-remove:hover { background: rgba(26,18,5,.3); }
+@keyframes couponSlide { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+
+/* spin promo strip — sits between hero and chefs-picks on homepage */
+.spin-promo {
+  background: linear-gradient(135deg, #ff5a1f 0%, #ffb020 100%);
+  color: #1a1205;
+  padding: 14px 24px;
+  text-align: center;
+  font-family: var(--font-body);
+}
+.spin-promo-inner {
+  display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center;
+  font-weight: 700; font-size: 14px;
+}
+.spin-promo-inner b { font-weight: 800; }
+.spin-promo a {
+  background: #1a0505; color: #ffb020;
+  padding: 8px 18px; border-radius: 999px; font-weight: 800; font-size: 13px;
+  text-decoration: none;
+  transition: transform .15s, box-shadow .15s;
+}
+.spin-promo a:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,.25); }
+
 .cart-total {
   display: flex;
   justify-content: space-between;

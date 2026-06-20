@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChopWithMel — Gamified Ad Funnel Prototype</title>
+<style>
+  :root{
+    --bg:#0e1117; --panel:#161b22; --panel2:#1c232d; --line:#2a323d;
+    --ink:#e9eef5; --mute:#9aa7b6; --faint:#6b7787;
+    --brand:#ff5a1f; --brand2:#ffb020; --green:#26d07c; --green-d:#0f9d63;
+    --blue:#3a8bfd; --purple:#a06bff; --pink:#ff4d8d;
+    --wa:#25d366;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 70% -10%,#1b2330,#0e1117 55%);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 20px 80px}
+  header.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .logo{font-weight:800;font-size:22px;letter-spacing:-.4px}
+  .logo b{color:var(--brand)}
+  .pill{font-size:11px;color:var(--mute);border:1px solid var(--line);padding:4px 10px;border-radius:999px;background:var(--panel)}
+  .sub{color:var(--mute);font-size:14px;margin:2px 0 18px;max-width:760px}
+  /* tabs */
+  .tabs{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px;width:max-content;max-width:100%;flex-wrap:wrap;margin-bottom:22px}
+  .tab{padding:9px 16px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--mute);cursor:pointer;border:none;background:transparent;transition:.15s}
+  .tab:hover{color:var(--ink)}
+  .tab.active{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#1a1205;box-shadow:0 6px 18px -8px var(--brand)}
+  .view{display:none;animation:fade .35s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* funnel layout */
+  .funnelGrid{display:grid;grid-template-columns:300px 1fr;gap:26px;align-items:start}
+  @media(max-width:860px){.funnelGrid{grid-template-columns:1fr}}
+  /* phone */
+  .phone{width:300px;height:610px;border-radius:38px;background:#000;padding:11px;box-shadow:0 30px 70px -20px rgba(0,0,0,.8),0 0 0 2px #20262f;position:sticky;top:20px;margin:0 auto}
+  .screen{width:100%;height:100%;border-radius:28px;background:#fff;color:#15191f;overflow:hidden;position:relative}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:22px;background:#000;border-radius:0 0 16px 16px;z-index:40}
+  .scr{position:absolute;inset:0;display:none;flex-direction:column}
+  .scr.show{display:flex}
+  .statusbar{height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0;font-size:11px;font-weight:700;color:#15191f;flex:0 0 auto}
+  /* IG ad screen */
+  .ig-top{display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid #eee;flex:0 0 auto}
+  .ig-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px}
+  .ig-name{font-size:12.5px;font-weight:700}.ig-spon{font-size:10px;color:#888}
+  .ig-img{flex:1;background:linear-gradient(160deg,#ff7a3c,#ff5a1f 60%,#e23d00);position:relative;display:flex;align-items:flex-end;overflow:hidden}
+  .ig-img .dish{position:absolute;inset:0;background:
+     radial-gradient(120px 120px at 30% 35%,rgba(255,210,150,.55),transparent 60%),
+     radial-gradient(90px 90px at 72% 60%,rgba(255,170,90,.5),transparent 60%)}
+  .ig-emoji{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);font-size:96px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.35))}
+  .ig-cap{position:relative;z-index:2;color:#fff;padding:14px;text-shadow:0 1px 6px rgba(0,0,0,.45)}
+  .ig-cap h3{font-size:18px;line-height:1.2;margin-bottom:4px}
+  .ig-cap p{font-size:12px;opacity:.95}
+  .cta-bar{background:#0b66ff;color:#fff;text-align:center;padding:11px;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;flex:0 0 auto}
+  .cta-bar:active{filter:brightness(.92)}
+  .ig-actions{display:flex;gap:14px;padding:8px 12px;font-size:17px;flex:0 0 auto}
+  /* spin screen */
+  .land{flex:1;background:linear-gradient(180deg,#fff,#fff7f0);display:flex;flex-direction:column;align-items:center;padding:14px 16px;overflow:auto}
+  .land h2{font-size:16px;text-align:center;margin-top:4px;color:#15191f}
+  .land h2 b{color:var(--brand)}
+  .land .lede{font-size:11.5px;color:#6a7380;text-align:center;margin:5px 0 8px}
+  .wheelWrap{position:relative;width:210px;height:210px;margin:4px auto 2px}
+  .wheelPtr{position:absolute;top:-4px;left:50%;transform:translateX(-50%);z-index:5;width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:20px solid #15191f;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+  .wheel{width:210px;height:210px;border-radius:50%;border:7px solid #15191f;transition:transform 4.2s cubic-bezier(.17,.67,.2,1);position:relative;box-shadow:0 10px 30px -10px rgba(0,0,0,.4)}
+  .wheel .lbl{position:absolute;top:50%;left:50%;transform-origin:0 0;font-size:9px;font-weight:800;color:#fff;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+  .spinHub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:#fff;border:4px solid #15191f;z-index:4;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:var(--brand);text-align:center}
+  .field{width:100%;margin-top:8px}
+  .field input{width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid #e2e2e2;font-size:13px;outline:none}
+  .field input:focus{border-color:var(--brand)}
+  .btn{width:100%;border:none;border-radius:11px;padding:12px;font-size:13.5px;font-weight:800;cursor:pointer;margin-top:9px;transition:.15s}
+  .btn-brand{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#1a1205}
+  .btn-brand:active{transform:translateY(1px)}
+  .btn-wa{background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;gap:7px}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .prizeTag{margin-top:10px;background:#fff3e8;border:1.5px dashed var(--brand);border-radius:12px;padding:10px;text-align:center;width:100%}
+  .prizeTag .big{font-size:18px;font-weight:900;color:var(--brand)}
+  .prizeTag .sm{font-size:10.5px;color:#6a7380}
+  .micro{font-size:9.5px;color:#9aa3ad;text-align:center;margin-top:7px}
+  /* order screen */
+  .ord{flex:1;overflow:auto;background:#fff;color:#15191f}
+  .ord-head{padding:12px 14px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between}
+  .ord-head b{font-size:14px}
+  .basket{padding:6px 14px}
+  .item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f3f3f3}
+  .item .ic{width:38px;height:38px;border-radius:9px;background:#fff1e6;display:flex;align-items:center;justify-content:center;font-size:20px}
+  .item .nm{flex:1;font-size:12.5px;font-weight:600}
+  .item .pr{font-size:12.5px;font-weight:700}
+  .totals{padding:10px 14px;font-size:12px}
+  .totals .row{display:flex;justify-content:space-between;padding:3px 0;color:#5a6472}
+  .totals .row.disc{color:var(--green-d);font-weight:700}
+  .totals .row.tot{color:#15191f;font-weight:900;font-size:14px;border-top:1px dashed #ddd;margin-top:5px;padding-top:8px}
+  .paystack{margin:4px 14px 0;font-size:10px;color:#9aa3ad;text-align:center}
+  /* loyalty screen */
+  .loy{flex:1;overflow:auto;background:linear-gradient(180deg,#15191f,#1c2530);color:#fff;padding:14px}
+  .loy h2{font-size:15px}
+  .loy .tier{display:flex;align-items:center;gap:9px;margin-top:6px}
+  .tierBadge{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#1a1205;font-weight:800;font-size:10px;padding:3px 9px;border-radius:999px}
+  .card3{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px;margin-top:11px}
+  .card3 .ti{font-size:11px;color:#b9c2cd;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+  .streak{display:flex;gap:6px;margin-top:9px}
+  .dot{flex:1;height:34px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:15px;border:1.5px solid transparent}
+  .dot.on{background:linear-gradient(135deg,var(--brand),var(--brand2));border-color:#fff3;color:#1a1205}
+  .dot.win{background:linear-gradient(135deg,var(--green),var(--green-d));color:#04241a}
+  .prog{height:9px;border-radius:9px;background:rgba(255,255,255,.1);margin-top:10px;overflow:hidden}
+  .prog>i{display:block;height:100%;width:66%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:9px}
+  .ptsRow{display:flex;align-items:baseline;gap:6px;margin-top:6px}
+  .ptsRow .n{font-size:26px;font-weight:900;color:var(--brand2)}
+  .refBox{background:linear-gradient(135deg,#26d07c22,#0f9d6322);border:1px solid #26d07c55;border-radius:14px;padding:12px;margin-top:11px}
+  .refCode{display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.25);border:1px dashed #26d07c;border-radius:9px;padding:9px 11px;margin-top:8px;font-weight:800;letter-spacing:1px}
+  .copyBtn{background:var(--green);color:#04241a;border:none;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer}
+  /* stage controls */
+  .stageInfo{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}
+  .stageInfo .step{font-size:12px;color:var(--brand2);font-weight:800;letter-spacing:.6px;text-transform:uppercase}
+  .stageInfo h3{font-size:21px;margin:4px 0 8px;letter-spacing:-.3px}
+  .stageInfo p{color:var(--mute);font-size:14px;margin-bottom:12px}
+  .statline{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 13px;min-width:120px}
+  .stat .v{font-size:19px;font-weight:800;color:var(--green)}
+  .stat .k{font-size:11px;color:var(--faint);margin-top:1px}
+  .stat .src{font-size:9.5px;color:var(--faint);margin-top:3px}
+  .navRow{display:flex;gap:10px;margin-top:6px}
+  .nav{flex:1;border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:11px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;transition:.15s}
+  .nav:hover{border-color:var(--brand);color:#fff}
+  .nav.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#1a1205;border:none}
+  .nav:disabled{opacity:.4;cursor:not-allowed}
+  .stepDots{display:flex;gap:7px;margin:0 0 16px}
+  .sdot{width:9px;height:9px;border-radius:50%;background:var(--line)}
+  .sdot.active{background:var(--brand);box-shadow:0 0 0 4px #ff5a1f22}
+  .why{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--brand);border-radius:0 10px 10px 0;padding:11px 13px;font-size:12.5px;color:var(--mute);margin-top:4px}
+  .why b{color:var(--ink)}
+
+  /* economics */
+  .econGrid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:860px){.econGrid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}
+  .card h3{font-size:16px;margin-bottom:4px}
+  .card .csub{font-size:12.5px;color:var(--faint);margin-bottom:14px}
+  .slider{margin-bottom:15px}
+  .slider .lab{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+  .slider .lab span:last-child{font-weight:800;color:var(--brand2)}
+  input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:6px;background:var(--line);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));cursor:pointer;box-shadow:0 2px 8px -2px var(--brand)}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border:none;border-radius:50%;background:var(--brand);cursor:pointer}
+  .kpiGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .kpi{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px}
+  .kpi .k{font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.4px}
+  .kpi .v{font-size:24px;font-weight:900;margin-top:3px}
+  .kpi .d{font-size:11.5px;margin-top:3px;font-weight:700}
+  .up{color:var(--green)}.down{color:#ff6b6b}
+  .funnelBars{margin-top:4px}
+  .fb{margin-bottom:11px}
+  .fb .lab{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;color:var(--mute)}
+  .fb .lab b{color:var(--ink)}
+  .fb .track{height:26px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .fb .fill{height:100%;display:flex;align-items:center;padding-left:10px;font-size:11.5px;font-weight:800;color:#08120c;border-radius:7px;white-space:nowrap;transition:width .5s ease}
+  .verdict{margin-top:8px;background:linear-gradient(135deg,#0f9d6322,#26d07c11);border:1px solid #26d07c44;border-radius:14px;padding:16px}
+  .verdict .big{font-size:30px;font-weight:900;color:var(--green)}
+  .verdict p{font-size:13px;color:var(--mute);margin-top:4px}
+  .compare{width:100%;border-collapse:collapse;margin-top:6px;font-size:13px}
+  .compare th,.compare td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line)}
+  .compare th:first-child,.compare td:first-child{text-align:left;color:var(--mute)}
+  .compare thead th{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.4px}
+  .compare .hl{color:var(--green);font-weight:800}
+
+  /* research */
+  .resGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+  .rcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;transition:.15s}
+  .rcard:hover{border-color:var(--brand);transform:translateY(-2px)}
+  .rcard .rstat{font-size:27px;font-weight:900;color:var(--brand2);letter-spacing:-.5px}
+  .rcard .rdesc{font-size:13px;color:var(--ink);margin:4px 0 8px}
+  .rcard .rsrc{font-size:11px;color:var(--faint)}
+  .rcard .rsrc a{color:var(--blue);text-decoration:none}
+  .rcard .rsrc a:hover{text-decoration:underline}
+  .rtag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:8px}
+  .t-acq{background:#3a8bfd22;color:#7db4ff;border:1px solid #3a8bfd44}
+  .t-game{background:#a06bff22;color:#c4a3ff;border:1px solid #a06bff44}
+  .t-loy{background:#26d07c22;color:#7fe8b6;border:1px solid #26d07c44}
+  .t-ng{background:#ffb02022;color:#ffd27a;border:1px solid #ffb02044}
+  h2.sec{font-size:18px;margin:6px 0 4px}
+  .secsub{color:var(--mute);font-size:13.5px;margin-bottom:18px;max-width:820px}
+  .foot{margin-top:30px;color:var(--faint);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+  .disclaim{font-size:11.5px;color:var(--faint);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:14px}
+  .flashWin{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:30;flex-direction:column;color:#fff;text-align:center;padding:20px;animation:fade .3s}
+  .flashWin.show{display:flex}
+  .flashWin .em{font-size:60px}
+  .flashWin .w1{font-size:13px;letter-spacing:2px;color:var(--brand2);font-weight:800;margin-top:6px}
+  .flashWin .w2{font-size:30px;font-weight:900;margin:2px 0 4px}
+  .confetti{position:absolute;width:9px;height:14px;top:-20px;opacity:.9;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(640px) rotate(540deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">Chop<b>WithMel</b></div>
+    <span class="pill">Gamified Ad Funnel · Interactive Prototype</span>
+    <span class="pill">Lagos · ₦ · Meta paid ads</span>
+  </header>
+  <p class="sub">A full-funnel growth engine: a Meta ad hooks a cold customer, a spin-the-wheel landing page captures them and triggers a first order, then a streak-and-referral loyalty loop turns that order into a habit. Every number is benchmarked to real research and tied to your revenue model. <b>Click through the phone on the left.</b></p>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-v="funnel">📱 The Funnel</button>
+    <button class="tab" data-v="econ">📊 Live Economics</button>
+    <button class="tab" data-v="research">🔬 The Research</button>
+  </div>
+
+  <!-- ===================== FUNNEL VIEW ===================== -->
+  <section class="view active" id="funnel">
+    <div class="funnelGrid">
+      <!-- PHONE -->
+      <div class="phone">
+        <div class="screen">
+          <div class="notch"></div>
+
+          <!-- SCREEN 1: META AD -->
+          <div class="scr show" id="s1">
+            <div class="statusbar"><span>9:41</span><span>📶 🔋</span></div>
+            <div class="ig-top">
+              <div class="ig-av">M</div>
+              <div><div class="ig-name">chopwithmel</div><div class="ig-spon">Sponsored · Lagos</div></div>
+            </div>
+            <div class="ig-img">
+              <div class="dish"></div>
+              <div class="ig-emoji">🍲</div>
+              <div class="ig-cap">
+                <h3>Hungry? Spin to win up to 40% off 🎉</h3>
+                <p>Hot jollof, peppered chicken & more — delivered. Tap to play.</p>
+              </div>
+            </div>
+            <div class="ig-actions"><span>❤️</span><span>💬</span><span>📨</span></div>
+            <div class="cta-bar" onclick="go('s2')">🎡 Spin &amp; Order Now ›</div>
+          </div>
+
+          <!-- SCREEN 2: SPIN WHEEL LANDING -->
+          <div class="scr" id="s2">
+            <div class="statusbar"><span>9:41</span><span>📶 🔋</span></div>
+            <div class="land">
+              <h2>Spin the <b>ChopWheel</b> 🎡</h2>
+              <div class="lede">One free spin. Every spin wins. Claim your prize, then order.</div>
+              <div class="wheelWrap">
+                <div class="wheelPtr"></div>
+                <div class="wheel" id="wheel"></div>
+                <div class="spinHub" id="hub">SPIN</div>
+              </div>
+              <button class="btn btn-brand" id="spinBtn" onclick="spin()">Spin the wheel 🎯</button>
+              <div class="prizeTag" id="prizeTag" style="display:none">
+                <div class="big" id="prizeBig">10% OFF</div>
+                <div class="sm">Saved to your account — enter details to lock it in</div>
+              </div>
+              <div class="field" id="capFields" style="display:none">
+                <input type="text" placeholder="WhatsApp number (e.g. 0803...)" />
+                <button class="btn btn-wa" onclick="go('s3')">✓ Claim on WhatsApp &amp; Order</button>
+                <div class="micro">No spam — just your prize code + order link. We use the number you order from.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCREEN 3: ORDER -->
+          <div class="scr" id="s3">
+            <div class="statusbar"><span>9:42</span><span>📶 🔋</span></div>
+            <div class="ord">
+              <div class="ord-head"><b>Your order</b><span style="font-size:11px;color:#26a36a">● Prize applied</span></div>
+              <div class="basket">
+                <div class="item"><div class="ic">🍚</div><div class="nm">Smoky Party Jollof + Chicken</div><div class="pr">₦6,500</div></div>
+                <div class="item"><div class="ic">🥩</div><div class="nm">Peppered Beef (regular)</div><div class="pr">₦3,500</div></div>
+              </div>
+              <div class="totals">
+                <div class="row"><span>Subtotal</span><span>₦10,000</span></div>
+                <div class="row disc"><span id="ordPrizeLab">ChopWheel prize (10%)</span><span id="ordPrizeAmt">– ₦1,000</span></div>
+                <div class="row"><span>Delivery</span><span>₦0 — first order 🎁</span></div>
+                <div class="row tot"><span>Total</span><span id="ordTotal">₦9,000</span></div>
+              </div>
+              <div class="paystack">🔒 Pay with Paystack · 1.5% + ₦100 (₦100 waived under ₦2,500)</div>
+              <button class="btn btn-brand" style="margin:12px 14px" onclick="go('s4')">Pay ₦<span id="payAmt">9,000</span> &amp; place order</button>
+            </div>
+          </div>
+
+          <!-- SCREEN 4: LOYALTY -->
+          <div class="scr" id="s4">
+            <div class="statusbar"><span>9:43</span><span>📶 🔋</span></div>
+            <div class="loy">
+              <div class="tier"><h2>Nice one, new chopper! 🎉</h2></div>
+              <div class="tier"><span class="tierBadge">🥉 BRONZE</span><span style="font-size:11px;color:#b9c2cd">Order 2 more to reach Silver</span></div>
+
+              <div class="card3">
+                <div class="ti">🔥 Chop Streak — order 3× in 14 days</div>
+                <div class="streak">
+                  <div class="dot on">✓</div><div class="dot on">2</div><div class="dot">3</div>
+                </div>
+                <div style="font-size:11px;color:#b9c2cd;margin-top:8px">1 more order in 9 days → <b style="color:#ffd27a">free dessert + 2× points</b></div>
+              </div>
+
+              <div class="card3">
+                <div class="ti">⭐ ChopPoints</div>
+                <div class="ptsRow"><span class="n">100</span><span style="font-size:11px;color:#b9c2cd">pts · 400 = ₦2,000 off</span></div>
+                <div class="prog"><i></i></div>
+              </div>
+
+              <div class="refBox">
+                <div class="ti" style="color:#7fe8b6;font-size:11px;font-weight:800;text-transform:uppercase">🎁 Give ₦1,000, Get ₦1,000</div>
+                <div style="font-size:11.5px;color:#cfe9da;margin-top:5px">Share your code. Friend gets ₦1,000 off their first order — you get ₦1,000 when they chop.</div>
+                <div class="refCode"><span>MEL-SEAN24</span><button class="copyBtn" onclick="this.textContent='Copied ✓'">Copy</button></div>
+                <button class="btn btn-wa" style="margin-top:9px" onclick="restart()">Share on WhatsApp ↗</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- WIN FLASH -->
+          <div class="flashWin" id="flash">
+            <div class="em" id="flashEm">🎉</div>
+            <div class="w1">YOU WON</div>
+            <div class="w2" id="flashPrize">10% OFF</div>
+            <div style="font-size:12px;color:#cfd8e3">Tap to claim →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE INFO -->
+      <div class="stageInfo">
+        <div class="stepDots" id="dots">
+          <div class="sdot active"></div><div class="sdot"></div><div class="sdot"></div><div class="sdot"></div>
+        </div>
+
+        <div class="stageBlock" data-stage="s1">
+          <div class="step">Stage 1 · Acquisition</div>
+          <h3>The Meta ad — hook with the game, not the food</h3>
+          <p>A scroll-stopping Instagram/Facebook ad leads with the <b>game and the reward</b> ("Spin to win up to 40% off"), not a generic menu shot. The prize is the hook; the food is the payoff. Food is Meta's cheapest, highest-converting vertical — and Nigerian clicks are remarkably cheap.</p>
+          <div class="statline">
+            <div class="stat"><div class="v">₦30–150</div><div class="k">CPC in Nigeria</div><div class="src">Shopify NG / DataReportal 2025</div></div>
+            <div class="stat"><div class="v">18.25%</div><div class="k">Food lead-CVR on Meta</div><div class="src">WordStream 2025 (US)</div></div>
+            <div class="stat"><div class="v">~₦8 CPM</div><div class="k">Cheapest vertical</div><div class="src">Varos / Ryze 2026</div></div>
+          </div>
+          <div class="why"><b>Why it works:</b> Restaurants & Food has the highest landing-page conversion (7.1%) and lowest cost-per-lead ($3.16) of any Meta vertical. In Nigeria the same clicks cost a fraction of US rates, so a ₦150k budget buys ~1,000–1,500 landing visits.</div>
+        </div>
+
+        <div class="stageBlock" data-stage="s2" style="display:none">
+          <div class="step">Stage 2 · Capture &amp; Convert</div>
+          <h3>The ChopWheel — every spin wins, every spinner converts</h3>
+          <p>Instead of a flat "10% off" box, visitors <b>spin a wheel</b> and "earn" their discount. Earned rewards feel more valuable and redeem far more often. Capture is a single WhatsApp field — the lowest-friction, highest-trust channel in Lagos.</p>
+          <div class="statline">
+            <div class="stat"><div class="v">13.2%</div><div class="k">Spin-wheel opt-in</div><div class="src">OptiMonk 2025 (vs 5.1% standard)</div></div>
+            <div class="stat"><div class="v">18–25%</div><div class="k">Prize redemption</div><div class="src">EasyApps 2026 (vs 8–12%)</div></div>
+            <div class="stat"><div class="v">95%</div><div class="k">NG internet users on WhatsApp</div><div class="src">Statista 2024</div></div>
+          </div>
+          <div class="why"><b>Why it works:</b> The spin-to-win popup converts <b>2.6× better</b> than a standard email popup (13.2% vs 5.1%), and the "I earned this" effect lifts coupon redemption to 18–25%. Capturing the WhatsApp number — not email — matches how 51M Nigerians already order.</div>
+        </div>
+
+        <div class="stageBlock" data-stage="s3" style="display:none">
+          <div class="step">Stage 3 · First Order</div>
+          <h3>The order — prize applied, friction removed</h3>
+          <p>The won prize is <b>pre-applied</b> and free delivery seals the first order (your model already budgets a ₦500 delivery subsidy). Paystack handles payment at 1.5% + ₦100 — and the flat fee is waived under ₦2,500. Even after a 10% prize, the order clears <b>~₦3,950 contribution</b>.</p>
+          <div class="statline">
+            <div class="stat"><div class="v">₦4,750</div><div class="k">Contribution / full order</div><div class="src">Your Unit Economics tab</div></div>
+            <div class="stat"><div class="v">47.5%</div><div class="k">Contribution margin</div><div class="src">Your model</div></div>
+            <div class="stat"><div class="v">1.3</div><div class="k">Orders to repay CAC</div><div class="src">Your model</div></div>
+          </div>
+          <div class="why"><b>Why it works:</b> A 10% spin prize costs you ₦1,000 but still leaves ₦3,950 contribution — and the gamified path roughly halves CAC, so the prize more than pays for itself. The discount is the acquisition cost, not a margin leak.</div>
+        </div>
+
+        <div class="stageBlock" data-stage="s4" style="display:none">
+          <div class="step">Stage 4 · Retention &amp; Virality</div>
+          <h3>The loyalty loop — turn one order into a habit + a referral</h3>
+          <p>Three compounding mechanics fire after order #1: a <b>time-boxed streak</b> ("order 3× in 14 days → reward"), <b>points &amp; tiers</b>, and a <b>double-sided "give ₦1,000 / get ₦1,000" referral</b>. This is where the real money is — it attacks your 20% churn and feeds cheap referred customers back into the top.</p>
+          <div class="statline">
+            <div class="stat"><div class="v">3.3×</div><div class="k">Loyalty purchase frequency</div><div class="src">Smile.io (1.2B orders)</div></div>
+            <div class="stat"><div class="v">+56%</div><div class="k">Repeat-purchase rate</div><div class="src">Smile.io</div></div>
+            <div class="stat"><div class="v">+16% LTV</div><div class="k">Referred customers</div><div class="src">Extole / J. of Marketing</div></div>
+          </div>
+          <div class="why"><b>Why it works:</b> Restaurant loyalty + online ordering lifts order frequency ~18%, and referred customers retain 37% longer at ~40% lower CAC. Cutting churn from 20% → 15% raises a customer's lifetime value from ₦95k to ~₦127k — a bigger lever than ad spend. <b>This is the stage that matters most.</b></div>
+        </div>
+
+        <div class="navRow">
+          <button class="nav" id="prevBtn" onclick="prevStage()" disabled>‹ Back</button>
+          <button class="nav primary" id="nextBtn" onclick="nextStage()">Next: the ChopWheel ›</button>
+        </div>
+        <p style="font-size:11.5px;color:var(--faint);margin-top:12px">Tip: you can also drive the demo by tapping inside the phone — spin the wheel, claim, pay, share.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ECONOMICS VIEW ===================== -->
+  <section class="view" id="econ">
+    <h2 class="sec">Live funnel economics</h2>
+    <p class="secsub">Drag the sliders to model the gamified funnel against your current plan. Defaults use the research benchmarks and your ChopWithMel revenue model (AOV ₦10,000 · contribution ₦4,750/order · 4 orders/customer/month). Everything recalculates instantly.</p>
+    <div class="econGrid">
+      <!-- INPUTS -->
+      <div class="card">
+        <h3>Your levers</h3>
+        <div class="csub">Inputs you control. Benchmarked defaults shown in orange.</div>
+
+        <div class="slider">
+          <div class="lab"><span>Monthly Meta ad budget</span><span id="o_budget">₦150,000</span></div>
+          <input type="range" id="budget" min="50000" max="600000" step="10000" value="150000">
+        </div>
+        <div class="slider">
+          <div class="lab"><span>Cost per click (Nigeria)</span><span id="o_cpc">₦120</span></div>
+          <input type="range" id="cpc" min="30" max="300" step="10" value="120">
+        </div>
+        <div class="slider">
+          <div class="lab"><span>Spin-wheel opt-in rate</span><span id="o_optin">13%</span></div>
+          <input type="range" id="optin" min="4" max="22" step="0.5" value="13">
+        </div>
+        <div class="slider">
+          <div class="lab"><span>Opt-in → first-order conversion</span><span id="o_fo">28%</span></div>
+          <input type="range" id="fo" min="10" max="50" step="1" value="28">
+        </div>
+        <div class="slider">
+          <div class="lab"><span>Avg spin prize (discount on 1st order)</span><span id="o_prize">10%</span></div>
+          <input type="range" id="prize" min="0" max="30" step="1" value="10">
+        </div>
+        <div class="slider">
+          <div class="lab"><span>Referral multiplier (extra customers via "give₦/get₦")</span><span id="o_ref">25%</span></div>
+          <input type="range" id="ref" min="0" max="60" step="5" value="25">
+        </div>
+        <div class="slider">
+          <div class="lab"><span>Churn after loyalty loop</span><span id="o_churn">15%</span></div>
+          <input type="range" id="churn" min="8" max="20" step="1" value="15">
+        </div>
+        <div class="disclaim">Baseline (your current model): 25 new customers/month at ₦6,000 CAC, 20% churn, ₦95,000 LTV. The referral multiplier adds near-zero-CAC customers on top of paid acquisition; the prize is deducted from first-order contribution only.</div>
+      </div>
+
+      <!-- OUTPUTS -->
+      <div class="card">
+        <h3>What it produces</h3>
+        <div class="csub">Gamified funnel vs your current ₦6,000-CAC plan.</div>
+
+        <div class="funnelBars">
+          <div class="fb"><div class="lab"><span>Landing visits</span><b id="b_clicks">1,250</b></div><div class="track"><div class="fill" id="bar_clicks" style="width:100%;background:linear-gradient(90deg,#3a8bfd,#7db4ff)">paid clicks</div></div></div>
+          <div class="fb"><div class="lab"><span>Spin opt-ins (leads)</span><b id="b_leads">163</b></div><div class="track"><div class="fill" id="bar_leads" style="background:linear-gradient(90deg,#a06bff,#c4a3ff)">captured</div></div></div>
+          <div class="fb"><div class="lab"><span>Paid first orders</span><b id="b_orders">46</b></div><div class="track"><div class="fill" id="bar_orders" style="background:linear-gradient(90deg,#ffb020,#ff5a1f)">converted</div></div></div>
+          <div class="fb"><div class="lab"><span>+ Referred customers</span><b id="b_refc">11</b></div><div class="track"><div class="fill" id="bar_refc" style="background:linear-gradient(90deg,#26d07c,#0f9d63)">viral</div></div></div>
+        </div>
+
+        <div class="kpiGrid" style="margin-top:6px">
+          <div class="kpi"><div class="k">New customers / month</div><div class="v" id="k_new">57</div><div class="d up" id="k_new_d">▲ 128% vs 25</div></div>
+          <div class="kpi"><div class="k">Blended CAC</div><div class="v" id="k_cac">₦2,640</div><div class="d up" id="k_cac_d">▼ 56% vs ₦6,000</div></div>
+          <div class="kpi"><div class="k">New LTV (after loyalty)</div><div class="v" id="k_ltv">₦127k</div><div class="d up" id="k_ltv_d">▲ 33% vs ₦95k</div></div>
+          <div class="kpi"><div class="k">LTV : CAC</div><div class="v" id="k_ratio">48×</div><div class="d up" id="k_ratio_d">▲ vs 15.8×</div></div>
+        </div>
+
+        <div class="verdict">
+          <div style="font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.5px;font-weight:700">Added annual contribution — at steady state</div>
+          <div class="big" id="k_annual">+₦58.0M</div>
+          <p id="k_annual_note">Compares the two steady states (new customers ÷ churn) using your model's logic: a faster inflow plus lower churn builds a much larger active base. It's a ceiling, reached over time — not month one. Adjust the sliders to pressure-test it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:22px">
+      <h3>Side-by-side</h3>
+      <table class="compare">
+        <thead><tr><th>Metric</th><th>Current plan</th><th>Gamified funnel</th><th>Change</th></tr></thead>
+        <tbody>
+          <tr><td>New customers / month</td><td>25</td><td class="hl" id="c_new">57</td><td id="c_new_c">+32</td></tr>
+          <tr><td>CAC</td><td>₦6,000</td><td class="hl" id="c_cac">₦2,640</td><td id="c_cac_c">–56%</td></tr>
+          <tr><td>Monthly churn</td><td>20%</td><td class="hl" id="c_churn">15%</td><td id="c_churn_c">–5 pts</td></tr>
+          <tr><td>Customer lifetime</td><td>5.0 mo</td><td class="hl" id="c_life">6.7 mo</td><td id="c_life_c">+1.7 mo</td></tr>
+          <tr><td>LTV (contribution)</td><td>₦95,000</td><td class="hl" id="c_ltv">₦126,667</td><td id="c_ltv_c">+33%</td></tr>
+          <tr><td>LTV : CAC ratio</td><td>15.8×</td><td class="hl" id="c_ratio">48×</td><td id="c_ratio_c">3×</td></tr>
+        </tbody>
+      </table>
+      <div class="disclaim" style="margin-top:16px">These projections combine measured industry benchmarks with your model's unit economics; they are planning estimates, not guarantees. Conversion rates from US/global studies (OptiMonk, WordStream, Smile.io) transfer better as <i>rates</i> than absolute costs — Nigerian CPCs are set with local benchmarks. Treat single-vendor "case study" highs as optimistic ceilings. Validate with a small live test before scaling spend.</div>
+    </div>
+  </section>
+
+  <!-- ===================== RESEARCH VIEW ===================== -->
+  <section class="view" id="research">
+    <h2 class="sec">The research behind every number</h2>
+    <p class="secsub">Benchmarks gathered from primary and reputable secondary sources, then cross-checked. Vendor-reported figures are flagged in the notes. Grouped by funnel stage.</p>
+    <div class="resGrid" id="resGrid"></div>
+    <div class="foot">
+      <b>Method:</b> Five parallel research sweeps (gamification conversion, Meta food-ad benchmarks, loyalty/referral retention, Nigeria/Lagos market, proven playbooks), claims verified across sources. Strongest data: OptiMonk popup aggregate, WordStream/LocaliQ 2025 Meta benchmarks, Smile.io 1.2B-order dataset, Paytronix restaurant loyalty, Extole (citing Nielsen/Wharton/HBR/Journal of Marketing), DataReportal Digital 2025 Nigeria, Paystack official pricing. Currency working rate ≈ ₦1,360/$ (CBN, June 2026).
+    </div>
+  </section>
+</div>
+
+<script>
+/* ---------- TAB SWITCHING ---------- */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.v).classList.add('active');
+  };
+});
+
+/* ---------- WHEEL BUILD ---------- */
+const segs=[
+  {t:'10% OFF',c:'#ff5a1f',e:'🔥'},{t:'FREE DRINK',c:'#3a8bfd',e:'🥤'},
+  {t:'15% OFF',c:'#a06bff',e:'🎉'},{t:'FREE DELIVERY',c:'#26d07c',e:'🛵'},
+  {t:'5% OFF',c:'#ffb020',e:'😋'},{t:'40% OFF',c:'#ff4d8d',e:'💎'},
+  {t:'FREE SIDE',c:'#0f9d63',e:'🍟'},{t:'10% OFF',c:'#e23d00',e:'🔥'}
+];
+const wheel=document.getElementById('wheel');
+const n=segs.length, seg=360/n;
+let grad='conic-gradient(';
+segs.forEach((s,i)=>{grad+=`${s.c} ${i*seg}deg ${(i+1)*seg}deg${i<n-1?',':''}`});
+grad+=')';
+wheel.style.background=grad;
+segs.forEach((s,i)=>{
+  const lbl=document.createElement('div');
+  lbl.className='lbl';
+  lbl.textContent=s.e+' '+s.t;
+  const ang=(i+0.5)*seg-90;
+  lbl.style.transform=`rotate(${ang}deg) translate(34px,-4px)`;
+  wheel.appendChild(lbl);
+});
+
+/* ---------- SPIN ---------- */
+let spun=false;
+function spin(){
+  if(spun) return; spun=true;
+  document.getElementById('spinBtn').disabled=true;
+  document.getElementById('hub').textContent='…';
+  // weight toward 10% (index 0 or 7) so demo prize matches order screen
+  const win=0; // land on 10% OFF
+  const target=5*360 + (360 - (win*seg + seg/2)); // pointer at top
+  wheel.style.transform=`rotate(${target}deg)`;
+  setTimeout(()=>{
+    const f=document.getElementById('flash');
+    document.getElementById('flashPrize').textContent='10% OFF';
+    document.getElementById('flashEm').textContent='🔥';
+    f.classList.add('show'); confetti(f);
+    f.onclick=()=>{
+      f.classList.remove('show');
+      document.getElementById('prizeTag').style.display='block';
+      document.getElementById('prizeBig').textContent='10% OFF — your next order';
+      document.getElementById('capFields').style.display='block';
+      document.getElementById('hub').textContent='WON';
+    };
+  },4300);
+}
+function confetti(parent){
+  const cols=['#ff5a1f','#ffb020','#26d07c','#3a8bfd','#ff4d8d','#a06bff'];
+  for(let i=0;i<40;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'%';
+    c.style.background=cols[i%cols.length];
+    c.style.animationDuration=(1.6+Math.random()*1.6)+'s';
+    c.style.animationDelay=(Math.random()*.4)+'s';
+    parent.appendChild(c);
+    setTimeout(()=>c.remove(),3600);
+  }
+}
+
+/* ---------- SCREEN NAV ---------- */
+const order=['s1','s2','s3','s4'];
+let stage=0;
+const labels=['Next: the ChopWheel ›','Next: the first order ›','Next: the loyalty loop ›','↺ Restart the journey'];
+function showStage(i){
+  stage=i;
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('show'));
+  document.getElementById(order[i]).classList.add('show');
+  document.querySelectorAll('.stageBlock').forEach(b=>b.style.display='none');
+  document.querySelector(`.stageBlock[data-stage="${order[i]}"]`).style.display='block';
+  document.querySelectorAll('#dots .sdot').forEach((d,j)=>d.classList.toggle('active',j<=i));
+  document.getElementById('prevBtn').disabled=(i===0);
+  document.getElementById('nextBtn').textContent=labels[i];
+}
+function go(id){ showStage(order.indexOf(id)); }
+function nextStage(){ if(stage<3) showStage(stage+1); else restart(); }
+function prevStage(){ if(stage>0) showStage(stage-1); }
+function restart(){
+  spun=false;
+  wheel.style.transition='none'; wheel.style.transform='rotate(0deg)';
+  setTimeout(()=>wheel.style.transition='transform 4.2s cubic-bezier(.17,.67,.2,1)',30);
+  document.getElementById('spinBtn').disabled=false;
+  document.getElementById('hub').textContent='SPIN';
+  document.getElementById('prizeTag').style.display='none';
+  document.getElementById('capFields').style.display='none';
+  showStage(0);
+}
+
+/* ---------- ECONOMICS ---------- */
+const F=v=>'₦'+Math.round(v).toLocaleString();
+const ids=['budget','cpc','optin','fo','prize','ref','churn'];
+ids.forEach(id=>document.getElementById(id).addEventListener('input',calc));
+function calc(){
+  const budget=+budgetEl().budget, cpc=+v('cpc'), optin=+v('optin')/100,
+        fo=+v('fo')/100, prize=+v('prize')/100, ref=+v('ref')/100, churn=+v('churn')/100;
+  // labels
+  set('o_budget',F(budget)); set('o_cpc','₦'+cpc); set('o_optin',v('optin')+'%');
+  set('o_fo',v('fo')+'%'); set('o_prize',v('prize')+'%'); set('o_ref',v('ref')+'%'); set('o_churn',v('churn')+'%');
+  // funnel
+  const clicks=budget/cpc;
+  const leads=clicks*optin;
+  const paidOrders=leads*fo;              // = new paid customers
+  const referred=paidOrders*ref;
+  const newCust=paidOrders+referred;
+  // bars (scale to clicks)
+  set('b_clicks',Math.round(clicks).toLocaleString());
+  set('b_leads',Math.round(leads).toLocaleString());
+  set('b_orders',Math.round(paidOrders).toLocaleString());
+  set('b_refc',Math.round(referred).toLocaleString());
+  document.getElementById('bar_leads').style.width=Math.max(8,(leads/clicks*100))+'%';
+  document.getElementById('bar_orders').style.width=Math.max(8,(paidOrders/clicks*100))+'%';
+  document.getElementById('bar_refc').style.width=Math.max(6,(referred/clicks*100))+'%';
+  // CAC: paid budget over ALL new customers (referred are ~free to acquire, minus their referral reward handled in LTV)
+  const cac=budget/newCust;
+  // LTV: contribution 4750/order, 4 orders/mo, lifetime=1/churn months
+  const cmOrder=4750, ordPerMo=4;
+  const life=1/churn;
+  const ltv=life*ordPerMo*cmOrder;
+  const ratio=ltv/cac;
+  // outputs
+  set('k_new',Math.round(newCust));
+  set('k_cac',F(cac));
+  set('k_ltv','₦'+Math.round(ltv/1000)+'k');
+  set('k_ratio',Math.round(ratio)+'×');
+  delta('k_new_d',newCust,25,'vs 25',false);
+  delta('k_cac_d',cac,6000,'vs ₦6,000',true);
+  delta('k_ltv_d',ltv,95000,'vs ₦95k',false);
+  set('k_ratio_d','▲ vs 15.8×');
+  // annual added contribution:
+  // extra new customers/mo * LTV  (spread over their life) -> approximate annual contribution delta
+  // Compare gross monthly contribution flow at steady state vs baseline.
+  // Steady-state active base = newCust/churn ; orders = base*4 ; contribution = orders*4750
+  const baseActive=25/0.20, baseContrib=baseActive*4*cmOrder;
+  const newActive=newCust/churn, newContrib=newActive*4*cmOrder;
+  const addedMonthly=(newContrib-baseContrib);
+  const addedAnnual=addedMonthly*12 - (budget-150000)*12; // net of any extra ad spend vs ₦150k baseline... keep simple: subtract extra budget
+  const annual=addedMonthly*12;
+  set('k_annual',(annual>=0?'+':'–')+'₦'+Math.abs(annual/1e6).toFixed(1)+'M');
+  // compare table
+  set('c_new',Math.round(newCust));
+  set('c_new_c','+'+Math.round(newCust-25));
+  set('c_cac',F(cac));
+  set('c_cac_c',Math.round((cac/6000-1)*100)+'%');
+  set('c_churn',(churn*100)+'%');
+  set('c_churn_c','–'+Math.round((0.20-churn)*100)+' pts');
+  set('c_life',life.toFixed(1)+' mo');
+  set('c_life_c','+'+(life-5).toFixed(1)+' mo');
+  set('c_ltv',F(ltv));
+  set('c_ltv_c','+'+Math.round((ltv/95000-1)*100)+'%');
+  set('c_ratio',Math.round(ratio)+'×');
+  set('c_ratio_c',(ratio/15.8).toFixed(1)+'×');
+}
+function v(id){return document.getElementById(id).value}
+function budgetEl(){return {budget:document.getElementById('budget').value}}
+function set(id,val){document.getElementById(id).textContent=val}
+function delta(id,now,base,suffix,lowerBetter){
+  const pct=Math.round((now/base-1)*100);
+  const good=lowerBetter? now<base : now>base;
+  const el=document.getElementById(id);
+  el.className='d '+(good?'up':'down');
+  const arrow=now>base?'▲':'▼';
+  el.textContent=`${arrow} ${Math.abs(pct)}% ${suffix}`;
+}
+calc();
+
+/* ---------- RESEARCH CARDS ---------- */
+const research=[
+ ['acq','Acquisition','₦30–150','Meta cost-per-click in Nigeria — 5–25× cheaper than US rates.','Shopify NG / DataReportal Digital 2025','https://datareportal.com/reports/digital-2025-nigeria'],
+ ['acq','Acquisition','$3.16','Cost-per-lead for Restaurants &amp; Food on Meta — the lowest of any vertical.','WordStream / LocaliQ 2025','https://www.wordstream.com/blog/facebook-ads-benchmarks-2025'],
+ ['acq','Acquisition','18.25%','Food lead-objective conversion rate on Facebook — highest of any industry.','WordStream / LocaliQ 2025','https://www.wordstream.com/blog/facebook-ads-benchmarks-2025'],
+ ['acq','Acquisition','7.1%','Food &amp; Beverage landing-page conversion — among the highest verticals.','Unbounce Benchmark Report Q4 2024','https://unbounce.com/average-conversion-rates-landing-pages/'],
+ ['game','Game / Capture','13.2%','Spin-the-wheel popup opt-in rate vs 5.1% for a standard email popup (2.6×).','OptiMonk Popup Statistics 2025','https://www.optimonk.com/popup-statistics'],
+ ['game','Game / Capture','18–25%','Coupon redemption for spin-wheel prizes vs 8–12% for standard codes.','EasyApps Ecommerce 2026','https://easyappsecom.com/guides/email-capture-rate-benchmarks'],
+ ['game','Game / Capture','11.3%','Mystery-reveal / gift-box mechanic conversion — beats static forms.','Alia 2026','https://www.aliapopups.com/blog/15-ecommerce-gamification-examples-that-drive-conversions'],
+ ['game','Game / Capture','19→34%','Endowed-progress effect: pre-filling a progress bar lifts completion.','Foundational gamification research','https://www.linkedin.com/advice/1/how-can-you-use-gamification-increase-your-landing-o7tqe'],
+ ['loy','Loyalty / Referral','3.3×','Higher purchase frequency for loyalty-program members (1.2B-order dataset).','Smile.io 2023','https://blog.smile.io/traditional-loyalty-programs-work-and-we-can-prove-it/'],
+ ['loy','Loyalty / Referral','+56%','Higher repeat-purchase rate for loyalty members vs non-members.','Smile.io 2023','https://blog.smile.io/traditional-loyalty-programs-work-and-we-can-prove-it/'],
+ ['loy','Loyalty / Referral','+18%','Order-frequency lift from restaurant loyalty paired with online ordering.','Paytronix / Deliverect','https://www.deliverect.com/en-us/blog/omni-channel-restaurant/loyalty-programs-for-restaurants-stats-and-trends'],
+ ['loy','Loyalty / Referral','+16% LTV','Referred customers vs paid-acquisition customers; they also retain 37% longer.','Extole 2026 (J. of Marketing / HBR)','https://www.extole.com/blog/referral-stats-to-know-in-2026/'],
+ ['loy','Loyalty / Referral','~40%','Lower CAC for referral/affiliate customers vs paid search.','Extole 2026','https://www.extole.com/blog/referral-stats-to-know-in-2026/'],
+ ['loy','Loyalty / Referral','78%','Of referral programs use the double-sided "give X / get X" model.','Extole 2026','https://www.extole.com/blog/referral-stats-to-know-in-2026/'],
+ ['loy','Loyalty / Referral','3.6×','7-day-streak users more likely to stay engaged long-term (Duolingo).','StriveCloud (vendor-reported)','https://www.strivecloud.io/blog/gamification-examples-boost-user-retention-duolingo'],
+ ['ng','Nigeria / Lagos','95%','Of Nigerian internet users are on WhatsApp — the #1 ordering channel.','Statista Q3 2024','https://www.statista.com/statistics/1176101/leading-social-media-platforms-nigeria/'],
+ ['ng','Nigeria / Lagos','51M','WhatsApp users in Nigeria; orders routinely placed via DM &amp; Status.','Statista 2025','https://www.statista.com/forecasts/1146609/whatsapp-users-in-nigeria'],
+ ['ng','Nigeria / Lagos','1.5% + ₦100','Paystack local fee; flat ₦100 waived under ₦2,500, all fees capped at ₦2,000.','Paystack official pricing 2026','https://support.paystack.com/en/articles/2130306'],
+ ['ng','Nigeria / Lagos','₦300/GB','Mobile data ~$0.38/GB — among the cheapest globally; keep UX low-data.','TechEconomy / DataReportal 2025','https://datareportal.com/reports/digital-2025-nigeria'],
+ ['ng','Nigeria / Lagos','$2.1B','Nigeria meal-delivery market 2025, ~8.6% CAGR to 2029.','Statista Market Forecast 2025','https://www.statista.com/outlook/emo/online-food-delivery/meal-delivery/nigeria'],
+ ['ng','Nigeria / Lagos','38.7M','Facebook reach in Nigeria (vs 9.9M Instagram) — run both, lead on FB+WhatsApp.','DataReportal Digital 2025','https://datareportal.com/reports/digital-2025-nigeria'],
+];
+const tagClass={acq:'t-acq',game:'t-game',loy:'t-loy',ng:'t-ng'};
+const rg=document.getElementById('resGrid');
+research.forEach(r=>{
+  const d=document.createElement('div');
+  d.className='rcard';
+  d.innerHTML=`<span class="rtag ${tagClass[r[0]]}">${r[1]}</span>
+    <div class="rstat">${r[2]}</div>
+    <div class="rdesc">${r[3]}</div>
+    <div class="rsrc">${r[4]} · <a href="${r[5]}" target="_blank" rel="noopener">source ↗</a></div>`;
+  rg.appendChild(d);
+});
+
+showStage(0);
+</script>
+</body>
+</html>

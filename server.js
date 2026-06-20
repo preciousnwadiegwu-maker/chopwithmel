@@ -117,6 +117,88 @@ function saveOrder(order) {
   });
 }
 
+// ── COUPONS DB (spin wheel prizes + future loyalty rewards) ───────────────────
+const COUPONS_FILE = path.join(__dirname, 'data', 'coupons.json');
+const SPINS_FILE = path.join(__dirname, 'data', 'spins.json');
+if (!fs.existsSync(COUPONS_FILE)) fs.writeFileSync(COUPONS_FILE, '[]');
+if (!fs.existsSync(SPINS_FILE)) fs.writeFileSync(SPINS_FILE, '[]');
+
+function loadCoupons() {
+  try { return JSON.parse(fs.readFileSync(COUPONS_FILE, 'utf8')); }
+  catch { return []; }
+}
+function loadSpins() {
+  try { return JSON.parse(fs.readFileSync(SPINS_FILE, 'utf8')); }
+  catch { return []; }
+}
+function saveCoupon(coupon) {
+  return withWriteLock(() => {
+    const coupons = loadCoupons();
+    coupons.unshift(coupon);
+    fs.writeFileSync(COUPONS_FILE, JSON.stringify(coupons, null, 2));
+  });
+}
+function saveSpin(spin) {
+  return withWriteLock(() => {
+    const spins = loadSpins();
+    spins.unshift(spin);
+    fs.writeFileSync(SPINS_FILE, JSON.stringify(spins, null, 2));
+  });
+}
+
+// 8 wheel segments — weighted server-side so margin is protected
+// type: PERCENT (value=10 means 10%), FIXED (value in NGN), FREE_DELIVERY, FREE_SIDE
+const WHEEL_PRIZES = [
+  { id: 'p10', label: '10% OFF',       type: 'PERCENT',        value: 10,    weight: 28, emoji: '🔥' },
+  { id: 'fd',  label: 'FREE DRINK',    type: 'FREE_SIDE',      value: 0,     weight: 12, emoji: '🥤' },
+  { id: 'p15', label: '15% OFF',       type: 'PERCENT',        value: 15,    weight: 18, emoji: '🎉' },
+  { id: 'fdv', label: 'FREE DELIVERY', type: 'FREE_DELIVERY',  value: 0,     weight: 15, emoji: '🛵' },
+  { id: 'p5',  label: '5% OFF',        type: 'PERCENT',        value: 5,     weight: 14, emoji: '😋' },
+  { id: 'p40', label: '40% OFF',       type: 'PERCENT',        value: 40,    weight: 3,  emoji: '💎' },
+  { id: 'fs',  label: 'FREE SIDE',     type: 'FREE_SIDE',      value: 0,     weight: 5,  emoji: '🍟' },
+  { id: 'p10b',label: '10% OFF',       type: 'PERCENT',        value: 10,    weight: 5,  emoji: '🔥' }
+];
+
+function pickWeightedPrize() {
+  const total = WHEEL_PRIZES.reduce((s, p) => s + p.weight, 0);
+  let r = Math.random() * total;
+  for (const p of WHEEL_PRIZES) {
+    if ((r -= p.weight) <= 0) return p;
+  }
+  return WHEEL_PRIZES[0];
+}
+
+function generateCouponCode() {
+  return 'MEL-' + Math.random().toString(36).slice(2, 7).toUpperCase();
+}
+
+function findActiveCoupon(code) {
+  const norm = String(code || '').trim().toUpperCase();
+  if (!norm) return null;
+  const c = loadCoupons().find(x => x.code === norm);
+  if (!c) return null;
+  if (c.redeemedAt) return { ...c, _err: 'already_redeemed' };
+  if (new Date(c.expiresAt) < new Date()) return { ...c, _err: 'expired' };
+  return c;
+}
+
+function calcCouponDiscount(coupon, subtotal) {
+  if (!coupon) return 0;
+  if (coupon.type === 'PERCENT') return Math.round(subtotal * (coupon.value / 100));
+  if (coupon.type === 'FIXED')   return Math.min(coupon.value, subtotal);
+  return 0; // FREE_DELIVERY / FREE_SIDE are handled outside cart total
+}
+
+function markCouponRedeemed(code, orderRef) {
+  return withWriteLock(() => {
+    const coupons = loadCoupons();
+    const i = coupons.findIndex(c => c.code === code);
+    if (i === -1) return;
+    coupons[i] = { ...coupons[i], redeemedAt: new Date().toISOString(), redeemedOrderRef: orderRef };
+    fs.writeFileSync(COUPONS_FILE, JSON.stringify(coupons, null, 2));
+  });
+}
+
 // ── AD ATTRIBUTION SANITIZER — whitelist utm fields from client ───────────────
 function cleanAttribution(raw) {
   if (!raw || typeof raw !== 'object') return null;
@@ -175,6 +257,102 @@ app.get('/config.js', (req, res) => {
   );
 });
 
+// ── SPIN WHEEL: LOG SPIN INTENT (analytics event, no prize issued yet) ────────
+app.post('/api/spin/log', async (req, res) => {
+  const b = req.body || {};
+  await saveSpin({
+    id: 'sp_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    sessionId: String(b.sessionId || '').slice(0, 60) || null,
+    landedAt: new Date().toISOString(),
+    attribution: cleanAttribution(b.attribution)
+  });
+  res.json({ success: true });
+});
+
+// ── SPIN WHEEL: CLAIM PRIZE (server picks weighted prize, issues coupon) ──────
+app.post('/api/spin/claim', async (req, res) => {
+  const b = req.body || {};
+  const phone = String(b.phone || '').replace(/\D/g, '').slice(0, 15);
+  const name = String(b.name || '').trim().slice(0, 100);
+  const sessionId = String(b.sessionId || '').slice(0, 60) || null;
+
+  if (phone.length < 10 || phone.length > 15) {
+    return res.status(400).json({ success: false, message: 'Please enter a valid WhatsApp number.' });
+  }
+
+  // One spin per WhatsApp number per 30 days (prevents abuse)
+  const existing = loadCoupons().find(c =>
+    c.phone === phone &&
+    c.source === 'SPIN' &&
+    (new Date() - new Date(c.issuedAt)) < 30 * 24 * 60 * 60 * 1000
+  );
+  if (existing) {
+    return res.json({
+      success: true,
+      reused: true,
+      coupon: { code: existing.code, label: existing.label, type: existing.type, value: existing.value, expiresAt: existing.expiresAt }
+    });
+  }
+
+  const prize = pickWeightedPrize();
+  const code = generateCouponCode();
+  const issuedAt = new Date();
+  const expiresAt = new Date(issuedAt.getTime() + 72 * 60 * 60 * 1000); // 72h
+
+  const coupon = {
+    code,
+    phone,
+    name,
+    sessionId,
+    source: 'SPIN',
+    prizeId: prize.id,
+    label: prize.label,
+    type: prize.type,
+    value: prize.value,
+    emoji: prize.emoji,
+    issuedAt: issuedAt.toISOString(),
+    expiresAt: expiresAt.toISOString(),
+    redeemedAt: null,
+    redeemedOrderRef: null,
+    attribution: cleanAttribution(b.attribution)
+  };
+
+  await saveCoupon(coupon);
+
+  // Build a WhatsApp deep-link the customer can tap to message Mel with their prize
+  const waMsg = encodeURIComponent(
+    `Hi Mel! ${prize.emoji} I just spun the ChopWheel and won *${prize.label}* on chopwithmel.com\n\n` +
+    `My prize code: *${code}*\n` +
+    `Expires: ${expiresAt.toDateString()}\n\n` +
+    `I'd like to use it on an order today!`
+  );
+  const whatsappUrl = WA_NUMBER ? `https://wa.me/${WA_NUMBER}?text=${waMsg}` : null;
+
+  return res.json({
+    success: true,
+    coupon: { code, label: prize.label, type: prize.type, value: prize.value, emoji: prize.emoji, expiresAt: coupon.expiresAt },
+    whatsappUrl,
+    orderUrl: `/?coupon=${code}#picks`
+  });
+});
+
+// ── COUPON CHECK (used by frontend to validate before showing discount) ───────
+app.get('/api/coupon/:code', (req, res) => {
+  const c = findActiveCoupon(req.params.code);
+  if (!c) return res.status(404).json({ valid: false, message: 'Coupon not found' });
+  if (c._err === 'expired')          return res.status(410).json({ valid: false, message: 'This coupon has expired.' });
+  if (c._err === 'already_redeemed') return res.status(409).json({ valid: false, message: 'This coupon has already been used.' });
+  res.json({
+    valid: true,
+    code: c.code,
+    label: c.label,
+    type: c.type,
+    value: c.value,
+    emoji: c.emoji,
+    expiresAt: c.expiresAt
+  });
+});
+
 // ── VERIFY PAYMENT ────────────────────────────────────────────────────────────
 app.post('/api/verify-payment', async (req, res) => {
   const { reference, orderDetails } = req.body || {};
@@ -192,6 +370,7 @@ app.post('/api/verify-payment', async (req, res) => {
   const email   = String(orderDetails.email   || '').trim().slice(0, 200);
   const items   = Array.isArray(orderDetails.items) ? orderDetails.items.slice(0, 50) : [];
   const claimedTotal = Number(orderDetails.total) || 0;
+  const couponCode = String(orderDetails.couponCode || '').trim().toUpperCase().slice(0, 50);
 
   if (!name || !phone || !address || items.length === 0 || claimedTotal <= 0) {
     return res.status(400).json({ success: false, message: 'Missing required fields' });
@@ -215,6 +394,16 @@ app.post('/api/verify-payment', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Amount mismatch — please contact support' });
     }
 
+    // Mark coupon redeemed (best-effort, non-blocking)
+    let appliedCoupon = null;
+    if (couponCode) {
+      const c = findActiveCoupon(couponCode);
+      if (c && !c._err) {
+        appliedCoupon = { code: c.code, label: c.label, type: c.type, value: c.value };
+        markCouponRedeemed(c.code, reference).catch(() => {});
+      }
+    }
+
     // Save order
     await saveOrder({
       id: reference, ref: reference,
@@ -223,7 +412,8 @@ app.post('/api/verify-payment', async (req, res) => {
       channel: transaction.channel || 'unknown',
       status: 'paid',
       createdAt: new Date().toISOString(),
-      attribution: cleanAttribution(orderDetails.attribution)
+      attribution: cleanAttribution(orderDetails.attribution),
+      coupon: appliedCoupon
     });
 
     // Build WhatsApp URL — guard WA_NUMBER (C1)
@@ -340,6 +530,46 @@ app.get('/refer', (req, res) => {
 // ── OMUGWO / POSTPARTUM PACKAGE LANDING ───────────────────────────────────────
 app.get('/omugwo', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'omugwo.html'));
+});
+
+// ── SPIN-THE-WHEEL LANDING (acquisition page) ─────────────────────────────────
+app.get('/spin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'spin.html'));
+});
+
+// ── ADMIN: COUPONS + SPIN FUNNEL METRICS ──────────────────────────────────────
+app.get('/admin/api/coupons', adminAuth, (req, res) => {
+  const coupons = loadCoupons();
+  const spins = loadSpins();
+  const orders = loadOrders();
+
+  const issued = coupons.length;
+  const redeemed = coupons.filter(c => c.redeemedAt).length;
+  const expired = coupons.filter(c => !c.redeemedAt && new Date(c.expiresAt) < new Date()).length;
+  const active = issued - redeemed - expired;
+
+  // Prize distribution
+  const byPrize = {};
+  coupons.forEach(c => { byPrize[c.label] = (byPrize[c.label] || 0) + 1; });
+
+  // Funnel: spins -> opt-ins (coupons) -> redemptions
+  const spinCount = spins.length;
+  const optInRate = spinCount > 0 ? Math.round((issued / spinCount) * 100) : 0;
+  const redemptionRate = issued > 0 ? Math.round((redeemed / issued) * 100) : 0;
+
+  // Revenue from redeemed coupons
+  const couponRefs = new Set(coupons.filter(c => c.redeemedAt).map(c => c.redeemedOrderRef));
+  const couponRevenue = orders
+    .filter(o => couponRefs.has(o.ref))
+    .reduce((s, o) => s + (o.total || 0), 0);
+
+  res.json({
+    coupons: coupons.slice(0, 200),
+    stats: {
+      spinCount, issued, redeemed, expired, active,
+      optInRate, redemptionRate, couponRevenue, byPrize
+    }
+  });
 });
 
 // ── CATCH-ALL ─────────────────────────────────────────────────────────────────

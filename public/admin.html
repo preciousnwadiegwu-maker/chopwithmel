@@ -270,6 +270,56 @@
         </tbody>
       </table>
     </div>
+
+    <!-- SPIN-WHEEL FUNNEL -->
+    <div style="margin-top:48px;padding-top:24px;border-top:2px dashed #2a323d">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:16px;flex-wrap:wrap">
+        <h2 style="font-size:20px;font-weight:800">🎡 Spin Funnel</h2>
+        <span style="font-size:12px;color:#9aa7b6">Acquisition channel performance</span>
+        <button class="refresh-btn" onclick="loadCoupons()" style="margin-left:auto">🔄 Refresh</button>
+      </div>
+
+      <div class="stats" id="spinStats">
+        <div class="stat-card">
+          <div class="stat-label">Spins</div>
+          <div class="stat-value" id="spStat_spins">—</div>
+          <div class="stat-sub">/spin page hits</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Coupons issued</div>
+          <div class="stat-value" id="spStat_issued">—</div>
+          <div class="stat-sub"><span id="spStat_optin">—</span>% opt-in rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Redeemed</div>
+          <div class="stat-value" id="spStat_redeemed">—</div>
+          <div class="stat-sub"><span id="spStat_rate">—</span>% redemption</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Revenue from coupons</div>
+          <div class="stat-value" id="spStat_revenue">—</div>
+          <div class="stat-sub">From redeemed orders</div>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:18px">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Customer</th>
+              <th>Prize</th>
+              <th>Status</th>
+              <th>Issued</th>
+              <th>Expires</th>
+            </tr>
+          </thead>
+          <tbody id="couponsBody">
+            <tr><td colspan="6" class="empty">No coupons yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -286,6 +336,7 @@
       if (ok) {
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
+        loadCoupons();
       } else {
         document.getElementById('loginError').textContent = 'Invalid token. Try again.';
         TOKEN = '';
@@ -309,6 +360,49 @@
       renderOrders();
       return true;
     } catch { return false; }
+  }
+
+  async function loadCoupons() {
+    try {
+      const res = await fetch('/admin/api/coupons', { headers: { 'x-admin-token': TOKEN } });
+      if (!res.ok) return;
+      const data = await res.json();
+      const s = data.stats || {};
+      document.getElementById('spStat_spins').textContent     = (s.spinCount || 0).toLocaleString();
+      document.getElementById('spStat_issued').textContent    = (s.issued || 0).toLocaleString();
+      document.getElementById('spStat_optin').textContent     = s.optInRate || 0;
+      document.getElementById('spStat_redeemed').textContent  = (s.redeemed || 0).toLocaleString();
+      document.getElementById('spStat_rate').textContent      = s.redemptionRate || 0;
+      document.getElementById('spStat_revenue').textContent   = '₦' + Math.round(s.couponRevenue || 0).toLocaleString();
+
+      const tbody = document.getElementById('couponsBody');
+      const coupons = data.coupons || [];
+      if (!coupons.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty">No coupons yet — share /spin in your ads to start the funnel.</td></tr>';
+        return;
+      }
+      const esc = s => String(s == null ? '' : s)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+      tbody.innerHTML = coupons.map(c => {
+        const issued = new Date(c.issuedAt).toLocaleString('en-NG', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+        const expires = new Date(c.expiresAt).toLocaleString('en-NG', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+        const expired = new Date(c.expiresAt) < new Date();
+        let status, badge;
+        if (c.redeemedAt)     { status = 'Redeemed ✓';  badge = 'badge-delivered'; }
+        else if (expired)     { status = 'Expired';     badge = 'badge-cancelled'; }
+        else                  { status = 'Active';      badge = 'badge-paid'; }
+        return `
+          <tr>
+            <td><b style="font-family:monospace;letter-spacing:1px">${esc(c.code)}</b><div class="order-phone">${esc(c.emoji || '')}</div></td>
+            <td><div class="order-name">${esc(c.name) || '—'}</div><div class="order-phone">${esc(c.phone)}</div></td>
+            <td>${esc(c.label)}</td>
+            <td><span class="badge ${badge}">${status}</span>${c.redeemedAt ? `<div class="order-phone" style="margin-top:4px">Order ${esc(c.redeemedOrderRef||'').slice(0,16)}</div>` : ''}</td>
+            <td><div class="order-date">${issued}</div>${c.attribution?.utm_source ? `<div class="order-phone" style="color:#A16207">📣 ${esc(c.attribution.utm_source)}</div>` : ''}</td>
+            <td><div class="order-date" style="color:${expired ? '#DC2626' : '#15803D'}">${expires}</div></td>
+          </tr>`;
+      }).join('');
+    } catch { /* fail silently — main dashboard still works */ }
   }
 
   function setFilter(f, btn) {
@@ -391,7 +485,7 @@
   }
 
   // Auto-refresh every 60s
-  setInterval(() => { if (TOKEN) loadOrders(); }, 60000);
+  setInterval(() => { if (TOKEN) { loadOrders(); loadCoupons(); } }, 60000);
 </script>
 </body>
 </html>

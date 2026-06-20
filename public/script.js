@@ -273,6 +273,80 @@ function trackEvent(name, params = {}) {
   try { if (window.gtag) gtag('event', name.toLowerCase().replace(/\s/g,'_'), params); } catch (e) {}
 }
 
+// ─── COUPON STATE (spin-wheel prize, persists across the cart flow) ──────────
+const COUPON_KEY = 'cwm_coupon';
+let ACTIVE_COUPON = null;   // {code, label, type, value, emoji, expiresAt}
+
+function loadCouponFromUrlOrStorage() {
+  // 1) URL param wins (so deep-link from /spin always applies the latest prize)
+  try {
+    const code = new URL(location.href).searchParams.get('coupon');
+    if (code) {
+      sessionStorage.setItem(COUPON_KEY, code.toUpperCase());
+      return code.toUpperCase();
+    }
+  } catch (e) {}
+  return sessionStorage.getItem(COUPON_KEY) || null;
+}
+
+async function validateCoupon(code) {
+  if (!code) return null;
+  try {
+    const res = await fetch(`/api/coupon/${encodeURIComponent(code)}`);
+    if (!res.ok) {
+      sessionStorage.removeItem(COUPON_KEY);
+      return null;
+    }
+    return await res.json();
+  } catch (e) { return null; }
+}
+
+function calcCouponDiscount(subtotal) {
+  if (!ACTIVE_COUPON) return 0;
+  if (ACTIVE_COUPON.type === 'PERCENT') return Math.round(subtotal * (ACTIVE_COUPON.value / 100));
+  if (ACTIVE_COUPON.type === 'FIXED')   return Math.min(ACTIVE_COUPON.value, subtotal);
+  return 0; // FREE_DELIVERY / FREE_SIDE — no cart-level discount
+}
+
+function clearCoupon() {
+  ACTIVE_COUPON = null;
+  sessionStorage.removeItem(COUPON_KEY);
+  renderCouponBanner();
+  renderCart();
+  updateFab();
+}
+
+function renderCouponBanner() {
+  const el = document.getElementById('couponBanner');
+  if (!el) return;
+  if (!ACTIVE_COUPON) { el.style.display = 'none'; return; }
+  const valueText = ACTIVE_COUPON.type === 'PERCENT' ? `${ACTIVE_COUPON.value}% OFF`
+                   : ACTIVE_COUPON.type === 'FIXED'  ? `₦${ACTIVE_COUPON.value.toLocaleString()} OFF`
+                   : ACTIVE_COUPON.label;
+  el.innerHTML = `
+    <div class="coupon-banner-inner">
+      <span class="coupon-emoji">${ACTIVE_COUPON.emoji || '🎁'}</span>
+      <div class="coupon-text">
+        <div class="coupon-label">${valueText} APPLIED</div>
+        <div class="coupon-code">Code: <b>${ACTIVE_COUPON.code}</b></div>
+      </div>
+      <button class="coupon-remove" onclick="clearCoupon()" aria-label="Remove coupon">×</button>
+    </div>`;
+  el.style.display = 'block';
+}
+
+async function bootstrapCoupon() {
+  const code = loadCouponFromUrlOrStorage();
+  if (!code) return;
+  const v = await validateCoupon(code);
+  if (v && v.valid) {
+    ACTIVE_COUPON = v;
+    renderCouponBanner();
+    renderCart();
+    trackEvent('CouponApplied', { coupon_code: v.code, content_category: v.label });
+  }
+}
+
 // ─── CART LOGIC ──────────────────────────────────────────────────────────────
 function addToCart(id) {
   const item = MENU.find(m => m.id === id);
@@ -371,12 +445,12 @@ function renderCart() {
     return;
   }
 
-  let total = 0;
+  let subtotal = 0;
   cartItems.innerHTML = ids.map(id => {
     const item = MENU.find(m => m.id === id);
     const qty = cart[id];
-    const subtotal = item.price * qty;
-    total += subtotal;
+    const lineTotal = item.price * qty;
+    subtotal += lineTotal;
     return `
       <div class="cart-row">
         <span class="cart-row-name">${item.emoji} ${item.name}</span>
@@ -385,10 +459,27 @@ function renderCart() {
           <span class="qty-count">${qty}</span>
           <button class="qty-btn" onclick="updateQty(${id}, 1)">+</button>
         </div>
-        <span class="cart-row-price">₦${subtotal.toLocaleString()}</span>
+        <span class="cart-row-price">₦${lineTotal.toLocaleString()}</span>
       </div>`;
   }).join('');
 
+  // Apply coupon discount if any
+  const discount = calcCouponDiscount(subtotal);
+  if (discount > 0) {
+    cartItems.innerHTML += `
+      <div class="cart-row cart-discount">
+        <span class="cart-row-name">🎁 Prize: ${ACTIVE_COUPON.label}</span>
+        <span class="cart-row-price">– ₦${discount.toLocaleString()}</span>
+      </div>`;
+  } else if (ACTIVE_COUPON && (ACTIVE_COUPON.type === 'FREE_DELIVERY' || ACTIVE_COUPON.type === 'FREE_SIDE')) {
+    cartItems.innerHTML += `
+      <div class="cart-row cart-discount">
+        <span class="cart-row-name">🎁 Prize: ${ACTIVE_COUPON.label}</span>
+        <span class="cart-row-price">Applied on delivery</span>
+      </div>`;
+  }
+
+  const total = subtotal - discount;
   totalAmount.textContent = `₦${total.toLocaleString()}`;
   cartTotal.style.display = 'flex';
   orderForm.style.display = 'block';
@@ -454,7 +545,9 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     return { id: item.id, name: item.name, price: item.price, qty: cart[id] };
   });
 
-  const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const discount = calcCouponDiscount(subtotal);
+  const total = subtotal - discount;
   if (!total || total <= 0) {
     showToast('⚠️ Invalid order total. Please refresh and try again.');
     return;
@@ -469,7 +562,8 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     content_ids: items.map(i => String(i.id)),
     num_items: items.reduce((n, i) => n + i.qty, 0),
     currency: 'NGN',
-    value: total
+    value: total,
+    ...(ACTIVE_COUPON ? { coupon: ACTIVE_COUPON.code } : {})
   });
 
   const handler = PaystackPop.setup({
@@ -483,11 +577,16 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
       custom_fields: [
         { display_name: 'Customer name', variable_name: 'name', value: name },
         { display_name: 'Phone', variable_name: 'phone', value: phone },
-        { display_name: 'Address', variable_name: 'address', value: address }
+        { display_name: 'Address', variable_name: 'address', value: address },
+        ...(ACTIVE_COUPON ? [{ display_name: 'Coupon', variable_name: 'coupon', value: ACTIVE_COUPON.code }] : [])
       ]
     },
     callback: function(response) {
-      verifyPayment(response.reference, { name, phone, email, address, items, total, attribution: getAttribution() });
+      verifyPayment(response.reference, {
+        name, phone, email, address, items, total,
+        attribution: getAttribution(),
+        couponCode: ACTIVE_COUPON ? ACTIVE_COUPON.code : null
+      });
     },
     onClose: function() {
       payBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay with Paystack';
@@ -521,9 +620,12 @@ async function verifyPayment(reference, orderDetails) {
       });
       document.getElementById('whatsappLink').href = data.whatsappUrl;
       document.getElementById('successModal').style.display = 'flex';
-      // Clear cart after successful payment
+      // Clear cart + redeemed coupon after successful payment
       Object.keys(cart).forEach(k => delete cart[k]);
       persistCart();
+      ACTIVE_COUPON = null;
+      sessionStorage.removeItem(COUPON_KEY);
+      renderCouponBanner();
       renderCart();
       updateFab();
     } else {
@@ -577,7 +679,9 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
     const item = MENU.find(m => m.id === Number(id));
     return { id: item.id, name: item.name, price: item.price, qty: cart[id] };
   });
-  const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const discount = calcCouponDiscount(subtotal);
+  const total = subtotal - discount;
 
   const btn = this;
   btn.disabled = true;
@@ -590,7 +694,11 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
     fetch('/api/whatsapp-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ref, name, phone, email, address, items, total, attribution: getAttribution() })
+      body: JSON.stringify({
+        ref, name, phone, email, address, items, total,
+        attribution: getAttribution(),
+        couponCode: ACTIVE_COUPON ? ACTIVE_COUPON.code : null
+      })
     }).catch(() => {});
   } catch (e) { /* non-blocking */ }
 
@@ -598,12 +706,18 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
   const itemLines = items
     .map(i => `• ${i.name} ×${i.qty} — ₦${(i.price * i.qty).toLocaleString()}`)
     .join('\n');
+  const couponLine = ACTIVE_COUPON
+    ? `\n*ChopWheel prize:* ${ACTIVE_COUPON.label} (code ${ACTIVE_COUPON.code})` +
+      (discount > 0 ? ` → –₦${discount.toLocaleString()}` : '')
+    : '';
   const message =
     `Hi Mel! 🍲 I'd like to place this order:\n\n` +
     `*Name:* ${name}\n*Phone:* ${phone}\n` +
     (email ? `*Email:* ${email}\n` : '') +
     `*Delivery:* ${address}\n\n` +
-    `*Order:*\n${itemLines}\n\n` +
+    `*Order:*\n${itemLines}\n` +
+    (discount > 0 ? `*Subtotal:* ₦${subtotal.toLocaleString()}\n` : '') +
+    couponLine + '\n' +
     `*Total:* ₦${total.toLocaleString()}\n` +
     `*Ref:* ${ref}\n\n` +
     `Please confirm delivery time & payment details. Thank you!`;
@@ -618,9 +732,12 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
     content_category: 'whatsapp_checkout'
   });
 
-  // Clear cart + open WhatsApp
+  // Clear cart + coupon + open WhatsApp
   Object.keys(cart).forEach(k => delete cart[k]);
   persistCart();
+  ACTIVE_COUPON = null;
+  sessionStorage.removeItem(COUPON_KEY);
+  renderCouponBanner();
   renderCart();
   updateFab();
   showToast('✅ Opening WhatsApp — Mel will confirm shortly!');
@@ -663,6 +780,7 @@ renderMenu();
 renderPicks();
 renderCart();
 updateFab();
+bootstrapCoupon(); // ← apply ?coupon=CODE from URL / sessionStorage
 // Reflect restored cart in menu "+ Add" buttons
 Object.keys(cart).forEach(id => {
   const btn = document.getElementById(`add-${id}`);

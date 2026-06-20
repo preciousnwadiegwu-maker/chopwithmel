@@ -164,6 +164,7 @@
       <a href="#menu" onclick="toggleMobileMenu()">Menu</a>
       <a href="#delivery-areas" onclick="toggleMobileMenu()">Delivery Areas</a>
       <a href="#reviews" onclick="toggleMobileMenu()">Reviews</a>
+      <a href="/spin" onclick="toggleMobileMenu()">🎡 Spin to Win up to 40% off</a>
       <a href="/refer" onclick="toggleMobileMenu()">🎁 Refer & Earn ₦5k</a>
       <a href="/omugwo" onclick="toggleMobileMenu()">🤱🏾 Omugwo Package</a>
       <a href="https://wa.me/2347033352997" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
@@ -244,6 +245,14 @@
       </div>
     </div>
   </section>
+
+  <!-- SPIN-WHEEL PROMO STRIP — drives traffic to /spin for acquisition -->
+  <aside class="spin-promo" aria-label="Spin the ChopWheel promo">
+    <div class="spin-promo-inner">
+      <span>🎡 First time here? <b>Spin to win up to 40% off</b> — every spin wins.</span>
+      <a href="/spin">Spin now →</a>
+    </div>
+  </aside>
 
   <!-- HOW IT WORKS -->
   <section class="how-it-works" id="how-it-works">
@@ -326,6 +335,7 @@
     <div class="container">
       <div class="order-box">
         <h2>Your order</h2>
+        <div id="couponBanner" class="coupon-banner" style="display:none" aria-live="polite"></div>
         <div id="cartItems" class="cart-items" aria-live="polite">
           <p class="cart-empty">No items yet — add something from the menu above.</p>
         </div>

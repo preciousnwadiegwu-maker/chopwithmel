@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🎡 Spin the ChopWheel — Win up to 40% off ChopWithMel</title>
+<meta name="description" content="Spin the ChopWheel for a guaranteed prize off your first ChopWithMel order — up to 40% off, free delivery, or a free side. Lagos delivery.">
+<meta name="theme-color" content="#ff5a1f">
+<link rel="icon" type="image/png" href="/images/logo.png">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chopwithmel.com/spin">
+<meta property="og:title" content="🎡 Spin to Win — Up to 40% off ChopWithMel">
+<meta property="og:description" content="Every spin wins. Free spin, instant prize, delivered hot in Lagos.">
+<meta property="og:image" content="https://chopwithmel.com/images/jollof-rice.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700;800&family=Playfair+Display+SC:wght@700&display=swap" rel="stylesheet">
+
+<script src="/config.js"></script>
+<script>
+  // Meta Pixel — fires LandingPageView for ad-spend attribution
+  (function() {
+    if (!window.META_PIXEL_ID) return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', window.META_PIXEL_ID);
+    fbq('track', 'PageView');
+  })();
+  (function() {
+    if (!window.GA_MEASUREMENT_ID) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.GA_MEASUREMENT_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date()); gtag('config', window.GA_MEASUREMENT_ID);
+  })();
+  function trackEvent(name, params={}){
+    try{ if(window.fbq) fbq('track', name, params); }catch(e){}
+    try{ if(window.gtag) gtag('event', name.toLowerCase().replace(/\s/g,'_'), params); }catch(e){}
+  }
+</script>
+<style>
+  :root{
+    --bg:#0e1117; --panel:#161b22; --line:#2a323d;
+    --ink:#e9eef5; --mute:#9aa7b6;
+    --brand:#ff5a1f; --brand2:#ffb020;
+    --green:#26d07c; --wa:#25d366;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:'Karla',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:radial-gradient(900px 600px at 50% -10%,#1b2330,#0e1117 55%);
+    color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    padding:24px 18px 48px;-webkit-font-smoothing:antialiased
+  }
+  .header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .header img{width:36px;height:36px;border-radius:50%}
+  .header .name{font-weight:800;font-size:17px;letter-spacing:-.3px}
+  .header .name b{color:var(--brand2)}
+  .pill{font-size:10.5px;color:var(--mute);border:1px solid var(--line);padding:4px 10px;border-radius:999px;background:var(--panel)}
+
+  .stage{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center}
+
+  h1{font-family:'Playfair Display SC',serif;font-size:clamp(26px,7vw,36px);text-align:center;line-height:1.1;margin:6px 0 6px}
+  h1 b{color:var(--brand2)}
+  .lede{font-size:14px;color:var(--mute);text-align:center;max-width:340px;margin-bottom:18px;line-height:1.55}
+
+  .wheelWrap{position:relative;width:300px;height:300px;margin:6px 0 8px}
+  .wheelPtr{position:absolute;top:-6px;left:50%;transform:translateX(-50%);z-index:5;width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:26px solid #15191f;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45))}
+  .wheel{width:300px;height:300px;border-radius:50%;border:8px solid #15191f;position:relative;box-shadow:0 12px 40px -8px rgba(255,90,31,.35),inset 0 0 0 4px rgba(255,255,255,.06);transition:transform 4.5s cubic-bezier(.17,.67,.2,1)}
+  .wheel .lbl{position:absolute;top:50%;left:50%;transform-origin:0 0;font-size:11px;font-weight:800;color:#fff;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.45);pointer-events:none}
+  .spinHub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));border:5px solid #15191f;z-index:4;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#1a1205;text-align:center;cursor:pointer;box-shadow:0 4px 14px rgba(255,90,31,.4)}
+  .spinHub:active{transform:translate(-50%,-50%) scale(.95)}
+
+  .btn{width:100%;border:none;border-radius:14px;padding:16px 18px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s,opacity .2s;margin-top:12px;letter-spacing:.2px}
+  .btn-brand{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#1a1205;box-shadow:0 8px 22px -6px rgba(255,90,31,.5)}
+  .btn-brand:active{transform:translateY(1px)}
+  .btn-wa{background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 22px -6px rgba(37,211,102,.5)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+
+  .form{width:100%;display:none;flex-direction:column;gap:10px;animation:fadeUp .3s ease}
+  .form.show{display:flex}
+  .form input{width:100%;padding:15px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font-size:15px;font-family:inherit;outline:none}
+  .form input:focus{border-color:var(--brand2)}
+  .form input::placeholder{color:var(--mute)}
+  .micro{font-size:11px;color:var(--mute);text-align:center;margin-top:6px;line-height:1.4}
+
+  .prizeBox{width:100%;display:none;flex-direction:column;align-items:center;background:linear-gradient(135deg,rgba(255,90,31,.15),rgba(255,176,32,.08));border:1.5px dashed var(--brand2);border-radius:18px;padding:22px 18px;margin-top:14px;animation:fadeUp .4s ease}
+  .prizeBox.show{display:flex}
+  .prizeBox .emoji{font-size:54px;line-height:1;margin-bottom:6px}
+  .prizeBox .label{font-size:13px;color:var(--brand2);font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+  .prizeBox .value{font-family:'Playfair Display SC',serif;font-size:34px;font-weight:800;color:#fff;margin:6px 0 4px;text-align:center;line-height:1.1}
+  .prizeBox .code{margin-top:10px;background:#15191f;border:1px dashed var(--brand2);border-radius:10px;padding:10px 14px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:17px;font-weight:800;letter-spacing:2px;color:var(--brand2);cursor:pointer}
+  .prizeBox .code:active{transform:scale(.98)}
+  .prizeBox .expires{font-size:11px;color:var(--mute);margin-top:8px}
+
+  .badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+  .badge{font-size:10.5px;color:var(--mute);border:1px solid var(--line);padding:4px 10px;border-radius:999px;background:var(--panel)}
+
+  .flash{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:50;flex-direction:column;color:#fff;text-align:center;padding:30px;animation:fade .3s;backdrop-filter:blur(6px)}
+  .flash.show{display:flex}
+  .flash .em{font-size:90px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1)}
+  .flash .w1{font-size:13px;letter-spacing:3px;color:var(--brand2);font-weight:800;margin-top:8px}
+  .flash .w2{font-family:'Playfair Display SC',serif;font-size:44px;font-weight:800;margin:4px 0 8px}
+  .flash .hint{font-size:13px;color:#cfd8e3}
+
+  .confetti{position:absolute;width:10px;height:16px;top:-20px;opacity:.9;animation:fall linear forwards}
+
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="/images/logo.png" alt="ChopWithMel">
+    <div class="name">Chop<b>WithMel</b></div>
+    <span class="pill">🎡 Free spin</span>
+  </div>
+
+  <div class="stage">
+    <h1>Spin the <b>ChopWheel</b></h1>
+    <p class="lede">One free spin. Every spin wins. Claim your prize, then order homemade jollof, pepper soup, suya & more — delivered hot in Lagos.</p>
+
+    <div class="wheelWrap">
+      <div class="wheelPtr"></div>
+      <div class="wheel" id="wheel"></div>
+      <div class="spinHub" id="hub" onclick="spin()">SPIN</div>
+    </div>
+
+    <button class="btn btn-brand" id="spinBtn" onclick="spin()">Spin the wheel 🎯</button>
+
+    <div class="form" id="form">
+      <input type="text" id="name" placeholder="Your name" autocomplete="given-name" maxlength="60">
+      <input type="tel" id="phone" placeholder="WhatsApp number (e.g. 08012345678)" autocomplete="tel" inputmode="tel" maxlength="20">
+      <button class="btn btn-brand" id="claimBtn" onclick="claim()">Claim my prize →</button>
+      <p class="micro">No spam. We text your code on WhatsApp, then take you straight to the menu.</p>
+    </div>
+
+    <div class="prizeBox" id="prizeBox">
+      <div class="emoji" id="pEmoji">🎉</div>
+      <div class="label" id="pLabel">YOU WON</div>
+      <div class="value" id="pValue">10% OFF your order</div>
+      <div class="code" id="pCode" onclick="copyCode()">MEL-XXXXX</div>
+      <div class="expires" id="pExpires">Valid for 72 hours</div>
+      <a class="btn btn-wa" id="waBtn" href="#" target="_blank" rel="noopener noreferrer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Send my code to WhatsApp
+      </a>
+      <a class="btn btn-brand" id="orderBtn" href="/" style="text-decoration:none;text-align:center">
+        Order now — prize auto-applied 🍲
+      </a>
+    </div>
+
+    <div class="badges">
+      <span class="badge">⚡ Delivered same-day</span>
+      <span class="badge">🍲 Real Lagos homemade</span>
+      <span class="badge">💳 Card · transfer · USSD</span>
+    </div>
+  </div>
+
+  <div class="flash" id="flash" onclick="closeFlash()">
+    <div class="em" id="flashEm">🎉</div>
+    <div class="w1">YOU WON</div>
+    <div class="w2" id="flashPrize">10% OFF</div>
+    <div class="hint">Tap to claim →</div>
+  </div>
+
+<script>
+/* ── ATTRIBUTION (UTM capture for ad analytics) ───────────────────────── */
+const url = new URL(location.href);
+const ATTR = {
+  utm_source:   url.searchParams.get('utm_source'),
+  utm_medium:   url.searchParams.get('utm_medium'),
+  utm_campaign: url.searchParams.get('utm_campaign'),
+  utm_content:  url.searchParams.get('utm_content'),
+  fbclid:       url.searchParams.get('fbclid'),
+  landing:      '/spin'
+};
+const SESSION_ID = (() => {
+  let s = sessionStorage.getItem('cwm_session');
+  if (!s) { s = 'sp_' + Date.now() + '_' + Math.random().toString(36).slice(2,8); sessionStorage.setItem('cwm_session', s); }
+  return s;
+})();
+
+/* ── BUILD WHEEL ─────────────────────────────────────────────────────── */
+const segs = [
+  {t:'10% OFF',c:'#ff5a1f',e:'🔥'},
+  {t:'FREE DRINK',c:'#3a8bfd',e:'🥤'},
+  {t:'15% OFF',c:'#a06bff',e:'🎉'},
+  {t:'FREE DELIVERY',c:'#26d07c',e:'🛵'},
+  {t:'5% OFF',c:'#ffb020',e:'😋'},
+  {t:'40% OFF',c:'#ff4d8d',e:'💎'},
+  {t:'FREE SIDE',c:'#0f9d63',e:'🍟'},
+  {t:'10% OFF',c:'#e23d00',e:'🔥'}
+];
+const wheel = document.getElementById('wheel');
+const n = segs.length, seg = 360 / n;
+let grad = 'conic-gradient(';
+segs.forEach((s, i) => { grad += `${s.c} ${i*seg}deg ${(i+1)*seg}deg${i<n-1?',':''}`; });
+grad += ')';
+wheel.style.background = grad;
+segs.forEach((s, i) => {
+  const lbl = document.createElement('div');
+  lbl.className = 'lbl';
+  lbl.textContent = s.e + ' ' + s.t;
+  const ang = (i + 0.5) * seg - 90;
+  lbl.style.transform = `rotate(${ang}deg) translate(48px,-6px)`;
+  wheel.appendChild(lbl);
+});
+
+/* ── LOG SPIN (analytics fire-and-forget) ────────────────────────────── */
+fetch('/api/spin/log', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ sessionId: SESSION_ID, attribution: ATTR })
+}).catch(() => {});
+trackEvent('ViewContent', { content_name: 'spin_wheel' });
+
+/* ── PRIZE LABEL MAP (server is source of truth, this is for visuals) ──── */
+const PRIZE_DISPLAY = {
+  'PERCENT':       v => `${v}% OFF your order`,
+  'FIXED':         v => `₦${v.toLocaleString()} OFF your order`,
+  'FREE_DELIVERY': () => 'FREE delivery on your order',
+  'FREE_SIDE':     () => 'FREE side with your order'
+};
+
+/* ── SPIN ANIMATION + REVEAL ─────────────────────────────────────────── */
+let spinning = false, claimedCoupon = null, predeterminedPrizeId = null;
+
+function spin() {
+  if (spinning) return;
+  spinning = true;
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('hub').textContent = '…';
+  trackEvent('Lead', { content_name: 'spin_attempt' });
+
+  // Random visual target — actual prize is decided server-side after claim.
+  const visualIdx = Math.floor(Math.random() * n);
+  const target = 5 * 360 + (360 - (visualIdx * seg + seg / 2));
+  wheel.style.transform = `rotate(${target}deg)`;
+
+  setTimeout(() => {
+    // Reveal capture form so customer can claim
+    document.getElementById('form').classList.add('show');
+    document.getElementById('spinBtn').style.display = 'none';
+    document.getElementById('hub').textContent = 'WON';
+    document.getElementById('name').focus();
+  }, 4600);
+}
+
+/* ── CLAIM (server decides actual prize) ─────────────────────────────── */
+async function claim() {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const phoneClean = phone.replace(/\D/g, '');
+
+  if (!name) { document.getElementById('name').focus(); return; }
+  if (phoneClean.length < 10 || phoneClean.length > 15) {
+    alert('Please enter a valid WhatsApp number.');
+    document.getElementById('phone').focus();
+    return;
+  }
+
+  const btn = document.getElementById('claimBtn');
+  btn.disabled = true;
+  btn.textContent = 'Claiming…';
+
+  try {
+    const res = await fetch('/api/spin/claim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone: phoneClean, sessionId: SESSION_ID, attribution: ATTR })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || 'Spin failed');
+
+    claimedCoupon = data.coupon;
+    trackEvent('CompleteRegistration', {
+      content_name: 'spin_claim',
+      content_category: data.coupon.label
+    });
+
+    // Reveal — flash modal then prize box
+    showFlash(data.coupon);
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Claim my prize →';
+    alert(err.message || 'Something went wrong. Try again.');
+  }
+}
+
+function showFlash(coupon) {
+  document.getElementById('flashEm').textContent = coupon.emoji || '🎉';
+  document.getElementById('flashPrize').textContent = coupon.label;
+  const f = document.getElementById('flash');
+  f.classList.add('show');
+  shootConfetti(f);
+}
+function closeFlash() {
+  document.getElementById('flash').classList.remove('show');
+  revealPrize(claimedCoupon);
+}
+
+function revealPrize(coupon) {
+  document.getElementById('form').classList.remove('show');
+  const box = document.getElementById('prizeBox');
+  document.getElementById('pEmoji').textContent = coupon.emoji || '🎉';
+  document.getElementById('pValue').textContent = (PRIZE_DISPLAY[coupon.type] || (() => coupon.label))(coupon.value);
+  document.getElementById('pCode').textContent = coupon.code;
+  const exp = new Date(coupon.expiresAt);
+  document.getElementById('pExpires').textContent = `Valid until ${exp.toDateString()} • ${exp.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
+  document.getElementById('orderBtn').href = `/?coupon=${coupon.code}#picks`;
+
+  // Build WhatsApp deep-link
+  const waMsg = encodeURIComponent(
+    `Hi Mel! ${coupon.emoji || '🎉'} I just spun the ChopWheel and won *${coupon.label}*\n\n` +
+    `My prize code: *${coupon.code}*\nValid: ${exp.toDateString()}\n\n` +
+    `I'd like to use it on an order today.`
+  );
+  document.getElementById('waBtn').href = `https://wa.me/2347033352997?text=${waMsg}`;
+  box.classList.add('show');
+  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function copyCode() {
+  const code = claimedCoupon?.code;
+  if (!code) return;
+  navigator.clipboard?.writeText(code);
+  const el = document.getElementById('pCode');
+  const orig = el.textContent;
+  el.textContent = '✓ COPIED!';
+  setTimeout(() => el.textContent = orig, 1400);
+}
+
+function shootConfetti(parent) {
+  const cols = ['#ff5a1f','#ffb020','#26d07c','#3a8bfd','#ff4d8d','#a06bff'];
+  for (let i = 0; i < 50; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.background = cols[i % cols.length];
+    c.style.animationDuration = (1.6 + Math.random() * 1.8) + 's';
+    c.style.animationDelay = (Math.random() * 0.4) + 's';
+    parent.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+</script>
+</body>
+</html>
