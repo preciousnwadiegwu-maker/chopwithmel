@@ -100,6 +100,7 @@ const MENU = [
   { id: 62, category: 'Breakfast', name: 'Banana Oatmeal Pancakes',    description: 'Oatmeal pancakes with 2 sausages, bacon, scrambled egg, and syrup.',price: 9500,  emoji: '🥞', image: CARD('🥞', 'Banana Oatmeal Pancakes', '#FFF8DC', '#B8860B') },
   { id: 63, category: 'Breakfast', name: 'Waffles',                    description: 'Golden waffles served with crispy chicken and syrup.',              price: 9500,  emoji: '🧇', image: CARD('🧇', 'Waffles',                '#FFE8B5', '#DAA520') },
   { id: 64, category: 'Breakfast', name: 'French Toast',               description: 'French toast with 2 sausages, bacon, scrambled egg, and syrup.',   price: 8500,  emoji: '🍞', image: CARD('🍞', 'French Toast',           '#FFE4B5', '#CD853F') },
+  { id: 85, category: 'Breakfast', name: 'Akara Bread Breakfast Combo', description: 'Golden fried akara bread slices served with a tin of sardines/mackerel and a rich yellow sauce — a hearty Naija breakfast.', price: 15000, emoji: '🍞', image: '/images/akara-bread-breakfast-combo.jpg' },
 
   // ADD-ONS
   { id: 65, category: 'Add-Ons', name: 'Baked Beans',     description: 'Side of seasoned baked beans.',       price: 500,  emoji: '🫘', image: CARD('🫘', 'Baked Beans',   '#FFE5B4', '#FFB347') },
