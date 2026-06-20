@@ -81,8 +81,7 @@ const MENU = [
   { id: 48, category: 'Rice & Pasta', name: 'Fried Rice (4L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 80000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
   { id: 51, category: 'Rice & Pasta', name: 'Jollof Seafood Linguine (2L)',  description: 'Jollof-style linguine tossed with prawns, calamari and fresh fish in a smoky pepper sauce.', price: 55000,  emoji: '🍤', image: '/images/seafood-pasta.jpg' },
   { id: 52, category: 'Rice & Pasta', name: 'Jollof Seafood Linguine (4L)',  description: 'Jollof-style linguine tossed with prawns, calamari and fresh fish in a smoky pepper sauce.', price: 110000, emoji: '🍤', image: '/images/seafood-pasta.jpg' },
-  { id: 55, category: 'Rice & Pasta', name: 'Beef Stir Fry Pasta (2L)',     description: 'Spicy stir-fry spaghetti tossed with tender beef strips, peppers and onions.', price: 45000,  emoji: '🍝', image: '/images/beef-stir-fry-pasta.jpg' },
-  { id: 56, category: 'Rice & Pasta', name: 'Beef Stir Fry Pasta (4L)',     description: 'Spicy stir-fry spaghetti tossed with tender beef strips, peppers and onions.', price: 90000,  emoji: '🍝', image: '/images/beef-stir-fry-pasta.jpg' },
+  { id: 55, category: 'Rice & Pasta', name: 'Beef Stir Fry Pack', description: 'Single-serve takeaway — spicy stir-fry spaghetti tossed with tender beef strips, peppers and onions.', price: 10000, emoji: '🍝', image: '/images/beef-stir-fry-pasta.jpg' },
 
   // BURGERS
   { id: 57, category: 'Burgers', name: 'Breakfast Fast Burger',    description: 'Fully loaded breakfast burger — egg, bacon, sausage, and more.',  price: 15000, emoji: '🍔', image: '/images/breakfast-burger.jpg' },
@@ -748,7 +747,7 @@ document.getElementById('waOrderBtn').addEventListener('click', async function()
 // ─── CHEF'S PICKS — Test #2 (+30-60% add-to-cart) ────────────────────────────
 // 8 highest-converting / most-loved dishes (real photos prioritized)
 // 8 bestsellers — entry-tier combos featured first for conversion lift
-const CHEFS_PICKS_IDS = [83, 84, 85, 82, 39, 1, 13, 71];
+const CHEFS_PICKS_IDS = [83, 55, 84, 85, 82, 39, 1, 13];
 function renderPicks() {
   const grid = document.getElementById('picksGrid');
   if (!grid) return;
