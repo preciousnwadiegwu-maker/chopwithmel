@@ -79,20 +79,13 @@ const MENU = [
   { id: 46, category: 'Rice & Pasta', name: 'Asun Jollof Rice (4L)',         description: 'Jollof rice topped with peppered goat meat (asun).',           price: 80000,  emoji: '🍖', image: '/images/jollof-rice.jpg' },
   { id: 47, category: 'Rice & Pasta', name: 'Fried Rice (2L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 40000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
   { id: 48, category: 'Rice & Pasta', name: 'Fried Rice (4L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 80000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
-  { id: 49, category: 'Rice & Pasta', name: 'Creamy Penne Pasta (2L)',       description: 'Penne pasta in a rich, creamy sauce.',                          price: 50000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
-  { id: 50, category: 'Rice & Pasta', name: 'Creamy Penne Pasta (4L)',       description: 'Penne pasta in a rich, creamy sauce.',                          price: 110000, emoji: '🍝', image: '/images/seafood-pasta.jpg' },
   { id: 51, category: 'Rice & Pasta', name: 'Jollof Penne Pasta (2L)',       description: 'Penne pasta cooked Nigerian jollof-style.',                     price: 40000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
   { id: 52, category: 'Rice & Pasta', name: 'Jollof Penne Pasta (4L)',       description: 'Penne pasta cooked Nigerian jollof-style.',                     price: 80000,  emoji: '🍝', image: '/images/seafood-pasta.jpg' },
-  { id: 53, category: 'Rice & Pasta', name: 'Alfredo Linguine Pasta (2L)',   description: 'Linguine in a velvety Alfredo cream sauce.',                    price: 50000,  emoji: '🍜', image: '/images/seafood-pasta.jpg' },
-  { id: 54, category: 'Rice & Pasta', name: 'Alfredo Linguine Pasta (4L)',   description: 'Linguine in a velvety Alfredo cream sauce.',                    price: 110000, emoji: '🍜', image: '/images/seafood-pasta.jpg' },
   { id: 55, category: 'Rice & Pasta', name: 'Beef Stir Fry Pasta (2L)',     description: 'Spicy stir-fry spaghetti tossed with tender beef strips, peppers and onions.', price: 45000,  emoji: '🍝', image: '/images/beef-stir-fry-pasta.jpg' },
   { id: 56, category: 'Rice & Pasta', name: 'Beef Stir Fry Pasta (4L)',     description: 'Spicy stir-fry spaghetti tossed with tender beef strips, peppers and onions.', price: 90000,  emoji: '🍝', image: '/images/beef-stir-fry-pasta.jpg' },
 
   // BURGERS
   { id: 57, category: 'Burgers', name: 'Breakfast Fast Burger',    description: 'Fully loaded breakfast burger — egg, bacon, sausage, and more.',  price: 15000, emoji: '🍔', image: '/images/breakfast-burger.jpg' },
-  { id: 58, category: 'Burgers', name: 'Double Deck Burger',       description: 'Double-patty burger stacked high with all the toppings.',         price: 20000, emoji: '🍔', image: '/images/breakfast-burger.jpg' },
-  { id: 59, category: 'Burgers', name: 'Beef Burger',              description: 'Juicy beef patty with fresh lettuce, tomato, and sauce.',         price: 8000,  emoji: '🍔', image: '/images/breakfast-burger.jpg' },
-  { id: 60, category: 'Burgers', name: 'Chicken Burger',           description: 'Crispy chicken fillet with coleslaw and special mayo.',           price: 8500,  emoji: '🍗', image: '/images/breakfast-burger.jpg' },
   { id: 71, category: 'Burgers', name: 'Breakfast Burger & Sandwich Melt Combo', description: 'The ultimate combo — a loaded breakfast burger paired with a golden sandwich melt.', price: 50000, emoji: '🍔', image: '/images/burger-sandwich-combo.jpg' },
 
   // BREAKFAST
