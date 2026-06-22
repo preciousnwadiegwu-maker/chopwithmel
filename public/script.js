@@ -42,8 +42,8 @@ const MENU = [
   { id: 75, category: 'Swallow', name: 'Amala, Ewedu, Gbegiri & Assorted Fish (4L)', description: 'Yoruba classic — smooth amala with ewedu, gbegiri, assorted meat and fish.', price: 110000, emoji: '🍜', image: '/images/amala-ewedu.jpg' },
 
   // STEWS
-  { id: 17, category: 'Stews', name: 'Chicken Stew (2L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 40000,  emoji: '🍗', image: CARD('🍗', 'Chicken Stew',  '#FFE0CC', '#C0392B') },
-  { id: 18, category: 'Stews', name: 'Chicken Stew (4L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 80000,  emoji: '🍗', image: CARD('🍗', 'Chicken Stew',  '#FFE0CC', '#C0392B') },
+  { id: 17, category: 'Stews', name: 'Chicken Stew (2L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 40000,  emoji: '🍗', image: '/images/chicken-stew.jpg' },
+  { id: 18, category: 'Stews', name: 'Chicken Stew (4L)',          description: 'Tomato-based stew with tender chicken pieces.',                  price: 80000,  emoji: '🍗', image: '/images/chicken-stew.jpg' },
   { id: 19, category: 'Stews', name: 'Turkey Stew (2L)',           description: 'Rich tomato stew with well-seasoned turkey.',                    price: 40000,  emoji: '🦃', image: CARD('🦃', 'Turkey Stew',   '#FFD9B5', '#A0522D') },
   { id: 20, category: 'Stews', name: 'Turkey Stew (4L)',           description: 'Rich tomato stew with well-seasoned turkey.',                    price: 80000,  emoji: '🦃', image: CARD('🦃', 'Turkey Stew',   '#FFD9B5', '#A0522D') },
   { id: 21, category: 'Stews', name: 'Beef Stew (2L)',             description: 'Classic Nigerian beef stew, slow-cooked to perfection.',         price: 40000,  emoji: '🥩', image: '/images/beef-stew.jpg' },
