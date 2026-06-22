@@ -79,8 +79,8 @@ const MENU = [
   { id: 46, category: 'Rice & Pasta', name: 'Asun Jollof Rice (4L)',         description: 'Jollof rice topped with peppered goat meat (asun).',           price: 80000,  emoji: '🍖', image: '/images/jollof-rice.jpg' },
   { id: 47, category: 'Rice & Pasta', name: 'Fried Rice (2L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 40000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
   { id: 48, category: 'Rice & Pasta', name: 'Fried Rice (4L)',               description: 'Golden fried rice with mixed veggies and seasoning.',           price: 80000,  emoji: '🍳', image: '/images/fried-rice.jpg' },
-  { id: 51, category: 'Rice & Pasta', name: 'Surf and Turf Linguine Pasta (2L)',  description: 'Jollof-style linguine tossed with prawns, calamari and fresh fish in a smoky pepper sauce.', price: 55000,  emoji: '🍤', image: '/images/seafood-pasta.jpg' },
-  { id: 52, category: 'Rice & Pasta', name: 'Surf and Turf Linguine Pasta (4L)',  description: 'Jollof-style linguine tossed with prawns, calamari and fresh fish in a smoky pepper sauce.', price: 110000, emoji: '🍤', image: '/images/seafood-pasta.jpg' },
+  { id: 51, category: 'Rice & Pasta', name: 'Surf and Turf Linguine Pasta (2L)',  description: 'Jollof-style linguine tossed with prawns, calamari, fresh fish and tender beef in a smoky pepper sauce.', price: 55000,  emoji: '🍤', image: '/images/seafood-pasta.jpg' },
+  { id: 52, category: 'Rice & Pasta', name: 'Surf and Turf Linguine Pasta (4L)',  description: 'Jollof-style linguine tossed with prawns, calamari, fresh fish and tender beef in a smoky pepper sauce.', price: 110000, emoji: '🍤', image: '/images/seafood-pasta.jpg' },
   { id: 55, category: 'Rice & Pasta', name: 'Beef Stir Fry Pack', description: 'Single-serve takeaway — spicy stir-fry spaghetti tossed with tender beef strips, peppers and onions.', price: 10000, emoji: '🍝', image: '/images/beef-stir-fry-pasta.jpg' },
 
   // BURGERS
