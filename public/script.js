@@ -60,8 +60,7 @@ const MENU = [
   { id: 28, category: 'Pepper Soup', name: 'Chicken Pepper Soup (4L)',       description: 'Tender chicken simmered in a hot, aromatic broth with scent leaves.', price: 70000, emoji: '🐔', image: '/images/chicken-pepper-soup.jpg' },
 
   // RICE & PASTA
-  { id: 76, category: 'Rice & Pasta', name: 'Ofe Akwu & White Rice (2L)', description: 'Igbo palm nut soup (ofe akwu) served with fluffy white rice.',  price: 55000,  emoji: '🍚', image: '/images/ofe-akwu-white-rice.jpg' },
-  { id: 77, category: 'Rice & Pasta', name: 'Ofe Akwu & White Rice (4L)', description: 'Igbo palm nut soup (ofe akwu) served with fluffy white rice.',  price: 100000, emoji: '🍚', image: '/images/ofe-akwu-white-rice.jpg' },
+  { id: 76, category: 'Rice & Pasta', name: 'Ofe Akwu, White Rice & Plantain (1L)', description: 'Single-serve pack — rich Igbo palm nut soup (ofe akwu) with assorted meat, white rice and fried plantain.', price: 40000, emoji: '🍚', image: '/images/ofe-akwu-white-rice.jpg' },
   { id: 37, category: 'Rice & Pasta', name: 'Native Rice (2L)',              description: 'Ofada-style native rice cooked in palm oil sauce.',             price: 40000,  emoji: '🍚', image: CARD('🍚', 'Native Rice',       '#F5E6D3', '#8B4513') },
   { id: 38, category: 'Rice & Pasta', name: 'Native Rice (4L)',              description: 'Ofada-style native rice cooked in palm oil sauce.',             price: 80000,  emoji: '🍚', image: CARD('🍚', 'Native Rice',       '#F5E6D3', '#8B4513') },
   { id: 83, category: 'Rice & Pasta', name: 'Jollof & Chicken Lunch Pack', description: 'Single-serve bento — smoky party jollof topped with chicken and peppered onions. Perfect for office lunch, events and bulk orders.', price: 5000, emoji: '🍱', image: '/images/jollof-chicken-lunch-pack.jpg' },
